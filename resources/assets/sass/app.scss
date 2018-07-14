@@ -1,0 +1,43 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~vuetify/dist/vuetify.css';
+
+.application--wrap
+{
+  background: url("/img/ictFlag.svg") no-repeat;
+  background-size: cover;
+}
+.filter-content
+{
+  background-color: rgba(0,0,0,0.75);
+}
+.max-500
+{
+  max-width: 500px;
+}
+
+.max-650
+{
+  max-width: 650px;
+}
+
+[v-cloak] > * { display:none }
+[v-cloak]::before { content: "loading…" }
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
