@@ -45,11 +45,23 @@
         <p style="text-align: center;color:white;font-size: 25px;">Eat Local ICT Is Loading...Please Wait</p>
     </div>
     <v-app>
-        <transition name="fade">
-            <keep-alive>
-                <router-view class="filter-content"></router-view>
-            </keep-alive>
-        </transition>
+        <v-content class="filter-content">
+
+            <v-layout class="white--text" fill-height>
+                <transition name="fade">
+                    <keep-alive>
+                        <router-view></router-view>
+                    </keep-alive>
+                </transition>
+            </v-layout>
+            <v-footer dark class="pa-2" >
+                <v-container class="pa-0">
+                    <p class="text-xs-center mb-0">
+                        Copyright &copy; 2018 By Nicholas Coates
+                    </p>
+                </v-container>
+            </v-footer>
+        </v-content>
     </v-app>
 </div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbSgshuOWaQ8nCyLiOzliH4KFRVLHw1vM&libraries=places"></script>

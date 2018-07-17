@@ -1,18 +1,20 @@
 
 <template>
-    <v-content>
-        <v-layout class="white--text" fill-height>
+    <v-layout row wrap>
+        <v-layout class="white--text">
             <v-container class="max-500">
                 <h1 class="white--text mb-2 display-1 text-xs-center">Eat Local ICT</h1>
                 <p class="text-xs-center">What are you in the mood for?</p>
-                <v-autocomplete
+                <v-autocomplete @change="goToSearch"
                         dark
                         :items="items"
-                        hint="Click the icon to save"
+                        hint="Select One to Search"
                         v-model="selectedTag"
                         class="mx-3"
                         flat
                         block
+                        item-text="name"
+                        item-value="id"
                         label="Search by Tag"
                 ></v-autocomplete>
 
@@ -25,15 +27,7 @@
             </v-container>
 
         </v-layout>
-        <v-footer dark class="pa-2" >
-            <v-container class="pa-0">
-                <p class="text-xs-center mb-0">
-                    Copyright &copy; 2018 By Nicholas Coates
 
-                </p>
-            </v-container>
-
-        </v-footer>
         <v-dialog v-model="showPlaceModal" width="500">
             <v-card>
                 <v-card-title class="headline blue lighten-1" primary-title>
@@ -49,12 +43,11 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="error" flat @click="findRandomPlace" :loading="loadingRandom" >No, Try Again</v-btn>
-                    <v-btn color="success" flat :to="{name:'listing',params:{id:randomPlace.id}}">Looks Good!</v-btn>
+                    <v-btn color="success" @click="showPlaceModal=!showPlaceModal" flat :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}">Looks Good!</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-content>
-
+    </v-layout>
 </template>
 <script>
     export default {
@@ -89,10 +82,14 @@
                         this.loadingRandom = false;
 
                     })
+            },//findRandomPlace
+            goToSearch()
+            {
+                this.$router.push({ name: 'search', params: { term: this.selectedTag }})
+
             }
 
         },
-
         created(){
 
         }
