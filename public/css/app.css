@@ -11846,6 +11846,14 @@ table.v-table tfoot tr td {
   }
 }@charset "UTF-8";
 
+html {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
 .application--wrap {
   background: url("/img/ictFlag.svg") no-repeat;
   background-size: cover;
@@ -11859,8 +11867,8 @@ table.v-table tfoot tr td {
   max-width: 500px;
 }
 
-.max-650 {
-  max-width: 650px;
+.max-800 {
+  max-width: 800px;
 }
 
 [v-cloak] > * {

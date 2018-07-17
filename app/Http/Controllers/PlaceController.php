@@ -10,6 +10,10 @@ class PlaceController extends Controller
 //
 
 
+    /**
+     * @param int $iterator
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function getRandomPlace($iterator = 0)
     {
 
@@ -37,6 +41,10 @@ class PlaceController extends Controller
     }
 
 
+    /**
+     * @param Place $place
+     * @return Place
+     */
     public function index(Place $place)
     {
         return $place;

@@ -16,7 +16,7 @@ class CreatePlacesTable extends Migration
         Schema::create('places', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
             $table->text('description')->nullable();
             $table->string('address')->nullable();//nullable because food trucks may not have a set address
             $table->string('city')->default('Wichita');
@@ -25,6 +25,10 @@ class CreatePlacesTable extends Migration
             //contact info
             $table->string('phone_number')->nullable();
             $table->string('email_address')->nullable();
+            $table->string('menu_link')->nullable();
+            $table->string('website_url')->nullable();
+            $table->string('facebook_link')->nullable();
+            $table->string('instagram_link')->nullable();
             //
             //extra special attributes
             $table->boolean('has_vegan_options')->default(false);

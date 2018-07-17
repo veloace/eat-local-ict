@@ -36579,6 +36579,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -36630,7 +36659,7 @@ var render = function() {
         [
           _c(
             "v-container",
-            { staticClass: "max-650" },
+            { staticClass: "max-800" },
             [
               !_vm.loading
                 ? _c(
@@ -36646,7 +36675,7 @@ var render = function() {
                           _vm._v(
                             "\n                        " +
                               _vm._s(_vm.listing.name) +
-                              "                        "
+                              "\n                    "
                           )
                         ]
                       ),
@@ -36654,6 +36683,50 @@ var render = function() {
                       _c(
                         "v-card-text",
                         [
+                          _c(
+                            "v-layout",
+                            {
+                              attrs: { row: "", wrap: "", "align-center": "" }
+                            },
+                            [
+                              _c(
+                                "v-flex",
+                                { staticClass: "text-xs-center" },
+                                [
+                                  _c(
+                                    "v-avatar",
+                                    {
+                                      staticClass: "text-xs-center",
+                                      attrs: {
+                                        color: "grey lighten-4",
+                                        size: "120"
+                                      }
+                                    },
+                                    [
+                                      _vm.listing.image_url
+                                        ? _c("img", {
+                                            attrs: {
+                                              src: _vm.listing.image_url,
+                                              alt: "avatar"
+                                            }
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c("img", {
+                                        attrs: {
+                                          src: "/img/ictFlag.svg",
+                                          alt: "avatar"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
                           _c(
                             "p",
                             { staticClass: "text-xs-center" },
@@ -36676,6 +36749,40 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
+                          _c(
+                            "p",
+                            { staticClass: "text-xs-center" },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", icon: "", color: "pink" }
+                                },
+                                [_c("v-icon", [_vm._v("phone")])],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", icon: "", color: "pink" }
+                                },
+                                [_c("v-icon", [_vm._v("mail")])],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", icon: "", color: "pink" }
+                                },
+                                [_c("v-icon", [_vm._v("restaurant")])],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
                           _c("p", [
                             _vm._v(
                               "\n                            " +
@@ -36683,6 +36790,8 @@ var render = function() {
                                 "\n                        "
                             )
                           ]),
+                          _vm._v(" "),
+                          _c("v-divider"),
                           _vm._v(" "),
                           _c("h2", { staticClass: "text-xs-center" }, [
                             _vm._v("Hours")
@@ -37023,6 +37132,14 @@ var render = function() {
                       _c(
                         "v-card-actions",
                         [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { flat: "", block: "", color: "warning" }
+                            },
+                            [_vm._v("Go Back")]
+                          ),
+                          _vm._v(" "),
                           _c("v-spacer"),
                           _vm._v(" "),
                           _c(

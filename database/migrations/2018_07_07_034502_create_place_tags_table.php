@@ -17,7 +17,7 @@ class CreatePlaceTagsTable extends Migration
             $table->unsignedInteger('place_id')->index();
             $table->unsignedInteger('tag_id')->index();
             $table->timestamps();
-            $table->unique('place_id','tag_id');
+            $table->unique(['place_id','tag_id']);
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->foreign('place_id')->references('id')->on('places');
 

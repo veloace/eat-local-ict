@@ -11,6 +11,7 @@
 |
 */
 
+Auth::routes();
 Route::get('/{vue_capture?}',function(){
 
     $tag = \App\Tag::all()
@@ -28,3 +29,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

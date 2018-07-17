@@ -1,20 +1,48 @@
 <template>
     <v-content>
             <v-layout class="white--text" fill-height>
-                <v-container class="max-650">
+                <v-container class="max-800">
+
                     <v-card v-if="!loading">
                         <v-card-title class="headline blue lighten-1" primary-title>
-                            {{listing.name}}                        </v-card-title>
+                            {{listing.name}}
+                        </v-card-title>
                         <v-card-text>
+
+                            <v-layout row wrap align-center>
+                                <v-flex class="text-xs-center">
+                                    <v-avatar color="grey lighten-4" size="120" class="text-xs-center">
+                                        <img v-if="listing.image_url" :src="listing.image_url" alt="avatar">
+                                        <img src="/img/ictFlag.svg" alt="avatar">
+                                    </v-avatar>
+                                </v-flex>
+                            </v-layout>
                             <p class="text-xs-center">
                                 <v-icon>
                                     place
                                 </v-icon>
                                 {{listing.address}} {{listing.city}}, {{listing.state_code}}
                             </p>
+                            <p class="text-xs-center">
+
+                                <v-btn flat icon color="pink">
+                                    <v-icon>phone</v-icon>
+                                </v-btn>
+
+                                <v-btn flat icon color="pink">
+                                    <v-icon>mail</v-icon>
+                                </v-btn>
+
+                                <v-btn flat icon color="pink">
+                                    <v-icon>restaurant</v-icon>
+                                </v-btn>
+
+                            </p>
                             <p>
                                 {{listing.description}}
                             </p>
+
+                            <v-divider></v-divider>
                             <h2 class="text-xs-center">Hours</h2>
                             <v-list two-line>
 
@@ -121,6 +149,7 @@
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions>
+                            <v-btn flat block color="warning">Go Back</v-btn>
                             <v-spacer></v-spacer>
                             <v-btn flat block color="success" :to="{name:'home'}">Start Over</v-btn>
                         </v-card-actions>
