@@ -1,170 +1,77 @@
 <template>
-<v-layout row wrap class="white--text"t>
-    <v-container class="max-800">
 
-        <v-card v-if="!loading">
-            <v-card-title class="headline blue lighten-1" primary-title>
-                {{listing.name}}
-            </v-card-title>
-            <v-card-text>
+    <div class="container">
+        <h1 style="padding-top: 30px;" class="title has-text-centered">{{listing.name}}
+        </h1>
+        <p class="subtitle has-text-centered">
+            <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
+                <i class="fa fa-map-marker"></i>
+                {{listing.address}} {{listing.city}}, {{listing.state_code}}
+            </a>
+        </p>
+        <p>
+            {{listing.summary}}
+        </p>
+        <p>Price:
+               <span class="is-size-6">
+                <i class=" has-text-success fa fa-dollar" v-for="i in listing.price" :key="i"></i><i class="fa fa-dollar has-text-grey-lighter" v-for="c in (5-listing.price)" :key="c"></i>
+            </span>
+        </p>
 
-                <v-layout row wrap align-center>
-                    <v-flex class="text-xs-center">
-                        <v-avatar color="grey lighten-4" size="120" class="text-xs-center">
-                            <img v-if="listing.image_url" :src="listing.image_url" alt="avatar">
-                            <img src="/img/ictFlag.svg" alt="avatar">
-                        </v-avatar>
-                    </v-flex>
-                </v-layout>
-                <p class="text-xs-center">
-                    <a :href="listing.map_link">
-                        <v-icon>
-                            place
-                        </v-icon>
-                    </a>
-
-                    {{listing.address}} {{listing.city}}, {{listing.state_code}}
-
-                </p>
-                <p class="text-xs-center">
-
-                    <v-btn v-if="listing.phone_number" :href="'tel:'+listing.phone_number" flat icon color="pink" >
-                        <v-icon>phone</v-icon>
-                    </v-btn>
-
-                    <v-btn v-if="listing.email_address" :href="'mailto:'+listing.email_address" flat icon color="pink">
-                        <v-icon>mail</v-icon>
-                    </v-btn>
+        <p>Rating:
+            <span class=" is-size-6">
+                <i class="fa fa-star fa-2x has-text-warning" v-for="d in Math.round(listing.rating)" :key="d"></i><i class="fa fa-star fa-2x has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))" :key="e"></i>
+            </span>
+        </p>
 
 
-                    <v-btn  v-if="listing.website_url" :href="listing.website_url" target="_blank" flat icon color="pink">
-                        <v-icon>web</v-icon>
-                    </v-btn>
-
-                    <v-btn v-if="listing.menu_link" :href="listing.menu_link" target="_blank" flat icon color="pink">
-                        <v-icon>restaurant</v-icon>
-                    </v-btn>
-
-                </p>
-                <p>
-                    {{listing.description}}
-                </p>
-
-                <v-divider></v-divider>
-                <h2 class="text-xs-center">Hours</h2>
-                <v-list>
-
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Monday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Monday">
-                                Open From {{listing.hours.Monday.open}} until {{listing.hours.Monday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-
-                    <v-divider></v-divider>
-
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Tuesday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Tuesday">
-                                Open From {{listing.hours.Tuesday.open}} until {{listing.hours.Tuesday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-
-                    <v-divider></v-divider>
 
 
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Wednesday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Wednesday">
-                                Open From {{listing.hours.Wednesday.open}} until {{listing.hours.Wednesday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
+        <p class="buttons">
 
-                    <v-divider></v-divider>
+        <a v-if="listing.phone_number" :href="'tel:'+listing.phone_number" class="button is-small is-primary is-outlined">
+            <span class="icon">
+              <i class="fa fa-phone "></i>
+            </span>
+            <span>{{listing.phone_number}}</span>
+        </a>
 
+        <a v-if="listing.email_address" :href="'mailto:'+listing.email_address" class="button is-small is-success  is-outlined">
+                      <span class="icon">
 
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Thursday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Thursday">
-                                Open From {{listing.hours.Thursday.open}} until {{listing.hours.Thursday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-
-                    <v-divider></v-divider>
+            <i class="fa fa-envelope "></i>
+                           </span>
+            <span>&nbsp;Email</span>
+        </a>
 
 
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Monday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Friday">
-                                Open From {{listing.hours.Friday.open}} until {{listing.hours.Friday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
+        <a  v-if="listing.website_url" :href="listing.website_url" target="_blank" class="button is-small is-link  is-outlined">
+                       <span class="icon">
 
-                    <v-divider></v-divider>
+            <i class="fa fa-code fa-2x"></i>
+                            </span>
+            <span>&nbsp;Website</span>
+        </a>
 
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Monday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Saturday">
-                                Open From {{listing.hours.Saturday.open}} until {{listing.hours.Saturday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
+        <a v-if="listing.menu_link" :href="listing.menu_link" target="_blank" class="button is-small is-info  is-outlined">
+                       <span class="icon">
 
-                    <v-divider></v-divider>
+            <i class="fa fa-book fa-2x"></i>
+                            </span>
+            <span>&nbsp;Menu</span>
+        </a>
+        </p>
+        <hr>
+        <h2 class="has-text-centered subtitle">Hours</h2>
+        <p class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</p>
+        <p class="has-text-centered subtitle has-text--danger" v-else="">Closed Now</p>
+        <ul style="padding-bottom:100px;">
+            <li v-for="hour in listing.hours" class="has-text-centered">
+                {{hour}}
+            </li>
+        </ul>
 
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Sunday</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                <span class="green--text" v-if="listing.hours.Sunday">
-                                Open From {{listing.hours.Sunday.open}} until {{listing.hours.Sunday.close}}
-                                </span>
-                                <span class="red--text" v-else>CLOSED</span>
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-
-                </v-list>
-            </v-card-text>
-            <v-divider></v-divider>
-            <h2 class="text-xs-center">Tags</h2>
-            <v-card-actions>
-                <v-btn flat block color="warning" :to="lastPage">Go Back</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn flat block color="success" :to="{name:'home'}">Start Over</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-container>
-</v-layout>
+    </div>
 </template>
 <script>
     export default {
@@ -175,8 +82,14 @@
                     id:null,
                     name:null,
                     address:null,
+                    summary:null,
                     city:null,
-                    state_code:null
+                    state_code:null,
+                    map_link:null,
+                    hours:null,
+                    is_open:null,
+                    price:null,
+                    rating:5
                 },
                 tags:[],
                 lastPage:{
@@ -195,8 +108,6 @@
                         this.listing = response.data;
                         tempTag=[];
                         this.tags=[];
-                        console.log('TAGDS');
-                        console.log(this.listing.tags);
                         this.listing.tags.forEach(function(t){
                             console.log(t);
                         });

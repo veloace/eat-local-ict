@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="has-navbar-fixed-top" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Skating App') }}</title>
+    <title>{{ config('app.name', 'Eat Local ICT') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
@@ -40,29 +40,39 @@
     This is your fallback content in case JavaScript fails to load.
 </noscript>
 <div id="app">
-    <div v-if="false" style="background-color: #212121;position: absolute;z-index:100000;top:0;bottom: 0;left: 0;right:0;">
-        <img style="display:block;margin:auto; padding-top: 30vh" src="/img/ictFlag.svg" height="300">
-        <p style="text-align: center;color:white;font-size: 25px;">Eat Local ICT Is Loading...Please Wait</p>
-    </div>
-    <v-app>
-        <v-content class="filter-content">
+    <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+  <div class="container">
+      <div class="navbar-brand">
+          <router-link :to="{name:'home'}"  class="navbar-item" href="">
+              Eat Local ICT
+          </router-link>
 
-            <v-layout class="white--text" fill-height>
-                <transition name="fade">
-                    <keep-alive>
-                        <router-view></router-view>
-                    </keep-alive>
-                </transition>
-            </v-layout>
-            <v-footer dark class="pa-2" >
-                <v-container class="pa-0">
-                    <p class="text-xs-center mb-0">
-                        Copyright &copy; 2018 By Nicholas Coates
-                    </p>
-                </v-container>
-            </v-footer>
-        </v-content>
-    </v-app>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+          </a>
+      </div>
+  </div>
+    </nav>
+    <div v-if="false" style="background-color: #ffffff;position: absolute;z-index:100000;top:0;bottom: 0;left: 0;right:0;">
+        <img style="display:block;margin:auto; padding-top: 30vh" src="/img/ictFlag.svg" height="300">
+        <p style="text-align: center;color:black;font-size: 25px;">Eat Local ICT Is Loading...Please Wait</p>
+    </div>
+           <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>EatLocalICT</strong> by <a href="https://jgthms.com">Nicholas Coates</a>. The source code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+            </p>
+            <p>Support EatLocalICT</p>
+            </p>
+        </div>
+    </footer>
 </div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbSgshuOWaQ8nCyLiOzliH4KFRVLHw1vM&libraries=places"></script>
 <script type="text/javascript" src="/js/app.js?ver=0023"></script>

@@ -17,6 +17,7 @@ class CreatePlacesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('image_url')->nullable();
+            $table->string('summary')->nullable();
             $table->text('description')->nullable();
             $table->string('address')->nullable();//nullable because food trucks may not have a set address
             $table->string('city')->default('Wichita');

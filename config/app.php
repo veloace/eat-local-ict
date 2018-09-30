@@ -107,6 +107,7 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+    'PLACES_API_KEY'=>env('PLACES_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------

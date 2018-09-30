@@ -1,53 +1,64 @@
 
 <template>
-    <v-layout row wrap>
-        <v-layout class="white--text">
-            <v-container class="max-500">
-                <h1 class="white--text mb-2 display-1 text-xs-center">Eat Local ICT</h1>
-                <p class="text-xs-center">What are you in the mood for?</p>
-                <v-autocomplete @change="goToSearch"
-                        dark
-                        :items="items"
-                        hint="Select One to Search"
-                        v-model="selectedTag"
-                        class="mx-3"
-                        flat
-                        block
-                        item-text="name"
-                        item-value="id"
-                        label="Search by Tag"
-                ></v-autocomplete>
+   <div>
+   <section class="hero is-fullheight ict-flag-bg">
+      <!-- Hero content: will be in the middle -->
+      <div class="hero-body">
+         <div class="container has-text-centered">
+            <h1 class="title">
+               EAT & DRINK LOCAL IN WICHITA
+            </h1>
+            <h2 class="subtitle">
+               Why eat at a chain if you can eat local?
+            </h2>
+
+            <p>
+               <button v-on:click="findRandomPlace" class="button is-link is-outlined">Random Place</button>
+            </p>
+            <p>~ Or ~ </p>
+            <p>
+               <router-link :to="{name:'search'}"  class="button is-primary is-outlined">Advanced Search</router-link>
+            </p>
+         </div>
+      </div>
 
 
-                <p class="text-xs-center">- OR -</p>
-            <v-btn color="success" :loading="loadingRandom" block @click.native="findRandomPlace">
-                    Random Place
-                </v-btn>
 
-            </v-container>
+      <!-- Hero footer: will stick at the bottom -->
+      <div class="hero-foot">
+         <nav class="tabs">
+            <div class="container">
+               <ul>
+                  <li class="is-active"><a>Home</a></li>
+                  <li><a>About</a></li>
+                  <li><a href="https://www.instagram.com/veloace/" target="_blank">@VeloAce</a></li>
+               </ul>
+            </div>
+         </nav>
+      </div>
+   </section>
+      <div class="modal" v-bind:class="{ 'is-active': showPlaceModal }">
+         <div class="modal-background"></div>
+            <!-- Any other Bulma elements you want -->
 
-        </v-layout>
-
-        <v-dialog v-model="showPlaceModal" width="500">
-            <v-card>
-                <v-card-title class="headline blue lighten-1" primary-title>
-                How about...
-                </v-card-title>
-                <v-card-text>
-                    <h1 class="text-xs-center">{{randomPlace.name}}</h1>
-                    <p class="text-xs-center">Located at: {{randomPlace.address}} {{randomPlace.city}}, {{randomPlace.state_code}}</p>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="error" flat @click="findRandomPlace" :loading="loadingRandom" >No, Try Again</v-btn>
-                    <v-btn color="success" @click="showPlaceModal=!showPlaceModal" flat :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}">Looks Good!</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-layout>
+            <div class="modal-card">
+               <header class="modal-card-head">
+                  <p class="modal-card-title">How About...</p>
+               </header>
+               <section class="modal-card-body">
+                  <h1 class="subtitle">{{randomPlace.name}}</h1>
+                  <p style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
+                  <p class="heading">Located at: {{randomPlace.address}} {{randomPlace.city}}, {{randomPlace.state_code}}</p>
+               </section>
+               <footer class="modal-card-foot">
+                  <router-link :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">Sounds Good!</router-link>
+                  <button class="button is-small" v-on:click="findRandomPlace">No, Try Again.</button>
+                  <button class="button is-danger is-small" v-on:click="showPlaceModal=false">Cancel</button>
+               </footer>
+            </div>
+         <button class="modal-close is-large" aria-label="close" v-on:click="showPlaceModal=false"></button>
+      </div>
+   </div>
 </template>
 <script>
     export default {
@@ -60,6 +71,7 @@
                 randomPlace:{
                     id:0,
                     name:null,
+                    summary:null,
                     address:null,
                     city:null,
                     state_code:null
@@ -76,6 +88,7 @@
                         this.loadingRandom = false;
                         this.randomPlace = response.data;
                         this.showPlaceModal=true;
+                        console.log('random place');
 
                     })
                     .catch((error)=> {

@@ -12,9 +12,19 @@ const routes =
             name:'listing'
         },
         {
-            path: '/search/:term',
+            path: '/search/',
             component: require('./views/Search.vue'),
             name:'search'
+        },
+        {
+            path: '/backers',
+            component: require('./views/Backers.vue'),
+            name:'backer'
+        },
+        {
+            path: '/about',
+            component: require('./views/About.vue'),
+            name:'about'
         }
 ];
 
