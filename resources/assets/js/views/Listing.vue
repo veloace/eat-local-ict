@@ -14,13 +14,13 @@
         </p>
         <p>Price:
                <span class="is-size-6">
-                <i class=" has-text-success fa fa-dollar" v-for="i in listing.price" :key="i"></i><i class="fa fa-dollar has-text-grey-lighter" v-for="c in (5-listing.price)" :key="c"></i>
+                <i class=" has-text-success fa fa-dollar" v-for="i in listing.price" ></i><i class="fa fa-dollar has-text-grey-lighter" v-for="c in (5-listing.price)"></i>
             </span>
         </p>
 
         <p>Rating:
             <span class=" is-size-6">
-                <i class="fa fa-star fa-2x has-text-warning" v-for="d in Math.round(listing.rating)" :key="d"></i><i class="fa fa-star fa-2x has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))" :key="e"></i>
+                <i class="fa fa-star fa-2x has-text-warning" v-for="d in Math.round(listing.rating)" ></i><i class="fa fa-star fa-2x has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))"></i>
             </span>
         </p>
 
@@ -64,7 +64,7 @@
         <hr>
         <h2 class="has-text-centered subtitle">Hours</h2>
         <p class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</p>
-        <p class="has-text-centered subtitle has-text--danger" v-else="">Closed Now</p>
+        <p class="has-text-centered subtitle has-text-danger" v-else="">Closed Now</p>
         <ul style="padding-bottom:100px;">
             <li v-for="hour in listing.hours" class="has-text-centered">
                 {{hour}}

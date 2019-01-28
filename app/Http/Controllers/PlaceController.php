@@ -29,8 +29,27 @@ class PlaceController extends Controller
 
         if($place)
         {
-            //if model exits, return it
-            return $place;
+            //if model exits, return it, but first make sure we prevent reruns (showing the same location too many times in one session)(
+
+            if($this->randomIsRerun($id))
+            {
+                //it's a rerun, so try to get one that is not a rerun
+                if($iterator <3)
+                {//only try this three times
+                    return $this->getRandomPlace($iterator+1);
+
+                }//if
+                else
+                {
+                    //we tried three times, just send it
+                    return $place;
+                }//else
+            }//if is rerun
+            else
+            {
+                return $place;
+
+            }//else
         }
         elseif($iterator <3)
         {//if model does not exist, redo the process (but only try 3 times)
@@ -42,6 +61,23 @@ class PlaceController extends Controller
         }
     }
 
+
+    private function randomIsRerun($placeID)
+    {
+        $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
+        if(in_array($placeID,$runs))
+        {//it's a rerun
+            return true;
+        }
+        else
+        {
+            //it's not a rerun, so save the id to the session so that we ignore it in the future
+            $runs[] = $placeID;
+            session(['runs'=>$runs]);
+            return false;
+        }
+
+    }
 
     /**
      * @param Place $place
@@ -92,6 +128,10 @@ class PlaceController extends Controller
         return($return);
     }
 
+    /**
+     * @param null $tag
+     * @return mixed
+     */
     public function indexByTagID($tag=null)
     {
         if(!empty($tag)) {

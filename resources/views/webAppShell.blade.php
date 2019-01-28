@@ -59,17 +59,17 @@
         <img style="display:block;margin:auto; padding-top: 30vh" src="/img/ictFlag.svg" height="300">
         <p style="text-align: center;color:black;font-size: 25px;">Eat Local ICT Is Loading...Please Wait</p>
     </div>
-           <keep-alive>
+        <keep-alive>
             <router-view></router-view>
         </keep-alive>
     <footer class="footer">
         <div class="content has-text-centered">
             <p>
-                <strong>EatLocalICT</strong> by <a href="https://jgthms.com">Nicholas Coates</a>. The source code is licensed
-                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                <strong>EatLocalICT</strong> by VeloAce. The source code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a> and is available <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>. The website content
                 is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
             </p>
-            <p>Support EatLocalICT</p>
+            <p><a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Support EatLocalICT</a></p>
             </p>
         </div>
     </footer>
