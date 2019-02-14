@@ -16,14 +16,48 @@
 }
 .ict-flag-bg
 {
-  background-image: url('/img/ictFlag.svg');
+  background-color: #292929;
+  background-image: url('/img/bg/Keeper_Spark_January_2019_tfa7uk_c_scale,w_480.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+@media only screen and (max-width: 480px) {
+  .ict-flag-bg
+  {
+    background-image: url('/img/bg/Keeper_Spark_January_2019_tfa7uk_c_scale,w_1090.jpg');
+  }
+}
+
+
+@media only screen and (max-width: 1090px) and (min-width: 481px) {
+  .ict-flag-bg
+  {
+    background-image: url('/img/bg/Keeper_Spark_January_2019_tfa7uk_c_scale,w_1524.jpg');
+  }
+}
+
+
+
+@media only screen and (max-width: 1524px) and (min-width: 1091px){
+  .ict-flag-bg
+  {
+    background-image: url('/img/bg/Keeper_Spark_January_2019_tfa7uk_c_scale,w_1524.jpg');
+  }
+}
+
+
+@media only screen and (min-width: 1524px){
+  .ict-flag-bg
+  {
+    background-image: url('/img/Keeper_Spark_January_2019.jpg');
+  }
+}
+
 .container
 {
-  padding-left: 5px;
-  padding-right:5px;
+  padding-left: 10px;
+  padding-right:10px;
 }
 
 .top-spacer
@@ -31,7 +65,25 @@
   margin-top: 25px;
 }
 
+
+
 p{
   padding-bottom: 5px;
   padding-top: 5px;
+}
+
+.has-background-translucent
+{
+  background-color: rgba(0,0,0,0.5);
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+67,000000+100&0.5+0,0.5+52,0+98 */
+  background: -moz-linear-gradient(top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 52%, rgba(0,0,0,0.34) 67%, rgba(0,0,0,0) 98%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.5) 52%,rgba(0,0,0,0.34) 67%,rgba(0,0,0,0) 98%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.5) 52%,rgba(0,0,0,0.34) 67%,rgba(0,0,0,0) 98%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+
+.is-translucent
+{
+  background-color: rgba(0,0,0,0.75);
+
 }

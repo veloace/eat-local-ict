@@ -1,47 +1,7 @@
 <template>
- <div class="container">
-     <h1 class="is-size-3-desktop is-size-5-mobile">Search For Local Food & Drink in Wichita</h1>
-     <section class="message is-info">
-         <div class="message-header">
-             <p>Search Filters</p>
-         </div>
-         <div class="message-body">
-           <div class="columns">
-               <div class="column">
-                   <div class="field">
-                       <label class="label">Category</label>
-                       <div class="control">
-                           <select class="input" >
-                               <option selected disabled>Select a Category</option>
-                           </select>
-                       </div>
-                   </div>
-               </div>
-               <div class="column">
-                   <div class="field">
-                       <label class="label">Tag</label>
-                       <div class="control">
-                           <input class="input" type="text" placeholder="Type to Search By Tag">
-                       </div>
-                   </div>
-               </div>
-
-           </div>
-         </div>
-     </section>
-     <section class="top-spacer">
-        <h2>Search Results</h2>
-         <div v-if="loading" class="top-spacer">
-             <p class="has-text-centered">
-                 <i class="fa fa-spinner fa-spin fa-4x"></i>
-             </p>
-             <p class="has-text-centered">
-                 Loading Results...Please Wait!
-             </p>
-         </div>
-         <p class="has-text-centered" v-else-if="items.length==0">No results found. Please adjust the filters above and click 'Search'.</p>
-     </section>
- </div>
+    <div class="container" style="margin-top: 75px">
+        <h1 class="has-text-center has-text-white title">Coming Soon! <router-link :to="{name:'home'}">Go Back</router-link></h1>
+    </div>
 </template>
 <script>
     export default {

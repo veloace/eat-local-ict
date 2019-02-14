@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top" lang="en">
+<html class="" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,28 +40,25 @@
     This is your fallback content in case JavaScript fails to load.
 </noscript>
 <div id="app">
-    <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+    <div v-if="false" style="background-color: #292929;position: absolute;z-index:10000;top:0;bottom: 0;left: 0;right:0;">
+        <p style="text-align: center;color:white;font-size: 25px;padding-top: 30vh">Eat Local ICT Is Loading...Please Wait</p>
+    </div>
+    <nav class="navbar is-fixed-top is-translucent" role="navigation" aria-label="main navigation">
   <div class="container">
       <div class="navbar-brand">
-          <router-link :to="{name:'home'}"  class="navbar-item" href="">
+          <router-link :to="{name:'home'}"  class="navbar-item has-text-white" href="">
               Eat Local ICT
           </router-link>
-
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-          </a>
       </div>
   </div>
     </nav>
-    <div v-if="false" style="background-color: #ffffff;position: absolute;z-index:100000;top:0;bottom: 0;left: 0;right:0;">
-        <img style="display:block;margin:auto; padding-top: 30vh" src="/img/ictFlag.svg" height="300">
-        <p style="text-align: center;color:black;font-size: 25px;">Eat Local ICT Is Loading...Please Wait</p>
-    </div>
-        <keep-alive>
-            <router-view></router-view>
-        </keep-alive>
+
+        <section class="hero is-fullheight ict-flag-bg">
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
+        </section>
+
     <footer class="footer">
         <div class="content has-text-centered">
             <p>
