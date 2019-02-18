@@ -12,4 +12,9 @@ class AdminController extends Controller
     {
         return view('admin.dash');
     }
+
+    public function dataEditRequest()
+    {
+
+    }
 }

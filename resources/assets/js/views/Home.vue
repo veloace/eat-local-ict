@@ -99,6 +99,10 @@
             }
 
         },
+        showFeedBackModal()
+        {
+
+        },
         activated(){
             //clear out last state
             this.showPlaceModal=false;

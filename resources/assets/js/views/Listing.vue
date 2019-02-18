@@ -47,6 +47,9 @@
 
 
                     <p class="buttons">
+                        <a :href="listing.map_link" target="_blank" rel="nofollow noopener" class="button is-small is-danger is-outlined">Let's Go!
+                        &nbsp;<i class="fa fa-location-arrow"></i>
+                        </a>
 
                         <a v-if="listing.phone_number" :href="'tel:'+listing.phone_number"
                            class="button is-small is-primary is-outlined">

@@ -5,10 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Eat Local ICT') }}</title>
+    <meta name="description" content="Eat Local in Wichita, KS. Use this web app to find a locally-owned and operate restaurant, bar, or cafe in Wichita.">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-
     <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/fav/android-chrome-192x192.png">
@@ -21,7 +19,7 @@
     <meta name="theme-color" content="#292929">
 
 
-    <link rel="stylesheet" href="/css/app.css" type="text/css">
+    <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
     <base href="/app">
     <script>
@@ -76,6 +74,6 @@
     </footer>
 </div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbSgshuOWaQ8nCyLiOzliH4KFRVLHw1vM&libraries=places"></script>
-<script type="text/javascript" src="/js/app.js?ver=0023"></script>
+<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>

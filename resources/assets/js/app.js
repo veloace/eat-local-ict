@@ -6,7 +6,6 @@
  */
 require('./bootstrap');
 import VueRouter from 'vue-router';
-import Vuetify from 'vuetify';
 import router  from './router';
 
 window.Vue = require('vue');
