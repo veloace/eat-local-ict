@@ -34,4 +34,7 @@ const routes =
     base: '/',
     routes,
     hashbang: false,
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 }
+    }
 });

@@ -11,6 +11,13 @@
 |
 */
 
+Route::prefix('backend')
+    ->middleware(['auth:web','administrators'])
+    ->group(function () {
+    Route::get('','AdminController@index');
+
+});
+
 Auth::routes();
 Route::get('/{vue_capture?}',function(){
     $tags = \App\Tag::select('name','id')
@@ -21,14 +28,3 @@ Route::get('/{vue_capture?}',function(){
     return view('webAppShell',$data);
 })->where('vue_capture', '[\/\w\.-]*')
     ->name('app');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

@@ -6,25 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Eat Local ICT') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
-    <!--[if IE]><link rel="shortcut icon" href="/favicons/favicon.ico"><![endif]-->
-    <!-- Add to home screen for Android and modern mobile browsers -->
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#2196f3">
-    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#2196f3">
-    <meta name="apple-mobile-web-app-title" content="Skater.Space">
-    <meta name="application-name" content="Skater.Space">
-    <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- Add to home screen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Skater.Space">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-    <!-- Add to home screen for Windows -->
-    <meta name="msapplication-TileImage" content="/static/img/icons/msapplication-icon-144x144.png">
-    <meta name="msapplication-TileColor" content="#000000">
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/fav/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png">
+    <link rel="manifest" href="/fav/site.webmanifest">
+    <link rel="mask-icon" href="/fav/safari-pinned-tab.svg" color="#292929">
+    <link rel="shortcut icon" href="/fav/favicon.ico">
+    <meta name="msapplication-TileColor" content="#292929">
+    <meta name="msapplication-config" content="/fav/browserconfig.xml">
+    <meta name="theme-color" content="#292929">
+
+
     <link rel="stylesheet" href="/css/app.css" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
     <base href="/app">
@@ -46,8 +42,10 @@
     <nav class="navbar is-fixed-top is-translucent" role="navigation" aria-label="main navigation">
   <div class="container">
       <div class="navbar-brand">
-          <router-link :to="{name:'home'}"  class="navbar-item has-text-white" href="">
-              Eat Local ICT
+
+
+          <router-link :to="{name:'home'}"  class="navbar-item has-text-white">
+              <img src="/img/logo.svg" alt="EatLocalICT" width="42" height="34">&nbsp;<strong>EatLocalICT</strong>
           </router-link>
       </div>
   </div>
@@ -62,9 +60,15 @@
     <footer class="footer">
         <div class="content has-text-centered">
             <p>
-                <strong>EatLocalICT</strong> by VeloAce. The source code is licensed
-                <a href="http://opensource.org/licenses/mit-license.php">MIT</a> and is available <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>. The website content
-                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+                <img src="/img/logo.svg" alt="EatLocalICT" width="102" height="68">
+            </p>
+            <p>
+                <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
+            </p>
+            <p>
+                The source code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php" target="_blank" rel="nofollow">MIT</a> and is available <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="nofollow">CC BY NC SA 4.0</a> unless otherwise noted.
             </p>
             <p><a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Support EatLocalICT</a></p>
             </p>
