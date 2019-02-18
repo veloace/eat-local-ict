@@ -18,6 +18,8 @@
                <p>
                   <router-link :to="{name:'search'}"  class="has-text-white has-text-weight-bold">Advanced Search</router-link>
                </p>
+               <!--<p class="has-text-white">Have a suggestion or data correction?<a @click="showFeedBackModal">Let us Know</a> </p>-->
+
             </div>
          </div>
          <!-- Hero footer: will stick at the bottom -->

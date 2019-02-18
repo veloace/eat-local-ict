@@ -160,8 +160,9 @@
                     d = 6;
                     break;
                 default:
-                    d=d-1;
+                    d=d.getDay()-1;
             }
+            console.log(d);
             return {
                 loading: true,
                 today:d,

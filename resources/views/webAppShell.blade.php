@@ -26,8 +26,6 @@
         window.Laravel = {!! $token!!};
         window.tags = {!! $tags !!};
     </script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaInit&render=explicit" async defer>
-    </script>
 </head>
 <body>
 <noscript>
