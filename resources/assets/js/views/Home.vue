@@ -27,7 +27,8 @@
             <nav class="tabs">
                <div class="container">
                   <ul>
-                     <li><a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a></li>
+                     <li><router-link  class="has-text-white" :to="{name:'backer'}">Support Us</router-link></li>
+                     <li><a  class="has-text-white" href="mailto:suggestion@eatlocalict.com?subject=Suggestion%20for%20EatLocalICT">Suggest an Edit</a></li>
                   </ul>
                </div>
             </nav>

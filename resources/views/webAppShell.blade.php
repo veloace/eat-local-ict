@@ -55,18 +55,19 @@
 
     <footer class="footer">
         <div class="content has-text-centered">
+
+            <p>
+                <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
+            </p>
+            <p>Want to help out? Check out our stuff on <a href="https://teespring.com/eatlocalict-mug#pid=663&cid=102920&sid=front" target="_blank" rel="nofollow">Teespring</a>
+                or buy us a coffee on <a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Ko-Fi</a>.
+            </p>
             <p>
                 <img src="/img/logo.svg" alt="EatLocalICT" width="102" height="68">
             </p>
             <p>
-                <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
+                Copyright &copy; 2018-2019. View our repository <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>.
             </p>
-            <p>
-                The source code is licensed
-                <a href="http://opensource.org/licenses/mit-license.php" target="_blank" rel="nofollow">MIT</a> and is available <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>. The website content
-                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="nofollow">CC BY NC SA 4.0</a> unless otherwise noted.
-            </p>
-            <p><a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Support EatLocalICT</a></p>
             </p>
         </div>
     </footer>

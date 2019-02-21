@@ -24,7 +24,7 @@
         "bulma": "^0.7.1",
         "font-awesome": "^4.7.0",
         "livereload": "^0.7.0",
-        "vue-analytics": "^5.12.2",
+        "vue-analytics": "^5.16.2",
         "vue-invisible-recaptcha": "^0.2.1",
         "vue-router": "^3.0.1",
         "vuelidate": "^0.7.4",

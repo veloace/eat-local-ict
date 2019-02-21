@@ -7,10 +7,15 @@
 require('./bootstrap');
 import VueRouter from 'vue-router';
 import router  from './router';
+import VueAnalytics from 'vue-analytics'
 
 window.Vue = require('vue');
 window.Vue.use(VueRouter);
-
+window.Vue.use(VueAnalytics, {
+    id: 'UA-65860722-2',
+    checkDuplicatedScript: true,
+    router
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
