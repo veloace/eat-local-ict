@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GooglePlaceCache;
+use App\Http\Requests\GetRandomPlaceRequest;
 use App\Place;
 use App\PlaceHour;
 use App\PlaceTag;
@@ -15,11 +16,17 @@ class PlaceController extends Controller
 
 
     /**
+     * @param GetRandomPlaceRequest $request
      * @param int $iterator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function getRandomPlace($iterator = 0)
+    public function getRandomPlace(GetRandomPlaceRequest $request,$iterator = 0)
     {
+
+        $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
+
+
+
 
         $top = Place::whereRaw('id = (select max(`id`) from places)')->get()->pluck('id')->first();
         $id = rand(1,$top);
@@ -33,17 +40,21 @@ class PlaceController extends Controller
         {
             //if model exits, return it, but first make sure we prevent reruns (showing the same location too many times in one session)(
 
-            if($this->randomIsRerun($id))
+            $place->append('is_open');
+
+            $open = $requires_open ? $place->is_open:true;
+
+            if($this->randomIsRerun($id) && $open)
             {
                 //it's a rerun, so try to get one that is not a rerun
-                if($iterator <3)
+                if($iterator <10)
                 {//only try this three times
-                    return $this->getRandomPlace($iterator+1);
+                    return $this->getRandomPlace($request,$iterator+1);
 
                 }//if
                 else
                 {
-                    //we tried three times, just send it
+                    //we tried ten times, just send it
                     return $place;
                 }//else
             }//if is rerun
@@ -53,9 +64,9 @@ class PlaceController extends Controller
 
             }//else
         }
-        elseif($iterator <3)
+        elseif($iterator <10)
         {//if model does not exist, redo the process (but only try 3 times)
-            return $this->getRandomPlace($iterator+1);
+            return $this->getRandomPlace($request,$iterator+1);
         }
         else
         {
@@ -64,6 +75,11 @@ class PlaceController extends Controller
     }
 
 
+    /**
+     * determines if this place is a rerun (has been issued to the user in this session)
+     * @param $placeID
+     * @return bool
+     */
     private function randomIsRerun($placeID)
     {
         $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
@@ -83,7 +99,7 @@ class PlaceController extends Controller
 
     /**
      * @param Place $place
-     * @return Place
+     * @return array
      */
     public function index(Place $place)
     {
@@ -101,7 +117,7 @@ class PlaceController extends Controller
 
         $cached =GooglePlaceCache::where([
             ['google_place_id',$place->google_place_id],
-            ['updated_at', '>=', \Carbon\Carbon::now()->subDay()]
+            ['updated_at', '>=', \Carbon\Carbon::now()->subWeek()]
         ])->first();
 
 
@@ -109,7 +125,7 @@ class PlaceController extends Controller
         {
             $response = json_decode($cached->cached_content);
             $return['hours']=!empty($response->result->opening_hours->weekday_text) ? $response->result->opening_hours->weekday_text:[];
-            $return['is_open']=$this->isPlaceOpen($response);//since this information is cached, use our function to determine if they are open
+            $return['is_open']=$place->is_open;//since this information is cached, use our function to determine if they are open
             $return['price']=!empty($response->result->price_level) ? $response->result->price_level:1;
             $return['rating']=!empty($response->result->rating) ? $response->result->rating:5;
             $return['reviews']=!empty($response->result->reviews) ? $response->result->reviews:null;
@@ -297,91 +313,7 @@ class PlaceController extends Controller
 
     }//function buildAddress
 
-    /**
-     * @param $response
-     * @return boolean
-     */
-  public function isPlaceOpen($response)
-  {
-      $now =  new Carbon();
-      $now->tz='America/Chicago';
 
-      try {
-          foreach ($response->result->opening_hours->periods as $period) {
-             // echo Carbon::create($year, $month, $day, $hour, $minute, $second, $tz)."\n";
-
-              if($period->open->day==$period->close->day)
-              {//opens and closes on the same day
-                  if($now->dayOfWeek == $period->open->day)
-                  {//if that day is today, then it is time to use the time to determine if it is open
-                      $openTime = (integer)$period->open->time;
-                      $closeTime =(integer)$period->close->time ==0 ? 2400:(integer)$period->close->time ;
-                      $now = (integer)$now->format('Hi');
-                      return(($openTime<=$now) && ($closeTime >$now));
-                  }
-              }
-              elseif($period->open->day < $period->close->day)
-              {//normal situation
-
-                  //if today is the same or greater than the open day AND today is less than or same as the close day
-                  if(($now->dayOfWeek>=$period->open->day) && ($now->dayOfWeek<=$period->close->day))
-                  {//
-                     if($now->dayOfWeek<$period->close->day)
-                     {//if today is before the close day, return true as the restaurant is open all day.
-                         return true;
-                     }
-                     else //else close day is equal to today
-                     {//make sure today's time is before the close time
-                         $closeTime =(integer)$period->close->time ==0 ? 2400:(integer)$period->close->time ;
-                         $now = (integer)$now->format('Hi');
-                         return(($closeTime >$now));
-                     }
-                  }
-                  //(else) do nothing
-              }//if open day < closing day
-              else
-              {//opening day is greater than the closing day, a weird situation
-                  if($now->dayOfWeek > $period->close->day && $now->dayOfWeek < $period->open->day)
-                  {
-                      return false;
-                  }
-                  else
-                  {
-                      if($now->dayOfWeek<$period->close->day)
-                      {//if today is before the close day, return true as the restaurant is open all day.
-                          return true;
-                      }
-                      else //else close day is equal to today
-                      {//make sure today's time is before the close time
-                          $closeTime =(integer)$period->close->time ==0 ? 2400:(integer)$period->close->time ;
-                          $now = (integer)$now->format('Hi');
-                          return(($closeTime >$now));
-                      }
-                  }
-              }//else weirdness
-          }//foreach
-
-          return false;
-
-          /*
-           *  Days
-           * 0 - Sunday
-           * 1 - Monday
-           * 2 - Tuesday
-           * 3 - Wednesday
-           * 4 - Thursday
-           * 5 - Friday
-           * 6 - Saturday
-           */
-
-      }
-      catch (\Exception $e)
-      {
-          //
-          return true;//fail-safe
-      }
-
-  }//isPlaceOpen function
 
 
 }//class

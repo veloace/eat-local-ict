@@ -27,7 +27,7 @@
             <nav class="tabs">
                <div class="container">
                   <ul>
-                     <li><router-link  class="has-text-white" :to="{name:'backer'}">Support Us</router-link></li>
+                     <li><router-link  class="has-text-white" :to="{name:'backer'}">Help Us Out!</router-link></li>
                      <li><a  class="has-text-white" href="mailto:suggestion@eatlocalict.com?subject=Suggestion%20for%20EatLocalICT">Suggest an Edit</a></li>
                   </ul>
                </div>
@@ -44,15 +44,27 @@
                   <p class="modal-card-title">How About...<i v-if="loadingRandom" class="fa fa-spinner fa-spin"></i></p>
                </header>
 
-                  <section class="modal-card-body">
-                     <h1 class="subtitle">{{randomPlace.name}}</h1>
-                     <p style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
-                     <p class="heading">Located at: {{randomPlace.address}} {{randomPlace.city}}, {{randomPlace.state_code}}</p>
+                  <section class="modal-card-body has-text-white">
+                     <h1 class="subtitle has-text-white">{{randomPlace.name}}
+                        <sup>
+                           <span class="is-size-7 has-text-success" v-if="randomPlace.is_open">(Open Now!)</span>
+                           <span class="is-size-7 has-text-danger" v-else>(Closed Now)</span>
+                        </sup>
+                     </h1>
+                     <p class="has-text-white" style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
+                     <p class="heading has-text-white">Located at: {{randomPlace.address}} {{randomPlace.city}}, {{randomPlace.state_code}}</p>
+                     <p>
+                        <label class="checkbox">
+                           <input type="checkbox" v-model="filters.is_open" :true-value="1" :false-value="0">
+                           Only show open places.
+                        </label>
+                     </p>
                   </section>
                   <footer class="modal-card-foot">
                      <router-link :disabled="loadingRandom" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">Sounds Good!</router-link>
-                     <button :disabled="loadingRandom" class="button is-small" v-on:click="findRandomPlace">No, Try Again.</button>
+                     <button :disabled="loadingRandom" class="button is-small is-primary" v-on:click="findRandomPlace">Try Something Else</button>
                      <button class="button is-danger is-small" v-on:click="showPlaceModal=false">Cancel</button>
+                     <hr>
                   </footer>
 
 
@@ -75,7 +87,11 @@
                     summary:null,
                     address:null,
                     city:null,
-                    state_code:null
+                    state_code:null,
+                    is_open:null
+                },
+                filters:{
+                  is_open:1
                 },
                 showPlaceModal:false
             }
@@ -85,7 +101,7 @@
             {
                 this.loadingRandom = true;
                 this.showPlaceModal=true;
-                axios.get('/api/places/random')
+                axios.get('/api/places/random',{params:this.filters})
                     .then((response)=> {
                       this.loadingRandom = false;
                         this.randomPlace = response.data;
@@ -104,6 +120,7 @@
         },
         showFeedBackModal()
         {
+
 
         },
         activated(){

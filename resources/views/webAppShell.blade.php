@@ -59,7 +59,7 @@
             <p>
                 <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
             </p>
-            <p>Want to help out? Check out our stuff on <a href="https://teespring.com/eatlocalict-mug#pid=663&cid=102920&sid=front" target="_blank" rel="nofollow">Teespring</a>
+            <p>Want to help out? Check out our stuff on <a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" target="_blank" rel="nofollow">Teespring</a>
                 or buy us a coffee on <a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Ko-Fi</a>.
             </p>
             <p>

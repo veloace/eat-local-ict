@@ -21,8 +21,10 @@
                             <i class="fa fa-map-marker"></i>
                             {{listing.address}} {{listing.city}}, {{listing.state_code}}
                         </a>
-                            <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">(Open Now!)</small>
-                            <small class="has-text-centered subtitle has-text-danger" v-else="">(Closed Now)</small>
+                    </p>
+                    <p class="subtitle has-text-centered">
+                        <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</small>
+                        <small class="has-text-centered subtitle has-text-danger" v-else="">Closed Now</small>
                     </p>
                 </div>
             </div>
