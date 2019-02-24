@@ -108,7 +108,7 @@
                     })
                     .catch((error)=> {
                        this.loadingRandom = false;
-
+                       this.showPlaceModal=false;
                     })
             },//findRandomPlace
             goToSearch()

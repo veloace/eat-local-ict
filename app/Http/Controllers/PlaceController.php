@@ -25,54 +25,33 @@ class PlaceController extends Controller
 
         $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
 
-
-
-
-        $top = Place::whereRaw('id = (select max(`id`) from places)')->get()->pluck('id')->first();
-        $id = rand(1,$top);
-
-        $place = Place::where('id',$id)
-            ->select('id','name','address','city','state_code','summary')
-            ->first();
-
-
-        if($place)
-        {
-            //if model exits, return it, but first make sure we prevent reruns (showing the same location too many times in one session)(
-
-            $place->append('is_open');
-
-            $open = $requires_open ? $place->is_open:true;
-
-            if($this->randomIsRerun($id) && $open)
+        $place = Place::select('id','name','address','city','state_code','summary','google_place_id')
+            ->inRandomOrder()
+            ->first()
+            ->append('is_open');
+        $passesPreflight=true;
+        //passes preflight indicates if the place is NOT a rerun and it matches the filters
+            if($this->randomIsRerun($place->id))
             {
-                //it's a rerun, so try to get one that is not a rerun
-                if($iterator <10)
-                {//only try this three times
-                    return $this->getRandomPlace($request,$iterator+1);
+                $passesPreflight=false;
+            }//if this is a rerun
 
-                }//if
-                else
-                {
-                    //we tried ten times, just send it
-                    return $place;
-                }//else
-            }//if is rerun
+            if($requires_open && ($place->is_open==false))
+            {
+                $passesPreflight=false;
+            }//the place is required to be open but it is not open
+
+            if(!$passesPreflight && $iterator<10)
+            {
+                $iterator++;
+                return $this->getRandomPlace($request,$iterator);
+            }//if preflight failed and interator is less than 10
             else
             {
                 return $place;
-
             }//else
-        }
-        elseif($iterator <10)
-        {//if model does not exist, redo the process (but only try 3 times)
-            return $this->getRandomPlace($request,$iterator+1);
-        }
-        else
-        {
-            return response('',420);
-        }
-    }
+
+    }//function getRandomPlaces
 
 
     /**
@@ -83,6 +62,12 @@ class PlaceController extends Controller
     private function randomIsRerun($placeID)
     {
         $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
+
+        //if the rerun array exceeds 50, clear out the first element
+        if(count($runs)>50)
+        {
+            array_shift($runs);//removes the first item
+        }
         if(in_array($placeID,$runs))
         {//it's a rerun
             return true;
