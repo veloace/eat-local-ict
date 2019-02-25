@@ -17,9 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('session',function(){
-    dd(session('runs'),session('lat'),session('lng'));
-});
 Route::prefix('places')->group(function () {
     Route::get('index/{place}', 'PlaceController@index');
     Route::get('tag/{tag?}', 'PlaceController@indexByTagID');

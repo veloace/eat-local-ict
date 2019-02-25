@@ -133,7 +133,6 @@ const app = new Vue({
         },
         setGeo(position)
         {
-            console.log('got here');
             let crd = position.coords;
             this.geo.lat = crd.latitude;
             this.geo.lng =crd.longitude;

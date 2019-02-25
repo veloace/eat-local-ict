@@ -1,6 +1,6 @@
 <template>
     <div class="has-background-translucent top-spacer">
-        <div v-if="!loading" class="container has-background-translucent has-text-white">
+        <div v-if="!loading" class="container has-text-white">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">
                     <router-link :to="lastPage" class="button is-small is-primary is-outlined">
@@ -96,6 +96,10 @@
                             <span>&nbsp;Menu</span>
                         </a>
                     </p>
+                    <p>
+                        <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fa fa-facebook-square fa-2x"></i></a>
+                        <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fa fa-instagram fa-2x"></i></a>
+                    </p>
                 </div>
                 <div class="column">
                     <h2 class="has-text-centered subtitle has-text-white has-text-weight-bold">Hours</h2>
@@ -171,7 +175,6 @@
                 default:
                     d=d.getDay()-1;
             }
-            console.log(d);
             return {
                 loading: true,
                 today:d,
@@ -187,7 +190,10 @@
                     is_open: null,
                     price: null,
                     rating: 5,
-                    reviews:null
+                    reviews:null,
+                    facebook_link:null,
+                    instagram_link:null,
+                    user_distance:null
                 },
                 tags: [],
                 lastPage: {
@@ -214,7 +220,6 @@
                     })
                     .catch((error) => {
                         this.loading = false;
-                        console.log(error);
                         this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
                     })
             },

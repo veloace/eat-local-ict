@@ -2,7 +2,7 @@
 <template>
    <div>
       <!-- Hero content: will be in the middle -->
-      <div class="hero is-fullheight">
+      <div class="hero is-fullheight has-background-translucent">
          <div class="hero-body">
             <div class="container has-text-centered">
                <h1 class="title has-text-white">
@@ -18,8 +18,10 @@
                <p>
                   <router-link :to="{name:'search'}"  class="has-text-white has-text-weight-bold">Advanced Search</router-link>
                </p>
-               <!--<p class="has-text-white">Have a suggestion or data correction?<a @click="showFeedBackModal">Let us Know</a> </p>-->
-
+               <hr>
+               <p class="has-text-white">Help us add features and keep our servers running!</p>
+               <p><a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" target="_blank" rel="nofollow" class="button is-info is-inverted is-outlined is-small is-translucent">Check out our Merch!</a></p>
+               <p><a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow" class="button is-info is-inverted  is-outlined is-small  is-translucent">Support us on Ko-Fi!</a></p>
             </div>
          </div>
          <!-- Hero footer: will stick at the bottom -->
@@ -138,7 +140,6 @@
             },
             suggestDescription()
             {
-                this.showPlaceModal=false;
                 this.$root.showDescriptionSuggestionModal(this.randomPlace.id,this.randomPlace.name);
             }
 
