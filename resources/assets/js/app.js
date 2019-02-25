@@ -117,28 +117,6 @@ const app = new Vue({
         },
         getUserLocation()
         {
-            //so that we have SOMETHING to work with, let's use cached values from local
-            if(this.storageAvailable('localStorage'))
-            {
-                if(localStorage.getItem('lat'))
-                {
-                   let lat=localStorage.getItem('lat');
-
-                   if(isNaN(lat)===false)
-                   {
-                       this.geo.lat= Number(lat);
-                   }
-                }
-                if(localStorage.getItem('lng'))
-                {
-                    let lng=localStorage.getItem('lat');
-                    if(isNaN(lng)===false)
-                    {
-                        this.geo.lng= Number(lng);
-                    }
-                }
-
-            }
 
             let options = {
                 enableHighAccuracy: true,
@@ -161,36 +139,6 @@ const app = new Vue({
             this.geo.lng =crd.longitude;
             this.geo.timestamp =crd.timestamp;
             //
-            //now, cache it to localStorage
-            if(this.storageAvailable('localStorage'))
-            {
-                localStorage.setItem('lat', crd.latitude.toString());
-                localStorage.setItem('lng', crd.longitude.toString());
-            }
-
         },
-         storageAvailable(type) {
-    try {
-        let storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch(e) {
-        return e instanceof DOMException && (
-                // everything except Firefox
-            e.code === 22 ||
-            // Firefox
-            e.code === 1014 ||
-            // test name field too, because code might not be present
-            // everything except Firefox
-            e.name === 'QuotaExceededError' ||
-            // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            storage.length !== 0;
-    }
-}
     }
 });

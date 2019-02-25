@@ -99,7 +99,6 @@
         <button class="modal-close is-large" aria-label="close" @click="descriptionSuggestion.show=false"></button>
     </div>
 </div>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbSgshuOWaQ8nCyLiOzliH4KFRVLHw1vM&libraries=places"></script>
 <script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>
