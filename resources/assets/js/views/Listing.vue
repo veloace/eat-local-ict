@@ -1,6 +1,6 @@
 <template>
     <div class="has-background-translucent top-spacer">
-        <div v-if="!loading" class="container has-text-white">
+        <div v-if="!loading" class="container has-background-translucent has-text-white">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">
                     <router-link :to="lastPage" class="button is-small is-primary is-outlined">
@@ -21,6 +21,9 @@
                             <i class="fa fa-map-marker"></i>
                             {{listing.address}} {{listing.city}}, {{listing.state_code}}
                         </a>
+                        <span v-if="listing.user_distance" class="has-text-info">
+                           (About {{listing.user_distance}} miles away)
+                        </span>
                     </p>
                     <p class="subtitle has-text-centered">
                         <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</small>
@@ -30,9 +33,13 @@
             </div>
             <div class="columns">
                 <div class="column">
-                    <p>
+                    <p v-if="listing.summary">
                         {{listing.summary}}
                     </p>
+                    <div v-else class="has-text-white">
+                        <p class="is-italic"><em>We don't have a description for this place yet.</em></p>
+                        <a class="button is-info is-outlined is-small" @click="suggestDescription">Suggest a Description</a>
+                    </div>
                     <p>Price:
                         <span class="is-size-6">
                 <i class=" has-text-success fa fa-dollar" v-for="i in listing.price"></i><i
@@ -192,21 +199,27 @@
         methods: {
             getListing() {
                 this.loading = true;
-                axios.get('/api/places/index/' + this.$route.params.id)
+
+                let params = {params:{
+                    'lat':this.$root.geo.lat,
+                    'lng':this.$root.geo.lng
+                    }};
+
+                axios.get('/api/places/index/' + this.$route.params.id,params)
                     .then((response) => {
                         this.listing = response.data;
-                        tempTag = [];
                         this.tags = [];
-                        this.listing.tags.forEach(function (t) {
-                            console.log(t);
-                        });
                         this.loading = false;
 
                     })
                     .catch((error) => {
                         this.loading = false;
-
+                        console.log(error);
+                        this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
                     })
+            },
+            suggestDescription(){
+                this.$root.showDescriptionSuggestionModal(this.listing.id,this.listing.name);
             }
         },
         activated() {

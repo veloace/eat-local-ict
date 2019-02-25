@@ -27,5 +27,170 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data(){
+        return{
+            notification:{
+                show:false,
+                type:'is-info',
+                message:''
+            },
+            descriptionSuggestion:{
+                show:false,
+                name:null,
+                id:null,
+                description:null
+            },
+            loading:false,
+            geo:{
+                lat:null,
+                lng:null,
+                timestamp:0
+            }
+
+        }
+    },
+    methods: {
+        showNotification(message,type=null)
+        {
+            switch(type)
+            {
+                case 'primary':
+                case 'link':
+                case 'info':
+                case 'success':
+                case 'warning':
+                case 'danger':
+                    this.notification.type='is-'+type;
+                    break;
+                default:
+                    this.notification.type='is-info';
+            }//type determination
+
+            this.notification.message=message;
+            this.notification.show=true;
+
+            //Code to auto-hide notification after 10 seconds
+            let self=this;
+            setTimeout(function()
+            {
+
+                self.notification.show=false;
+                self.notification.type='is-info';
+                self.notification.message=null;
+
+            }, 10000);
+
+
+        },//showNotification
+        showDescriptionSuggestionModal(id,title){
+            this.descriptionSuggestion.show=true;
+            this.descriptionSuggestion.id=id;
+            this.descriptionSuggestion.name=title;
+        },
+        submitDescriptionSuggestion()
+        {
+            this.loading=true;
+            axios.post('/api/places/description',{
+                id:this.descriptionSuggestion.id,
+                description:this.descriptionSuggestion.description,
+            })
+                .then((response) => {
+                    this.loading = false;
+
+                })
+                .catch((error) => {
+                    this.loading = false;
+
+                });
+
+            /*always do this, we really don't care about the response from the server as the user shouldn't have to be
+            worried about it--and there is nothing they can do if it fails, either.
+             */
+            this.descriptionSuggestion={
+                show:false,
+                name:null,
+                id:null,
+                description:null
+            };
+            this.showNotification('Thanks, we appreciate people like you! We have received your suggestion and will review its suitability for use on EatLocalICT! ','success')
+        },
+        getUserLocation()
+        {
+            //so that we have SOMETHING to work with, let's use cached values from local
+            if(this.storageAvailable('localStorage'))
+            {
+                if(localStorage.getItem('lat'))
+                {
+                   let lat=localStorage.getItem('lat');
+
+                   if(isNaN(lat)===false)
+                   {
+                       this.geo.lat= Number(lat);
+                   }
+                }
+                if(localStorage.getItem('lng'))
+                {
+                    let lng=localStorage.getItem('lat');
+                    if(isNaN(lng)===false)
+                    {
+                        this.geo.lng= Number(lng);
+                    }
+                }
+
+            }
+
+            let options = {
+                enableHighAccuracy: true,
+                timeout: 5000
+            };
+
+            if(navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(this.setGeo, function(error){
+                }, options);
+
+            }
+
+        },
+        setGeo(position)
+        {
+            console.log('got here');
+            let crd = position.coords;
+            this.geo.lat = crd.latitude;
+            this.geo.lng =crd.longitude;
+            this.geo.timestamp =crd.timestamp;
+            //
+            //now, cache it to localStorage
+            if(this.storageAvailable('localStorage'))
+            {
+                localStorage.setItem('lat', crd.latitude.toString());
+                localStorage.setItem('lng', crd.longitude.toString());
+            }
+
+        },
+         storageAvailable(type) {
+    try {
+        let storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+                // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
+}
+    }
 });

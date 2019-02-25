@@ -35,28 +35,38 @@
          </div>
       </div>
 
-      <div class="modal" v-bind:class="{ 'is-active': showPlaceModal }">
+      <div class="modal" :class="{ 'is-active': showPlaceModal }">
          <div class="modal-background"></div>
-            <!-- Any other Bulma elements you want -->
-
             <div class="modal-card">
                <header class="modal-card-head">
                   <p class="modal-card-title">How About...<i v-if="loadingRandom" class="fa fa-spinner fa-spin"></i></p>
                </header>
 
-                  <section class="modal-card-body has-text-white">
-                     <h1 class="subtitle has-text-white">{{randomPlace.name}}
+               <section  v-if="loadingRandom" class="modal-card-body has-text-white">
+                  <h1 >Randomizing...Please Wait.</h1>
+
+               </section>
+                  <section v-else class="modal-card-body has-text-white">
+                     <h1 class="subtitle has-text-white random-place-card-title">{{randomPlace.name}}
                         <sup>
                            <span class="is-size-7 has-text-success" v-if="randomPlace.is_open">(Open Now!)</span>
                            <span class="is-size-7 has-text-danger" v-else>(Closed Now)</span>
                         </sup>
                      </h1>
-                     <p class="has-text-white" style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
-                     <p class="heading has-text-white">Located at: {{randomPlace.address}} {{randomPlace.city}}, {{randomPlace.state_code}}</p>
+                     <p class="heading has-text-white"><i class="fa fa-map-marker"></i>&nbsp;Located at {{randomPlace.address}} in {{randomPlace.city}}, {{randomPlace.state_code}}
+                        <span v-if="randomPlace.user_distance" class="has-text-primary">
+                           (About {{randomPlace.user_distance}} miles away)
+                        </span>
+                     </p>
+                     <p v-if="randomPlace.summary" class="has-text-white is-italic" style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
+                     <div v-else class="has-text-white" style="padding-bottom: 10px;">
+                        <p class="is-italic"><em>We don't have a description for this place yet.</em></p>
+                        <a class="button is-info is-outlined is-small" @click="suggestDescription">Suggest a Description</a>
+                     </div>
                      <p>
-                        <label class="checkbox">
+                        <label class="checkbox heading">
                            <input type="checkbox" v-model="filters.is_open" :true-value="1" :false-value="0">
-                           Only show open places.
+                           {{filters.is_open ? 'Only showing places that are open right now.':'Showing all places. Check to only show open places.'}}
                         </label>
                      </p>
                   </section>
@@ -88,10 +98,13 @@
                     address:null,
                     city:null,
                     state_code:null,
-                    is_open:null
+                    is_open:null,
+                    user_distance:null
                 },
                 filters:{
-                  is_open:1
+                  is_open:1,
+                 lat:this.$root.geo.lat,
+                 lng:this.$root.geo.lng,
                 },
                 showPlaceModal:false
             }
@@ -99,9 +112,14 @@
         methods:{
            findRandomPlace()
             {
+                //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
+                this.$root.getUserLocation();
+                this.filters.lat=this.$root.geo.lat;
+                this.filters.lng=this.$root.geo.lng;
                 this.loadingRandom = true;
                 this.showPlaceModal=true;
-                axios.get('/api/places/random',{params:this.filters})
+                let params = {params:this.filters};
+                axios.get('/api/places/random',params)
                     .then((response)=> {
                       this.loadingRandom = false;
                         this.randomPlace = response.data;
@@ -109,23 +127,32 @@
                     .catch((error)=> {
                        this.loadingRandom = false;
                        this.showPlaceModal=false;
+
+                       this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
                     })
             },//findRandomPlace
             goToSearch()
             {
                 this.$router.push({ name: 'search', params: { term: this.selectedTag }})
 
+            },
+            suggestDescription()
+            {
+                this.showPlaceModal=false;
+                this.$root.showDescriptionSuggestionModal(this.randomPlace.id,this.randomPlace.name);
             }
-
-        },
-        showFeedBackModal()
-        {
-
 
         },
         activated(){
             //clear out last state
             this.showPlaceModal=false;
+            this.$root.getUserLocation();
         }
     }
 </script>
+<style>
+   .random-place-card-title
+   {
+      margin-bottom: 0!important;
+   }
+</style>

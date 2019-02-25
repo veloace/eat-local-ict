@@ -4,7 +4,7 @@
     <div class="container" style="margin-top: 30px;">
         <h1 class="has-text-center has-text-white title">Coming Soon!</h1>
         <p class="has-text-center has-text-white">In the meantime, check the progress of this and other planned features on our <router-link :to="{name:'about'}">master plan</router-link> page.</p>
-        <p class="has-text-center has-text-white">Interested in how you can help out? Please see our<router-link :to="{name:'backer'}">backers</router-link> page.</p>
+        <p class="has-text-center has-text-white">Interested in how you can help out? Please see our <router-link :to="{name:'backer'}">backers</router-link> page.</p>
 
     </div>
     </div>

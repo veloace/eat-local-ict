@@ -51,8 +51,10 @@
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
-        </section>
 
+
+
+        </section>
     <footer class="footer">
         <div class="content has-text-centered">
 
@@ -71,6 +73,31 @@
             </p>
         </div>
     </footer>
+
+    <div v-if="notification.show" class="notification notification-fixed-bottom has-text-centered" :class="notification.type">
+        <button class="delete" @click="notification.show = !notification.show"></button>
+        @{{notification.message}}
+    </div>
+
+    <div class="modal is-active" v-if="descriptionSuggestion.show">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <h2 class="modal-card-title">Suggest a Description</h2>
+            </header>
+            <section class="modal-card-body has-text-white">
+                <label class="heading has-text-white" for="description-suggestion">Suggest a Description for <strong class="has-text-weight-bold has-text-white">@{{descriptionSuggestion.name}}</strong></label>
+                <textarea id="description-suggestion" class="textarea" v-model="descriptionSuggestion.description" :placeholder="'How would you describe \''+descriptionSuggestion.name+'\'?'">
+                        </textarea>
+
+            </section>
+            <footer class="modal-card-foot">
+                <button @click="submitDescriptionSuggestion" class="button is-small is-success">Submit Suggestion</button>
+                <button class="button is-danger is-small" @click="descriptionSuggestion.show=false">Cancel</button>
+            </footer>
+        </div>
+        <button class="modal-close is-large" aria-label="close" @click="descriptionSuggestion.show=false"></button>
+    </div>
 </div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbSgshuOWaQ8nCyLiOzliH4KFRVLHw1vM&libraries=places"></script>
 <script src="{{ mix('/js/app.js') }}"></script>

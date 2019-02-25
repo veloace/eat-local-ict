@@ -85,5 +85,13 @@ p{
 .is-translucent
 {
   background-color: rgba(0,0,0,0.75);
+}
 
+.notification-fixed-bottom
+{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right:0;
+  z-index:1000000;
 }

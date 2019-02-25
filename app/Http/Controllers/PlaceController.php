@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\GooglePlaceCache;
 use App\Http\Requests\GetRandomPlaceRequest;
+use App\Http\Requests\PlaceDescriptionSuggestionRequest;
 use App\Place;
-use App\PlaceHour;
+use App\PlaceDescriptionSuggestion;
 use App\PlaceTag;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class PlaceController extends Controller
 {
@@ -24,13 +25,23 @@ class PlaceController extends Controller
     {
 
         $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
+        if(!empty($request['lat']) && !empty($request['lng']) )
+        {
+            //browser gps coordinates were supplied, so add them to the session.
+            session([
+                'lat'=>$request['lat'],
+                'lng'=>$request['lng']
+            ]);
 
-        $place = Place::select('id','name','address','city','state_code','summary','google_place_id')
+        }
+
+        $place = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude')
             ->inRandomOrder()
             ->first()
-            ->append('is_open');
+            ->append(['is_open','user_distance']);
         $passesPreflight=true;
         //passes preflight indicates if the place is NOT a rerun and it matches the filters
+
             if($this->randomIsRerun($place->id))
             {
                 $passesPreflight=false;
@@ -84,11 +95,22 @@ class PlaceController extends Controller
 
     /**
      * @param Place $place
+     * @param Request $request
      * @return array
      */
     public function index(Place $place)
     {
 
+        $place->append('user_distance');
+        if(!empty($_GET['lat']) && !empty($_GET['lng']) )
+        {
+            //browser gps coordinates were supplied, so add them to the session.
+            session([
+                'lat'=>$_GET['lat'],
+                'lng'=>$_GET['lng']
+            ]);
+
+        }
 
         if (empty($place->google_place_id))
         {
@@ -299,6 +321,15 @@ class PlaceController extends Controller
     }//function buildAddress
 
 
+    public function placeDescriptionSuggestion(PlaceDescriptionSuggestionRequest $request)
+    {
+        $suggestion = new PlaceDescriptionSuggestion();
+        $suggestion->place_id = $request['id'];
+        $suggestion->description = $request['description'];
+        $suggestion->user_id = Auth::check() ? Auth::id() : null;
+        $suggestion->save();
+        return response(null,204);
+    }
 
 
 }//class

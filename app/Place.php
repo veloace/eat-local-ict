@@ -32,71 +32,67 @@ class Place extends Model
     public function getIsOpenAttribute()
     {
 
-        $response = $this->getCachedAPI();
-        $now =  new Carbon();
-        $now->tz='America/Chicago';
-        $today=$now->dayOfWeek;
-        $currentTime=$now->format('Hi');
-        //
+        try {
+            $response = $this->getCachedAPI();
+            $now = new Carbon();
+            $now->tz = 'America/Chicago';
+            $today = $now->dayOfWeek;
+            $currentTime = $now->format('Hi');
+            //
 
-        if(!empty($response->result->opening_hours))
-        {
-            $periods =$response->result->opening_hours->periods;        //this usort should be relevant as the opening hours should already be sorted correctly--but let's explicitly program that
-            usort($periods,function($a,$b){
-                return $a->open->day > $b->open->day;
-            });
+            if (!empty($response->result->opening_hours)) {
+                $periods = $response->result->opening_hours->periods;        //this usort should be relevant as the opening hours should already be sorted correctly--but let's explicitly program that
+                usort($periods, function ($a, $b) {
+                    return $a->open->day > $b->open->day;
+                });
 
-            foreach ($response->result->opening_hours->periods as $period) {
-                $openDay =(integer) $period->open->day;
-                $openTime =(integer)  $period->open->time;
-                $closeDay =(integer) $period->close->day;
-                $closeTime =(integer)  $period->close->time ==0 ? 2400:(integer)$period->close->time;
+                foreach ($response->result->opening_hours->periods as $period) {
+                    $openDay = (integer)$period->open->day;
+                    $openTime = (integer)$period->open->time;
+                    $closeDay = (integer)$period->close->day;
+                    $closeTime = (integer)$period->close->time == 0 ? 2400 : (integer)$period->close->time;
 
-                if(($openDay == $today) &&($closeDay== $today))
-                {//easy one, today is equal to the open day and close day, so we only need to look at time
-                    if(($openTime<=$currentTime)&&($closeTime>= $currentTime))
-                    {
-                        //current time is between the open time and the close time so it is open
+                    if (($openDay == $today) && ($closeDay == $today)) {//easy one, today is equal to the open day and close day, so we only need to look at time
+                        if (($openTime <= $currentTime) && ($closeTime >= $currentTime)) {
+                            //current time is between the open time and the close time so it is open
+                            return true;
+                        }
+                    }//if $close==$open==$now
+                    elseif (($openDay == $today) && ($closeDay != $today)) {
+                        //close day is not today, but today is the open day, so we just need to make sure we are passed the open time
+                        if (($openTime <= $currentTime)) {
+                            //current time is greater than the open time, so it's open
+                            return true;
+                        }
+                    }//elseif $open==$now, but $close != now
+                    elseif (($closeDay == $today) && ($openDay != $today)) {//open day is not today, but the close day is today
+                        if (($currentTime < $closeTime)) {
+                            //current time is less than the close time, so it's open
+                            return true;
+                        }
+                    }//elseif $open!=today, but $close ==$today
+                    elseif (($closeDay > $today) && ($openDay < $today)) {//
+                        //today falls between the open days, meaning it neither opens nor closes today
                         return true;
+                    }//if open < today < close
+                    elseif ($closeDay < $openDay) {//weird scenario
+                        /*this weird, because it indicates a span of open and close that spans a week, like Saturday to Monday, where the open day
+                        is 6 and the close day is 1, so we can't use standard math as that would give us a false close
+                        */
+                        if (($today < $closeDay) || ($openDay < $today)) {
+                            return true;
+                        }
                     }
-                }//if $close==$open==$now
-                elseif(($openDay == $today) &&($closeDay!=$today))
-                {
-                    //close day is not today, but today is the open day, so we just need to make sure we are passed the open time
-                    if(($openTime<=$currentTime))
-                    {
-                        //current time is greater than the open time, so it's open
-                        return true;
-                    }
-                }//elseif $open==$now, but $close != now
-                elseif(($closeDay == $today) &&($openDay!=$today))
-                {//open day is not today, but the close day is today
-                    if(($currentTime<$closeTime))
-                    {
-                        //current time is less than the close time, so it's open
-                        return true;
-                    }
-                }//elseif $open!=today, but $close ==$today
-                elseif(($closeDay > $today) &&($openDay<$today))
-                {//
-                    //today falls between the open days, meaning it neither opens nor closes today
-                    return true;
-                }//if open < today < close
-                elseif ( $closeDay < $openDay)
-                {//weird scenario
-                    /*this weird, because it indicates a span of open and close that spans a week, like Saturday to Monday, where the open day
-                    is 6 and the close day is 1, so we can't use standard math as that would give us a false close
-                    */
-                    if(($today<$closeDay) || ($openDay < $today ))
-                    {
-                        return true;
-                    }
-                }
 
 
-            }//foreach
+                }//foreach
+            }
+            return false;//default value
         }
-        return false;//default value
+        catch (\Exception $e)
+        {
+            return false;
+        }
 
     }//is_open
     public function getCachedAPI()
@@ -127,6 +123,31 @@ class Place extends Model
 
 
         return null;
+    }
+
+
+    public function getUserDistanceAttribute()
+    {
+        $lat = session('lat');
+        $lng = session('lng');
+        if(!empty($lat) && !empty($lng) && !empty($this->latitude) && !empty($this->longitude))
+        {//if we have coordinates for this user and this place, we can calculate distance
+            return $this->calculateDistance($lat, $lng, $this->latitude,$this->longitude);
+        }
+
+        return null;
+    }
+
+    private function calculateDistance($lat1, $lng1, $lat2, $lng2)
+    {
+        $radiusEarth=3959;
+        $deltaLat = deg2rad($lat2 -$lat1);
+        $deltaLong =deg2rad($lng2-$lng1);
+        $lat1 = deg2rad($lat1);
+        $lat2=deg2rad($lat2);
+        $a = sin($deltaLat/2)*sin($deltaLat/2)+sin($deltaLong/2)*sin($deltaLong/2)*cos($lat1)*cos($lat2);
+        $c = 2*atan2(sqrt($a), sqrt(1-$a));
+        return (round($radiusEarth*$c,2));
     }
 }
 
