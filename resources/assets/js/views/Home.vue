@@ -49,7 +49,7 @@
 
                </section>
                   <section v-else class="modal-card-body has-text-white">
-                     <h1 class="subtitle has-text-white random-place-card-title">{{randomPlace.name}}
+                     <h1 class="subtitle has-text-white random-place-card-title"><router-link :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}">{{randomPlace.name}}</router-link>
                         <sup>
                            <span class="is-size-7 has-text-success" v-if="randomPlace.is_open">(Open Now!)</span>
                            <span class="is-size-7 has-text-danger" v-else>(Closed Now)</span>

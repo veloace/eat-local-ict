@@ -42,8 +42,8 @@
                     </div>
                     <p>Price:
                         <span class="is-size-6">
-                <i class=" has-text-success fa fa-dollar" v-for="i in listing.price"></i><i
-                                class="fa fa-dollar has-text-grey-lighter" v-for="c in (5-listing.price)"></i>
+                <i class=" has-text-success fas fa-dollar-sign" v-for="i in listing.price"></i><i
+                                class="fas fa-dollar-sign has-text-grey-lighter" v-for="c in (5-listing.price)"></i>
             </span>
                     </p>
 
@@ -97,8 +97,8 @@
                         </a>
                     </p>
                     <p>
-                        <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fa fa-facebook-f fa-2x"></i></a>
-                        <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fa fa-instagram fa-2x"></i></a>
+                        <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fab fa-facebook fa-2x"></i></a>
+                        <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fab fa-instagram fa-2x"></i></a>
                     </p>
                 </div>
                 <div class="column">

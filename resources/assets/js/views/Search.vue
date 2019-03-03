@@ -49,7 +49,8 @@
         <div class="tile is-ancestor" v-if="!loading">
             <div class="tile is-parent is-4" v-for="item in items" :key="item.id">
                 <article class="tile is-child box is-primary has-background-black-bis">
-                        <h3 class="title has-text-primary is-size-4 listing-title">{{item.name}}
+                        <h3 class="title has-text-primary is-size-4 listing-title">
+                            <router-link :to="{name:'listing',params:{id:item.id},query:{ref:'search'}}">{{item.name}}</router-link>
                             <br>
                             <sup>
                                 <span class="is-size-7 has-text-success" v-if="item.is_open">(Open Now!)</span>

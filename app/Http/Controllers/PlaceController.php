@@ -370,6 +370,7 @@ class PlaceController extends Controller
      */
     public function search(PlaceSearchRequest $request)
     {
+        $useRadius = false;
 
         if(!empty($request['lat']) && !empty($request['lng']) )
         {
@@ -380,7 +381,6 @@ class PlaceController extends Controller
             ]);
 
 
-            $useRadius = false;
             if(!empty($request['distance']))
             {//
                 //translates a radius from the frontend to an actual max mileage
