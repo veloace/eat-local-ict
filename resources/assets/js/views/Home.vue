@@ -13,7 +13,7 @@
                </h2>
 
                <p>
-                  <button v-on:click="findRandomPlace" class="button is-link is-inverted  is-outlined is-large has-text-weight-bold	">Random Place</button>
+                  <button @click="findRandomPlace" class="button is-link is-inverted  is-outlined is-large has-text-weight-bold	">Random Place</button>
                </p>
                <p>
                   <router-link :to="{name:'search'}"  class="has-text-white has-text-weight-bold">Advanced Search</router-link>
@@ -37,7 +37,7 @@
          </div>
       </div>
 
-      <div class="modal" :class="{ 'is-active': showPlaceModal }">
+      <b-modal :active.sync="showPlaceModal" :width="640">
          <div class="modal-background"></div>
             <div class="modal-card">
                <header class="modal-card-head">
@@ -66,14 +66,28 @@
                         <a class="button is-info is-outlined is-small" @click="suggestDescription">Suggest a Description</a>
                      </div>
                      <p>
-                        <label class="checkbox heading">
-                           <input type="checkbox" v-model="filters.is_open" :true-value="1" :false-value="0">
-                           {{filters.is_open ? 'Only showing places that are open right now.':'Showing all places. Check to only show open places.'}}
+                        <label class="heading">
+                           <b-switch  v-model="filters.is_open" :true-value="1" :false-value="0">
+                              {{filters.is_open ? 'Only showing places that are open right now.':'Showing all places. Check to only show open places.'}}
+                           </b-switch>
                         </label>
+
                      </p>
+                     <b-field label="Distance" class="has-text-white" v-if="$root.geo.lat && $root.geo.lng">
+
+                        <b-select  placeholder="Distance" v-model="filters.distance">
+                           <option
+                                   v-for="option in distances"
+                                   :value="option.id"
+                                   :key="option.id">
+                              {{option.text }}
+                           </option>
+                        </b-select>
+                     </b-field>
+
                   </section>
                   <footer class="modal-card-foot">
-                     <router-link :disabled="loadingRandom" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">Sounds Good!</router-link>
+                     <router-link :disabled="loadingRandom" v-on:click="showPlaceModal=false" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">Sounds Good!</router-link>
                      <button :disabled="loadingRandom" class="button is-small is-primary" v-on:click="findRandomPlace">Try Something Else</button>
                      <button class="button is-danger is-small" v-on:click="showPlaceModal=false">Cancel</button>
                      <hr>
@@ -82,7 +96,7 @@
 
             </div>
          <button class="modal-close is-large" aria-label="close" v-on:click="showPlaceModal=false"></button>
-      </div>
+      </b-modal>
    </div>
 </template>
 <script>
@@ -107,15 +121,44 @@
                   is_open:1,
                  lat:this.$root.geo.lat,
                  lng:this.$root.geo.lng,
+                    distance:0
                 },
-                showPlaceModal:false
+                showPlaceModal:false,
+                distances:[
+                    {
+                        id:0,
+                        text:'All Locations'
+                    },
+                    {
+                        id:1,
+                        text:'Under a mile'
+                    },
+                    {
+                        id:2,
+                        text:'Under 3 miles'
+                    },
+                    {
+                        id:3,
+                        text:'Under 5 miles'
+                    },
+                    {
+                        id:4,
+                        text:'Under 10 miles'
+                    },
+                    {
+                        id:5,
+                        text:'Under 20 miles'
+                    },
+
+                ]
             }
         },
         methods:{
+            /**
+             * makes API call to get a random place
+             */
            findRandomPlace()
             {
-                //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
-                this.$root.getUserLocation();
                 this.filters.lat=this.$root.geo.lat;
                 this.filters.lng=this.$root.geo.lng;
                 this.loadingRandom = true;
@@ -131,23 +174,16 @@
                        this.showPlaceModal=false;
 
                        this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
-                    })
-            },//findRandomPlace
-            goToSearch()
-            {
-                this.$router.push({ name: 'search', params: { term: this.selectedTag }})
+                    });
+                //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
+                this.$root.getUserLocation();
 
-            },
+            },//findRandomPlace
             suggestDescription()
             {
                 this.$root.showDescriptionSuggestionModal(this.randomPlace.id,this.randomPlace.name);
             }
 
-        },
-        activated(){
-            //clear out last state
-            this.showPlaceModal=false;
-            this.$root.getUserLocation();
         }
     }
 </script>
@@ -155,5 +191,8 @@
    .random-place-card-title
    {
       margin-bottom: 0!important;
+   }
+   .has-text-white > label{
+      color: white;
    }
 </style>

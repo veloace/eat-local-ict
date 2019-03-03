@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetRandomPlaceRequest extends FormRequest
+class PlaceSearchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,10 @@ class GetRandomPlaceRequest extends FormRequest
         return [
             //
             'is_open'=>'nullable|boolean',
+            'name'=>'nullable|string',
             'lat'=>'nullable',
             'lng'=>'nullable',
-            'radius'=>'nullable'
+            'distance'=>'nullable'
         ];
     }
 }

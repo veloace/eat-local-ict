@@ -20,8 +20,12 @@
 
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
-    <base href="/app">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
+
+
+    <base href="/">
     <script>
         window.Laravel = {!! $token!!};
         window.tags = {!! $tags !!};
@@ -32,7 +36,7 @@
     This is your fallback content in case JavaScript fails to load.
 </noscript>
 <div id="app">
-    <div v-if="false" style="background-color: #292929;position: absolute;z-index:10000;top:0;bottom: 0;left: 0;right:0;">
+    <div v-if="false" style="background-color: #292929;position: fixed;z-index:10000000000;top:0;bottom: 0;left: 0;right:0;">
         <p style="text-align: center;color:white;font-size: 25px;padding-top: 30vh">Eat Local ICT Is Loading...Please Wait</p>
     </div>
     <nav class="navbar is-fixed-top is-translucent" role="navigation" aria-label="main navigation">
@@ -79,7 +83,7 @@
         @{{notification.message}}
     </div>
 
-    <div class="modal is-active" v-if="descriptionSuggestion.show">
+    <b-modal :active.sync="descriptionSuggestion.show">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -97,7 +101,7 @@
             </footer>
         </div>
         <button class="modal-close is-large" aria-label="close" @click="descriptionSuggestion.show=false"></button>
-    </div>
+    </b-modal>
 </div>
 <script src="{{ mix('/js/app.js') }}"></script>
 </body>

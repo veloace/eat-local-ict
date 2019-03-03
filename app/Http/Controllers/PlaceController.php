@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\GooglePlaceCache;
 use App\Http\Requests\GetRandomPlaceRequest;
 use App\Http\Requests\PlaceDescriptionSuggestionRequest;
+use App\Http\Requests\PlaceSearchRequest;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use App\PlaceTag;
@@ -24,7 +25,13 @@ class PlaceController extends Controller
     public function getRandomPlace(GetRandomPlaceRequest $request,$iterator = 0)
     {
 
+        $useRadius=false;
+        $radius = 10000;//default fail-safe value
         $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
+
+        //get the reruns from the session, if they are there
+        $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
+
         if(!empty($request['lat']) && !empty($request['lng']) )
         {
             //browser gps coordinates were supplied, so add them to the session.
@@ -33,67 +40,97 @@ class PlaceController extends Controller
                 'lng'=>$request['lng']
             ]);
 
+            if(!empty($request['distance']))
+            {
+                //translates a radius from the frontend to an actual max mileage
+                //as a side effect, it protects against SQL injection when running the raw query
+                $useRadius = true;
+                switch($request['distance'])
+                {
+                    case 0:
+                        $useRadius = false;
+                        break;
+                    case 1:
+                        $radius=1;
+                        break;
+                    case 2:
+                        $radius=3;
+                        break;
+                    case 3:
+                        $radius=5;
+                        break;
+                    case 4:
+                        $radius=10;
+                        break;
+                    case 5:
+                        $radius=20;
+                        break;
+                    default:
+                        $useRadius = false;
+                }//switch
+            }//if
+        }//if lat lng
+
+
+        $place = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude');
+
+        if($useRadius)
+        {
+            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . ")) 
+                    * cos(radians(`latitude`)) 
+                    * cos(radians(`longitude`) 
+                    - radians(" . $request['lng'] . ")) 
+                    + sin(radians(" . $request['lat'] . ")) 
+                    * sin(radians(`latitude`))))";
+
+            $place = $place->selectRaw("{$haversine} AS distance")
+                ->whereRaw("{$haversine} < ?", [$radius]);
         }
 
-        $place = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude')
-            ->inRandomOrder()
+        $place = $place->whereNotIn('id',$runs);//prevent duplicates in randomization
+        $place = $place->inRandomOrder()
             ->first()
             ->append(['is_open','user_distance']);
-        $passesPreflight=true;
-        //passes preflight indicates if the place is NOT a rerun and it matches the filters
-
-            if($this->randomIsRerun($place->id))
-            {
-                $passesPreflight=false;
-            }//if this is a rerun
-
-            if($requires_open && ($place->is_open==false))
-            {
-                $passesPreflight=false;
-            }//the place is required to be open but it is not open
-
-            if(!$passesPreflight && $iterator<10)
-            {
-                $iterator++;
-                return $this->getRandomPlace($request,$iterator);
-            }//if preflight failed and interator is less than 10
-            else
-            {
-                return $place;
-            }//else
-
-    }//function getRandomPlaces
 
 
-    /**
-     * determines if this place is a rerun (has been issued to the user in this session)
-     * @param $placeID
-     * @return bool
-     */
-    private function randomIsRerun($placeID)
-    {
-        $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
 
+        //to prevent a r rerun, save the id to the session so that we ignore it in the future
+        $runs[] = $place->id;
         //if the rerun array exceeds 50, clear out the first element
         if(count($runs)>50)
         {
             array_shift($runs);//removes the first item
         }
-        if(in_array($placeID,$runs))
-        {//it's a rerun
-            return true;
+        session(['runs'=>$runs]);//save to session
+
+
+        if(($requires_open && ($place->is_open==false))&& $iterator<10)
+        {
+            //this place must be open, but it's not, so try another place
+            $iterator++;
+            return $this->getRandomPlace($request,$iterator);
+        }//the place is required to be open but it is not open
+        elseif(!$place)
+        {
+            //we didn't find a place, so that must mean that there is something preventing results from returning to us.
+            //if that's the case, we need to remove some restrictions, then rerun it.
+            //easiest to remove is the reruns array, so let's do that
+            session(['runs'=>[]]);//reset runs to an empty array
+            $iterator++;
+            return $this->getRandomPlace($request,$iterator);
         }
         else
         {
-            //it's not a rerun, so save the id to the session so that we ignore it in the future
-            $runs[] = $placeID;
-            session(['runs'=>$runs]);
-            return false;
-        }
+            //either this place is good to go, or we couldn't find a place after 10 iterations.
+            //either way, we need to send something to the user, even if it isn't perfect
+            return $place;
+        }//else
 
-    }
+    }//function getRandomPlaces
+
 
     /**
+     * returns a Place object
      * @param Place $place
      * @param Request $request
      * @return array
@@ -162,27 +199,10 @@ class PlaceController extends Controller
         return($return);
     }
 
-    /**
-     * @param null $tag
-     * @return mixed
-     */
-    public function indexByTagID($tag=null)
-    {
-        if(!empty($tag)) {
 
-            $ids = PlaceTag::where('tag_id', $tag)->select('place_id')->pluck('place_id')->toArray();
-            return Place::whereIn('id', $ids)
-                ->select('id', 'name', 'description', 'image_url')
-                ->paginate(2);
-        }
-        else
-        {
-            return Place::paginate(20);
-        }
-
-    }
 
     /**
+     * Attempts to populate the place information using the Google Places API
      * @param Place $place
      * @return Place
      */
@@ -216,10 +236,15 @@ class PlaceController extends Controller
             }//if response has candidates
         }//if json decodable response
         return $place;
-    }
+    }//build place information
 
 
-
+    /**
+     * Gets the place details from a Google Places API call
+     * @param $placeID
+     * @param $key
+     * @return array|bool
+     */
     private function getPlaceDetails($placeID,$key)
     {
         $cached = GooglePlaceCache::where(
@@ -267,6 +292,7 @@ class PlaceController extends Controller
 
 
     /**
+     * Builds a human-readable address from the Google Places API JSON
      * @param $address_components
      * @return array
      */
@@ -321,6 +347,11 @@ class PlaceController extends Controller
     }//function buildAddress
 
 
+    /**
+     * Processes a user's suggestion from the frontend for adding a description for a place
+     * @param PlaceDescriptionSuggestionRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function placeDescriptionSuggestion(PlaceDescriptionSuggestionRequest $request)
     {
         $suggestion = new PlaceDescriptionSuggestion();
@@ -331,5 +362,75 @@ class PlaceController extends Controller
         return response(null,204);
     }
 
+
+    /**
+     * Function to search (and paginate) the places in our database. Used by the Search.vue frontend of the page
+     * @param PlaceSearchRequest $request
+     * @return mixed
+     */
+    public function search(PlaceSearchRequest $request)
+    {
+
+        if(!empty($request['lat']) && !empty($request['lng']) )
+        {
+            //browser gps coordinates were supplied, so add them to the session.
+            session([
+                'lat'=>$request['lat'],
+                'lng'=>$request['lng']
+            ]);
+
+
+            $useRadius = false;
+            if(!empty($request['distance']))
+            {//
+                //translates a radius from the frontend to an actual max mileage
+                //as a side effect, it protects against SQL injection when running the raw query
+                $useRadius = true;
+                switch($request['distance'])
+                {
+                    case 0:
+                        $useRadius = false;
+                        break;
+                    case 1:
+                        $radius=1;
+                        break;
+                    case 2:
+                        $radius=3;
+                        break;
+                    case 3:
+                        $radius=5;
+                        break;
+                    case 4:
+                        $radius=10;
+                        break;
+                    case 5:
+                        $radius=20;
+                        break;
+                    default:
+                        $useRadius = false;
+                }//switch
+            }//if
+        }//lat lng
+        $places = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude');
+
+        if(!empty($request['name']))
+        {
+            $places->where('name','like',"%{$request['name']}%");
+
+        }//search by name
+        if($useRadius)
+        {
+            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . ")) 
+                    * cos(radians(`latitude`)) 
+                    * cos(radians(`longitude`) 
+                    - radians(" . $request['lng'] . ")) 
+                    + sin(radians(" . $request['lat'] . ")) 
+                    * sin(radians(`latitude`))))";
+
+            $places = $places->selectRaw("{$haversine} AS distance")
+                ->whereRaw("{$haversine} < ?", [$radius]);
+        }//search by radius
+        return $places->paginate(20);
+    }
 
 }//class

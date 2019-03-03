@@ -3,12 +3,12 @@
         <div v-if="!loading" class="container has-text-white">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">
-                    <router-link :to="lastPage" class="button is-small is-primary is-outlined">
+                    <a @click="$router.go(-1)" class="button is-small is-primary is-outlined">
                         <span class="icon">
                           <i class="fa fa-arrow-left "></i>
                         </span>
                         <span>Go Back</span>
-                    </router-link>
+                    </a>
                 </div>
             </div>
             <div class="columns">
@@ -82,7 +82,7 @@
                            class="button is-small is-link  is-outlined">
                        <span class="icon">
 
-            <i class="fa fa-code fa-2x"></i>
+            <i class="fa fa-code"></i>
                             </span>
                             <span>&nbsp;Website</span>
                         </a>
@@ -91,13 +91,13 @@
                            class="button is-small is-info  is-outlined">
                        <span class="icon">
 
-            <i class="fa fa-book fa-2x"></i>
+            <i class="fa fa-book "></i>
                             </span>
                             <span>&nbsp;Menu</span>
                         </a>
                     </p>
                     <p>
-                        <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fa fa-facebook-square fa-2x"></i></a>
+                        <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fa fa-facebook-f fa-2x"></i></a>
                         <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fa fa-instagram fa-2x"></i></a>
                     </p>
                 </div>
@@ -144,12 +144,12 @@
                 </article>
             </div>
             <hr>
-            <router-link :to="lastPage" class="button is-small is-primary is-outlined" style="margin-bottom: 30px;">
+            <a @click="$router.go(-1)"  class="button is-small is-primary is-outlined" style="margin-bottom: 30px;">
                         <span class="icon">
                           <i class="fa fa-arrow-left "></i>
                         </span>
                 <span>Go Back</span>
-            </router-link>
+            </a>
         </div>
         <div class="hero is-fullheight" v-else>
             <div class="hero-body">
@@ -203,6 +203,9 @@
             }
         },
         methods: {
+            /**
+             * Makes the API call to get this listing from the backend
+             */
             getListing() {
                 this.loading = true;
 
@@ -229,6 +232,11 @@
         },
         activated() {
             this.getListing();
+            //
+            //this removes the is-clipped class buefy uses for modals which breaks scrolling on this page
+            let html = document.getElementsByTagName('html');
+            html[0].classList.remove('is-clipped');
+
         }
     }
 </script>

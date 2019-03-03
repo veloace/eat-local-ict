@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('places')->group(function () {
     Route::get('index/{place}', 'PlaceController@index');
-    Route::get('tag/{tag?}', 'PlaceController@indexByTagID');
+    Route::get('search', 'PlaceController@search');
     Route::get('random', 'PlaceController@getRandomPlace');
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
 });

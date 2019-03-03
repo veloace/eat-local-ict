@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Place extends Model
 {
     //
-    //protected $appends=['hours','map_link','tags'];
+    protected $appends=['user_distance','is_open'];
 
 
-
+    /**
+     * Generates the Apple Maps navigation link for use by the frontend
+     * @return string
+     */
     public function getMapLinkAttribute()
     {
         $query ="{$this->name}";
@@ -20,6 +23,10 @@ class Place extends Model
         return "http://maps.apple.com/?q={$query}&address={$address}";
     }
 
+    /**
+     * Gets an array of tags associated with this place
+     * @return mixed
+     */
     public function getTagsAttribute()
     {
         return PlaceTag::where('place_id',$this->id)->pluck('tag_id')->toArray();
@@ -92,9 +99,15 @@ class Place extends Model
         catch (\Exception $e)
         {
             return false;
-        }
+        }//false
 
     }//is_open
+
+    /**
+     * gets the cached Google Places API information from the database if it is still fresh enough (less than one week old)
+     * If it's over 1 week old, it will call a function to make the API call
+     * @return mixed|null
+     */
     public function getCachedAPI()
     {
         $cached =GooglePlaceCache::where([
@@ -105,6 +118,10 @@ class Place extends Model
     }
 
 
+    /**
+     * updates our Cache of the Google Places API information by calling the Google Places API
+     * @return mixed|null
+     */
     public function refreshCache()
     {
 
@@ -126,6 +143,10 @@ class Place extends Model
     }
 
 
+    /**
+     * determines if the necessary data is there to calculate the distance between the user and this location.
+     * @return float|null
+     */
     public function getUserDistanceAttribute()
     {
         $lat = session('lat');
@@ -138,6 +159,14 @@ class Place extends Model
         return null;
     }
 
+    /**
+     * Calculates the spherical straight-line distance of between the the two sets of points
+     * @param $lat1 float latitude of point 1
+     * @param $lng1 float longitude of point 1
+     * @param $lat2 float latitude of point 2
+     * @param $lng2 float longitude of point 2
+     * @return float
+     */
     private function calculateDistance($lat1, $lng1, $lat2, $lng2)
     {
         $radiusEarth=3959;
@@ -149,6 +178,9 @@ class Place extends Model
         $c = 2*atan2(sqrt($a), sqrt(1-$a));
         return (round($radiusEarth*$c,2));
     }
+
+
+
 }
 
 

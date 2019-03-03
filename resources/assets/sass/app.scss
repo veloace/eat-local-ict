@@ -1,15 +1,14 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
 @import "variables";
 
-// Buma
-@import '~bulma';
+// Bulma/buefy
+@import '~buefy/src/scss/buefy-build';
 //fontAwesome
-@import "~font-awesome/scss/font-awesome.scss";
-
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
 .button
 {
   border-radius: 0px;
