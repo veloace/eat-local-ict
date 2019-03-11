@@ -14,27 +14,30 @@
 $backendDomain =config('app.backend_url');
 
 Route::domain($backendDomain)
-    ->middleware(['auth:web','administrators'])
     ->group(function () {
-        //BEGIN ADMIN GROUP
-    Route::get('','AdminController@index');
-    Route::post('','AdminController@acceptSuggestion');
-    Route::delete('','AdminController@deleteSuggestion');
-    Auth::routes(['register'=>'false']);
 
-    Route::prefix('place')->group(function(){
-        Route::get('','AdminController@indexPlaces')->name('indexPlaces');
-        Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
-        Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
-        Route::get('add','AdminController@addPlace')->name('addPlace');
-        Route::post('add','AdminController@saveNewPlace')->name('saveNewPlace');
+        Route::middleware(['auth:web','administrators'])->group(function () {
+            //BEGIN ADMIN GROUP
 
-
-    });//place prefix
+            Route::get('','AdminController@index');
+            Route::post('','AdminController@acceptSuggestion');
+            Route::delete('','AdminController@deleteSuggestion');
+            Route::prefix('place')->group(function(){
+                Route::get('','AdminController@indexPlaces')->name('indexPlaces');
+                Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
+                Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
+                Route::get('add','AdminController@addPlace')->name('addPlace');
+                Route::post('add','AdminController@saveNewPlace')->name('saveNewPlace');
 
 
+            });//place prefix
 
-});//end  ADMIN GROUP
+        });//ADMIN GROUP
+
+        Auth::routes(['register'=>'false']);
+
+
+});//backend
 
 
 Route::get('/{vue_capture?}',function(){
