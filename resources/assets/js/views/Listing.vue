@@ -3,7 +3,7 @@
         <div v-if="!loading" class="container has-text-white">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">
-                    <a @click="$router.go(-1)" class="button is-small is-primary is-outlined">
+                    <a @click="$router.go(-1)" class="button is-small is-link is-outlined">
                         <span class="icon">
                           <i class="fa fa-arrow-left "></i>
                         </span>
@@ -144,7 +144,7 @@
                 </article>
             </div>
             <hr>
-            <a @click="$router.go(-1)"  class="button is-small is-primary is-outlined" style="margin-bottom: 30px;">
+            <a @click="$router.go(-1)"  class="button is-small is-link is-outlined" style="margin-bottom: 30px;">
                         <span class="icon">
                           <i class="fa fa-arrow-left "></i>
                         </span>

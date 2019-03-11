@@ -11,20 +11,35 @@
 |
 */
 
-Route::prefix('backend')
+$backendDomain =config('app.backend_url');
+
+Route::domain($backendDomain)
     ->middleware(['auth:web','administrators'])
     ->group(function () {
+        //BEGIN ADMIN GROUP
     Route::get('','AdminController@index');
+    Route::post('','AdminController@acceptSuggestion');
+    Route::delete('','AdminController@deleteSuggestion');
+    Auth::routes(['register'=>'false']);
 
-});
+    Route::prefix('place')->group(function(){
+        Route::get('','AdminController@indexPlaces')->name('indexPlaces');
+        Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
+        Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
+        Route::get('add','AdminController@addPlace')->name('addPlace');
+        Route::post('add','AdminController@saveNewPlace')->name('saveNewPlace');
 
-Auth::routes();
+
+    });//place prefix
+
+
+
+});//end  ADMIN GROUP
+
+
 Route::get('/{vue_capture?}',function(){
-    $tags = \App\Tag::select('name','id')
-        ->get()
-        ->toArray();
+
     $data['token']=json_encode(['csrfToken' => csrf_token()]);
-    $data['tags'] = json_encode($tags);
     return view('webAppShell',$data);
 })->where('vue_capture', '[\/\w\.-]*')
     ->name('app');

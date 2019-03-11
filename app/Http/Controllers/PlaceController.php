@@ -8,7 +8,6 @@ use App\Http\Requests\PlaceDescriptionSuggestionRequest;
 use App\Http\Requests\PlaceSearchRequest;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
-use App\PlaceTag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -156,8 +155,6 @@ class PlaceController extends Controller
         }
         $return = $place->toArray();
         $return['map_link']=$place->map_link;
-        $return['tags']=$place->tags;
-
 
         $cached =GooglePlaceCache::where([
             ['google_place_id',$place->google_place_id],

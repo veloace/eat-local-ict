@@ -5,18 +5,28 @@
     <div class="container has-text-white has-background-translucent" style="margin-top: 30px;">
 
         <b-collapse class="panel panel-form-heading" :open.sync="filtersVisible">
-            <div slot="trigger" class="panel-heading has-background-info ">
-                <strong class="has-text-white">Advanced Search Filters</strong>
+            <div slot="trigger" class="panel-heading has-background-black">
+                <strong class="has-text-white">Advanced Search Filters <i v-if="!filtersVisible" class="fas fa-plus"></i> <i v-else class="fas fa-times"></i></strong>
             </div>
-            <div class="container has-background-white">
+            <div class="container has-background-grey-darker">
                 <div class="columns">
                     <div class="column is-6">
                         <b-field >
                             <b-input  v-model="search.name" placeholder="Search by Name or Partial Name"></b-input>
                         </b-field>
                     </div>
+                    <div class="column is-3">
+                        <b-select v-model="search.genre" placeholder="Select Genre" :expanded="true">
+                            <option
+                                    v-for="option in genres"
+                                    :value="option.id"
+                                    :key="option.id">
+                                {{option.name }}
+                            </option>
+                        </b-select>
+                    </div>
                     <div class="column is-3" v-if="$root.geo.lat && $root.geo.lng">
-                            <b-select v-model="search.distance" placeholder="Select Distance">
+                            <b-select v-model="search.distance" placeholder="Select Distance" :expanded="true">
                                 <option
                                         v-for="option in distances"
                                         :value="option.id"
@@ -27,17 +37,18 @@
                     </div>
                 </div>
                 <div class="columns">
+
+                </div>
+                <div class="columns">
                     <div class="column">
                         <button class="button is-success" @click="getPlaces">Search</button>
                         <button class="button is-info" @click="reset">Reset Filters</button>
 
                     </div>
                 </div>
-                <p class="has-text-black heading">Searching for:
-                    <span v-if="!search.name && !search.glutenFree && !search.vegan">All Locations</span>
-                    <span v-else>
-                    <span v-if="search.name">Places where the name has the term "{{search.name}}" in it.</span>
-                </span>
+                <p class="has-text-info heading">Searching for:
+                    <span >All locations</span>
+                    <span v-if="search.name">where the name has the term "{{search.name}}" in it</span>
                 </p>
             </div>
         </b-collapse>
@@ -46,7 +57,7 @@
         </div>
 
 
-        <div class="tile is-ancestor" v-if="!loading">
+        <div class="tile is-ancestor" v-if="!loading && items.length>0">
             <div class="tile is-parent is-4" v-for="item in items" :key="item.id">
                 <article class="tile is-child box is-primary has-background-black-bis">
                         <h3 class="title has-text-primary is-size-4 listing-title">
@@ -84,6 +95,15 @@
                 </article>
             </div>
         </div>
+        <div v-else-if="!loading && items.length<1" class="hero is-fullheight">
+            <header>
+                <h2 class="title has-text-centered has-text-warning">No Results Found</h2>
+                <p class="has-text-centered has-text-warning">We don't seem to have what you're looking for, try broadening your search and trying again.</p>
+                <p class="has-text-centered has-text-white is-size-4">Do you think we're missing a restaurant?</p>
+                <p class="has-text-centered"><a class="button is-info is-outlined" @click="showMissingPlaceModal=true">Let Us Know What We're Missing</a></p>
+            </header>
+
+        </div>
         <div class="hero is-fullheight" v-else>
             <div class="hero-body">
                 <div class="container has-text-centered">
@@ -113,23 +133,35 @@
             </div>
 
         </div>
+
+        <b-modal :active.sync="showMissingPlaceModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <h2 class="modal-card-title">What are we missing?</h2>
+                </header>
+                <footer class="modal-card-foot">
+                    <button @click="submitMissingPlaceSuggestion" class="button is-small is-success">Submit Suggestion</button>
+                    <button class="button is-danger is-small" @click="showMissingPlaceModal=false">Cancel</button>
+                </footer>
+            </div>
+            <button class="modal-close is-large" aria-label="close" @click="showMissingPlaceModal=false"></button>
+        </b-modal>
     </div>
 </template>
 <script>
     export default {
         data(){
             return{
-                tag:{
-                    id:null,
-                    name:''
-                },
+                showMissingPlaceModal:false,
                 search:{
                     name:null,
                     vegan:false,
                     glutenFree:false,
                     lat:null,
                     lng:null,
-                    distance:null
+                    distance:null,
+                    genre:null
 
                 },
                 loading:false,
@@ -137,7 +169,17 @@
                 currentPage:1,
                 totalResults:1,
                 perPage:20,
-                filtersVisible:true,
+                filtersVisible:false,
+                genres:[
+                    {
+                        id:1,
+                        name:'American'
+                    },
+                    {
+                        id:2,
+                        name:'Vietnamese'
+                    },
+                ],
                 distances:[
                     {
                         id:0,
@@ -229,6 +271,10 @@
             },//reset
             scrollToTop() {
                 window.scrollTo(0,0);
+            },
+            submitMissingPlaceSuggestion()
+            {
+
             }
         },
 

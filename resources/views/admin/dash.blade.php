@@ -8,12 +8,50 @@
                     <div class="card-header">Dashboard</div>
 
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        You are logged in!
+                        <div class="col-md-12">
+                            <h2>Place Description Suggestions</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Place Name</td>
+                                        <td>Existing Description</td>
+                                        <td>Suggested Description</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($description_suggestions as $sugg)
+                                        <tr>
+                                            <td>{{$sugg->place->name}}</td>
+                                            <td>{{$sugg->place->summary}}</td>
+                                            <td>{{$sugg->description}}</td>
+                                            <td>
+                                                <form method="post">
+                                                    {{csrf_field()}}
+                                                    <input type="hidden" name="id" value="{{$sugg->id}}">
+                                                    <button class="btn btn-success">Accept</button>
+                                                </form>
+                                                <form method="post">
+                                                    {{csrf_field()}}
+                                                    {{method_field('DELETE')}}
+                                                    <input type="hidden" name="id" value="{{$sugg->id}}">
+                                                    <button class="btn btn-danger">Decline</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @if(count($description_suggestions)<1)
+                                        <tr>
+                                            <td colspan="4">No results found.</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-b">
+                            <a href="{{route('indexPlaces')}}" class="btn btn-info">Manage All Places</a>
+                            <a href="{{route('addPlace')}}" class="btn btn-success">Add New Place</a>
+                        </div>
                     </div>
                 </div>
             </div>

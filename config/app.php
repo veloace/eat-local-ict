@@ -27,6 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'backend_url' => env('BACKEND_URL', 'backend.eatlocalict.com'),
 
     /*
     |--------------------------------------------------------------------------

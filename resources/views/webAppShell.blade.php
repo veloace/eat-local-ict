@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <title>{{ config('app.name', 'Eat Local ICT') }}</title>
     <meta name="description" content="Eat Local in Wichita, KS. Use this web app to find a locally-owned and operate restaurant, bar, or cafe in Wichita.">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -28,7 +28,6 @@
     <base href="/">
     <script>
         window.Laravel = {!! $token!!};
-        window.tags = {!! $tags !!};
     </script>
 </head>
 <body>

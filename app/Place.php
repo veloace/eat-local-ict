@@ -23,14 +23,6 @@ class Place extends Model
         return "http://maps.apple.com/?q={$query}&address={$address}";
     }
 
-    /**
-     * Gets an array of tags associated with this place
-     * @return mixed
-     */
-    public function getTagsAttribute()
-    {
-        return PlaceTag::where('place_id',$this->id)->pluck('tag_id')->toArray();
-    }
 
     /**
      * determines (using JSON from the Google Places API) if the location is open or closed at this exact time.
@@ -42,7 +34,7 @@ class Place extends Model
         try {
             $response = $this->getCachedAPI();
             $now = new Carbon();
-            $now->tz = 'America/Chicago';
+           $now->tz = 'America/Chicago';
             $today = $now->dayOfWeek;
             $currentTime = $now->format('Hi');
             //
@@ -57,7 +49,18 @@ class Place extends Model
                     $openDay = (integer)$period->open->day;
                     $openTime = (integer)$period->open->time;
                     $closeDay = (integer)$period->close->day;
-                    $closeTime = (integer)$period->close->time == 0 ? 2400 : (integer)$period->close->time;
+
+                    if($period->close->time == 0)
+                    {
+                        $closeTime = 2400;
+                        $closeDay = $closeDay== 0 ? 6:$closeDay-1;
+
+                    }
+                    else
+                    {
+                        $closeTime = (integer)$period->close->time;
+
+                    }
 
                     if (($openDay == $today) && ($closeDay == $today)) {//easy one, today is equal to the open day and close day, so we only need to look at time
                         if (($openTime <= $currentTime) && ($closeTime >= $currentTime)) {
@@ -80,6 +83,7 @@ class Place extends Model
                     }//elseif $open!=today, but $close ==$today
                     elseif (($closeDay > $today) && ($openDay < $today)) {//
                         //today falls between the open days, meaning it neither opens nor closes today
+
                         return true;
                     }//if open < today < close
                     elseif ($closeDay < $openDay) {//weird scenario
