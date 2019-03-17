@@ -18,6 +18,9 @@ Route::domain($backendDomain)
 
         Route::middleware(['auth:web','administrators'])->group(function () {
             //BEGIN ADMIN GROUP
+            Route::get('/home',function (){
+                return redirect('/');
+            });
 
             Route::get('','AdminController@index');
             Route::post('','AdminController@acceptSuggestion');

@@ -16,7 +16,7 @@ class EditPlaceRequest extends FormRequest
     {
         if(Auth::check())
         {
-            return Auth::user()->has_world_admin_access;
+            return (Auth::user()->has_world_admin_access);
         }
         return false;    }
 
@@ -29,7 +29,23 @@ class EditPlaceRequest extends FormRequest
     {
         return [
             //
-            'id'=>'required|exists:places,id'
+            'id'=>'required|exists:places,id',
+            'name'=>'required|string',
+            'image_url'=>'nullable|string',
+            'summary'=>'nullable|string',
+            'email_address'=>'nullable|email',
+            'menu_link'=>'nullable|url',
+            'website_url'=>'nullable|url',
+            'facebook_link'=>'nullable|string',
+            'instagram_link'=>'nullable|string',
+            'google_place_id'=>'nullable|string',
+            'has_vegan_options'=>'nullable|boolean',
+            'has_gluten_free_options'=>'nullable|boolean',
+            'is_food_truck'=>'nullable|boolean',
+            'serves_full_meals'=>'nullable|boolean',
+            'serves_alcohol'=>'nullable|boolean',
+            'has_public_wifi'=>'nullable|boolean',
+            'has_bike_rack'=>'nullable|boolean'
         ];
     }
 }
