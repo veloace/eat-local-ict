@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\GooglePlaceCache;
 use App\Http\Requests\GetRandomPlaceRequest;
+use App\Http\Requests\MissingPlaceSuggestionRequest;
 use App\Http\Requests\PlaceDescriptionSuggestionRequest;
 use App\Http\Requests\PlaceSearchRequest;
+use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use Illuminate\Support\Facades\Auth;
@@ -359,6 +361,20 @@ class PlaceController extends Controller
         return response(null,204);
     }
 
+    /**
+     * Processes a user's suggestion from the frontend for adding a place
+     * @param MissingPlaceSuggestion $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function missingPlaceSuggestion(MissingPlaceSuggestionRequest $request)
+    {
+        $suggestion = new MissingPlaceSuggestion();
+        $suggestion->description = $request['description'];
+        $suggestion->user_id = Auth::check() ? Auth::id() : null;
+        $suggestion->save();
+        return response(null,204);
+    }
+
 
     /**
      * Function to search (and paginate) the places in our database. Used by the Search.vue frontend of the page
@@ -415,6 +431,48 @@ class PlaceController extends Controller
             $places->where('name','like',"%{$request['name']}%");
 
         }//search by name
+
+        if(!empty($request['vegan']))
+        {
+            $places->where('has_vegan_options',true);
+
+        }//search vegan places
+
+        if(!empty($request['glutenFree']))
+        {
+            $places->where('has_gluten_free_options',true);
+
+        }//search gluten-free places
+
+
+       if(!empty($request['alcohol']))
+        {
+            $places->where('serves_alcohol',true);
+
+        }//search places serving alcohol
+
+
+       if(!empty($request['wifi']))
+        {
+            $places->where('has_public_wifi',true);
+
+        }//search  places with wifi
+
+
+       if(!empty($request['bikeRack']))
+        {
+            $places->where('has_bike_rack',true);
+
+        }//search  places with a bike rack
+
+
+       if(!empty($request['serves_full_meals']))
+        {
+            $places->where('has_gluten_free_options',true);
+
+        }//search  places with full meals
+
+
         if($useRadius)
         {
             $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . ")) 

@@ -44,10 +44,10 @@ const app = new Vue({
                 description:null
             },
             loading:false,
-            geo:{
-                lat:null,
-                lng:null,
-                timestamp:0
+            geo:{//center of wichita is default value with timestamp of 10 seconds in the past
+                lat:37.6789,
+                lng:-97.3420,
+                timestamp:(Date.now()-10)
             }
 
         }
@@ -159,9 +159,13 @@ const app = new Vue({
         setGeo(position)
         {
             let crd = position.coords;
+
             this.geo.lat = crd.latitude;
             this.geo.lng =crd.longitude;
             this.geo.timestamp =crd.timestamp;
+
+
+
             //
         },
     },

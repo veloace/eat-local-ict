@@ -15,7 +15,7 @@
                             <b-input  v-model="search.name" placeholder="Search by Name or Partial Name"></b-input>
                         </b-field>
                     </div>
-                    <div class="column is-3">
+                   <!-- <div class="column is-3">
                         <b-select v-model="search.genre" placeholder="Select Genre" :expanded="true">
                             <option
                                     v-for="option in genres"
@@ -24,7 +24,7 @@
                                 {{option.name }}
                             </option>
                         </b-select>
-                    </div>
+                    </div>-->
                     <div class="column is-3" v-if="$root.geo.lat && $root.geo.lng">
                             <b-select v-model="search.distance" placeholder="Select Distance" :expanded="true">
                                 <option
@@ -37,6 +37,56 @@
                     </div>
                 </div>
                 <div class="columns">
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.vegan">
+                                Vegan Options
+                            </b-switch>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.glutenFree">
+                                Gluten-Free Options
+                            </b-switch>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.alcohol">
+                                Serves Alcohol
+                            </b-switch>
+                        </div>
+                    </div>
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.wifi">
+                                Public Wi-Fi
+                            </b-switch>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.bikeRack">
+                               Has Bike Rack
+                            </b-switch>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.meals">
+                                Has Full Meals
+                            </b-switch>
+                        </div>
+                    </div>
+
+
+
+
 
                 </div>
                 <div class="columns">
@@ -48,7 +98,15 @@
                 </div>
                 <p class="has-text-info heading">Searching for:
                     <span >All locations</span>
+                    <span v-if="search.distance && search.distance !=0">within
+                        <span v-if="search.distance==1">one mile</span>
+                        <span v-else-if="search.distance==2">3 miles</span>
+                        <span v-else-if="search.distance==3">5 miles</span>
+                        <span v-else-if="search.distance==4">10 miles</span>
+                        <span v-else-if="search.distance==5">20 miles</span>
+                    </span>
                     <span v-if="search.name">where the name has the term "{{search.name}}" in it</span>
+
                 </p>
             </div>
         </b-collapse>
@@ -140,6 +198,12 @@
                 <header class="modal-card-head">
                     <h2 class="modal-card-title">What are we missing?</h2>
                 </header>
+                <div class="modal-card-body">
+                    <p class="has-text-white">Describe what you think we're missing (is it a place? Are the attributes wrong? Something else?). We will review suggestions and make any necessary edits. Thanks!</p>
+                    <b-field >
+                        <b-input type="textarea" v-model="missingSuggestion" placeholder="Ex. I searched for vegan places but Beautify Day Cafe didn't show up."></b-input>
+                    </b-field>
+                </div>
                 <footer class="modal-card-foot">
                     <button @click="submitMissingPlaceSuggestion" class="button is-small is-success">Submit Suggestion</button>
                     <button class="button is-danger is-small" @click="showMissingPlaceModal=false">Cancel</button>
@@ -156,12 +220,16 @@
                 showMissingPlaceModal:false,
                 search:{
                     name:null,
-                    vegan:false,
-                    glutenFree:false,
                     lat:null,
                     lng:null,
                     distance:null,
-                    genre:null
+                    genre:null,
+                    vegan:0,
+                    glutenFree:0,
+                    alcohol:0,
+                    wifi:0,
+                    bikeRack:0,
+                    meals:0
 
                 },
                 loading:false,
@@ -206,7 +274,8 @@
                         text:'Under 20 miles'
                     },
 
-                ]
+                ],
+                missingSuggestion:null
             }
         },
 
@@ -224,7 +293,13 @@
                         name:this.search.name,
                         lat:this.search.lat,
                         lng:this.search.lng,
-                        distance:this.search.distance
+                        distance:this.search.distance,
+                        vegan:this.search.vegan,
+                        glutenFree:this.search.glutenFree,
+                        alcohol:this.search.alcohol,
+                        wifi:this.search.wifi,
+                        bikeRack:this.search.bikeRack,
+                        meals:this.search.meals
                     }
                 };
                 axios.get('/api/places/search',params)
@@ -258,11 +333,18 @@
             reset()
             {
              this.search={
-                name:null,
-                    vegan:false,
-                    glutenFree:false
-
-                };
+                 name:null,
+                 lat:this.$root.geo.lat,
+                 lng:this.$root.geo.lng,
+                 distance:null,
+                 genre:null,
+                 vegan:0,
+                 glutenFree:0,
+                 alcohol:0,
+                 wifi:0,
+                 bikeRack:0,
+                 meals:0
+             };
                 this.currentPage=1;
                 this.totalResults=1;
                 this.perPage=20;
@@ -272,9 +354,30 @@
             scrollToTop() {
                 window.scrollTo(0,0);
             },
+            /**
+             *
+             */
             submitMissingPlaceSuggestion()
             {
+                    this.$root.loading=true;
+                    axios.post('/api/places/missing',{
+                       description:this.missingSuggestion
+                    })
+                        .then((response) => {
+                            this.$root.loading = false;
 
+                        })
+                        .catch((error) => {
+                            this.$root.loading = false;
+
+                        });
+
+                    /*always do this, we really don't care about the response from the server as the user shouldn't have to be
+                    worried about it--and there is nothing they can do if it fails, either.
+                     */
+                    this.missingSuggestion = null;
+                    this.$root.showNotification('Thanks, we appreciate people like you! We have received your suggestion and will review its suitability for use on EatLocalICT! ','success')
+                    this.showMissingPlaceModal=false;
             }
         },
 

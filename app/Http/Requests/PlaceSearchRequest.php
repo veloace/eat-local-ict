@@ -29,7 +29,13 @@ class PlaceSearchRequest extends FormRequest
             'name'=>'nullable|string',
             'lat'=>'nullable',
             'lng'=>'nullable',
-            'distance'=>'nullable'
+            'distance'=>'nullable',
+            'vegan'=>'nullable|boolean',
+            'glutenFree'=>'nullable|boolean',
+            'alcohol'=>'nullable|boolean',
+            'wifi'=>'nullable|boolean',
+            'bikeRack'=>'nullable|boolean',
+            'meals'=>'nullable|boolean'
         ];
     }
 }

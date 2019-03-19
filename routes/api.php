@@ -22,4 +22,5 @@ Route::prefix('places')->group(function () {
     Route::get('search', 'PlaceController@search');
     Route::get('random', 'PlaceController@getRandomPlace');
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
+    Route::post('missing', 'PlaceController@missingPlaceSuggestion');
 });

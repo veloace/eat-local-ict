@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeletePlaceRequest;
 use App\Http\Requests\EditPlaceRequest;
 use App\Http\Requests\EditSuggestionRequest;
+use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class AdminController extends Controller
     public function index()
     {
         $data['description_suggestions'] = PlaceDescriptionSuggestion::all();
+        $data['missing_suggestions'] = MissingPlaceSuggestion::orderBy('created_at','desc')->get();
         return view('admin.dash',$data);
     }
 

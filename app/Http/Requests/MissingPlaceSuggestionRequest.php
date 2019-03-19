@@ -13,7 +13,7 @@ class MissingPlaceSuggestionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,8 @@ class MissingPlaceSuggestionRequest extends FormRequest
     {
         return [
             //
+            'description'=>'required|min:10,max:175',
+            'name'=>'nullable|max:50',
         ];
     }
 }

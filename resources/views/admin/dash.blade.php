@@ -48,6 +48,27 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="col-md-12">
+                            <h2>Missing Place Suggestions</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($missing_suggestions as $missing)
+                                        <tr>
+                                            <td>{{$missing->name}}</td>
+                                            <td>{{$missing->description}}</td>
+                                            <td>{{$missing->created_at->toDateTimeString()}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="col-md-b">
                             <a href="{{route('indexPlaces')}}" class="btn btn-info">Manage All Places</a>
                             <a href="{{route('addPlace')}}" class="btn btn-success">Add New Place</a>
