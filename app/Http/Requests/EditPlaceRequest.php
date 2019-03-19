@@ -18,7 +18,8 @@ class EditPlaceRequest extends FormRequest
         {
             return (Auth::user()->has_world_admin_access);
         }
-        return false;    }
+        return false;
+    }
 
     /**
      * Get the validation rules that apply to the request.

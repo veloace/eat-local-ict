@@ -27,6 +27,7 @@ Route::domain($backendDomain)
             Route::delete('','AdminController@deleteSuggestion');
             Route::prefix('place')->group(function(){
                 Route::get('','AdminController@indexPlaces')->name('indexPlaces');
+                Route::delete('','AdminController@deletePlace')->name('deletePlace');
                 Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
                 Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
                 Route::get('add','AdminController@addPlace')->name('addPlace');

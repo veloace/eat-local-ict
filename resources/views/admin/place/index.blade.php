@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('partials.errors')
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
@@ -71,8 +72,11 @@
                                         <a class="btn btn-success" href="{{route('editPlace',$place->id)}}" target="_blank">EDIT</a>
                                     </td>
                                     <td>
-                                        <form>
-                                            <button class="btn btn-danger">Delete</button>
+                                        <form action="{{route('deletePlace')}}" method="post">
+                                            {{csrf_field()}}
+                                            {{method_field('delete')}}
+                                            <input type="hidden" name="id" value="{{$place->id}}">
+                                            <button class="btn btn-danger delete-place" data-target="{{$place->name}}">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -84,4 +88,19 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('click', function (event) {
+
+            // If the clicked element doesn't have the right selector, bail
+            if (!event.target.matches('.delete-place')) return;
+
+            // Don't follow the link
+            if(!confirm('Are you sure you want to delete "'+event.target.getAttribute('data-target')+'"?'))
+            {
+                event.preventDefault();
+
+            }
+
+        }, false);
+    </script>
 @endsection

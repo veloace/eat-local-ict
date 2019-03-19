@@ -62,14 +62,14 @@
                                     <div class="form-group">
                                         <label for="facebook_link">Facebook Username</label>
                                         <input type="text" class="form-control" id="facebook_link" name="facebook_link" value="{{$place->facebook_link}}">
-                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                        <small id="emailHelp" class="form-text text-muted">Just the page slug, the part after facebook.com/</small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="instagram_link">Instagram Username</label>
                                         <input type="text" class="form-control" id="instagram_link" name="instagram_link" value="{{$place->instagram_link}}">
-                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                        <small id="emailHelp" class="form-text text-muted">Just the username, such as "veloace"</small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeletePlaceRequest;
 use App\Http\Requests\EditPlaceRequest;
 use App\Http\Requests\EditSuggestionRequest;
 use App\Place;
@@ -90,6 +91,14 @@ class AdminController extends Controller
 
     public function saveNewPlace()
     {
+
+    }
+
+
+    public function deletePlace(DeletePlaceRequest $request)
+    {
+        Place::find($request['id'])->delete();
+        return redirect()->route('indexPlaces')->with('success_message', 'Place successfully deleted.');
 
     }
 
