@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="columns">
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.vegan">
                                 Vegan Options
@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.glutenFree">
                                 Gluten-Free Options
@@ -53,14 +53,14 @@
                         </div>
                     </div>
 
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.alcohol">
                                 Serves Alcohol
                             </b-switch>
                         </div>
                     </div>
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.wifi">
                                 Public Wi-Fi
@@ -68,15 +68,20 @@
                         </div>
                     </div>
 
-                    <div class="column is-2">
+
+
+
+                </div>
+                <div class="columns">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.bikeRack">
-                               Has Bike Rack
+                                Has Bike Rack
                             </b-switch>
                         </div>
                     </div>
 
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <div class="field">
                             <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.meals">
                                 Has Full Meals
@@ -84,9 +89,13 @@
                         </div>
                     </div>
 
-
-
-
+                    <div class="column is-3">
+                        <div class="field">
+                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.carryout">
+                                Carryout/Drive-thru
+                            </b-switch>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="columns">
@@ -229,7 +238,8 @@
                     alcohol:0,
                     wifi:0,
                     bikeRack:0,
-                    meals:0
+                    meals:0,
+                    carryout:0
 
                 },
                 loading:false,
@@ -299,7 +309,8 @@
                         alcohol:this.search.alcohol,
                         wifi:this.search.wifi,
                         bikeRack:this.search.bikeRack,
-                        meals:this.search.meals
+                        meals:this.search.meals,
+                        carryout:this.search.carryout
                     }
                 };
                 axios.get('/api/places/search',params)

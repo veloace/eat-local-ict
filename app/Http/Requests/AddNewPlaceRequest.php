@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class EditPlaceRequest extends FormRequest
+class AddNewPlaceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,8 +18,7 @@ class EditPlaceRequest extends FormRequest
         {
             return (Auth::user()->has_world_admin_access);
         }
-        return false;
-    }
+        return false;    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -30,10 +29,9 @@ class EditPlaceRequest extends FormRequest
     {
         return [
             //
-            'id'=>'required|exists:places,id',
-            'name'=>'required|string',
+            'name'=>'required|string|unique:places,name',
             'image_url'=>'nullable|string',
-            'summary'=>'nullable|string',
+            'summary'=>'required|string',
             'email_address'=>'nullable|email',
             'menu_link'=>'nullable|url',
             'website_url'=>'nullable|url',

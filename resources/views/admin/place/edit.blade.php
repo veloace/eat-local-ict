@@ -134,6 +134,12 @@
                                         <label class="form-check-label" for="has_bike_rack">Has Bike Rack</label>
                                     </div>
                                 </div>
+                                <div class="col-xs-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="has_carryout" id="has_carryout" value="1" {{$place->has_carryout ? 'checked':''}}>
+                                        <label class="form-check-label" for="has_carryout">Has Carryout/Drive-Through</label>
+                                    </div>
+                                </div>
 
                             </div>
                             <hr>

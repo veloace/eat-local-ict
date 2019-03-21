@@ -31,7 +31,7 @@ Route::domain($backendDomain)
                 Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
                 Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
                 Route::get('add','AdminController@addPlace')->name('addPlace');
-                Route::post('add','AdminController@saveNewPlace')->name('saveNewPlace');
+                Route::post('add','PlaceController@saveNewPlace')->name('saveNewPlace');
 
 
             });//place prefix

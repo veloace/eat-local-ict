@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GooglePlaceCache;
+use App\Http\Requests\AddNewPlaceRequest;
 use App\Http\Requests\GetRandomPlaceRequest;
 use App\Http\Requests\MissingPlaceSuggestionRequest;
 use App\Http\Requests\PlaceDescriptionSuggestionRequest;
@@ -466,9 +467,15 @@ class PlaceController extends Controller
         }//search  places with a bike rack
 
 
-       if(!empty($request['serves_full_meals']))
+       if(!empty($request['meals']))
         {
-            $places->where('has_gluten_free_options',true);
+            $places->where('serves_full_meals',true);
+
+        }//search  places with full meals
+        //
+        if(!empty($request['carryout']))
+        {
+            $places->where('has_carryout',true);
 
         }//search  places with full meals
 
@@ -486,6 +493,33 @@ class PlaceController extends Controller
                 ->whereRaw("{$haversine} < ?", [$radius]);
         }//search by radius
         return $places->paginate(20);
+    }
+
+    public function saveNewPlace(AddNewPlaceRequest $request)
+    {
+        $place = new Place();
+        $place->name= $request['name'];
+        $place->image_url=!empty($request['image_url']) ? $request['image_url']:null;
+        $place->summary=!empty($request['summary']) ? $request['summary']:null;
+        $place->email_address=!empty($request['email_address']) ? $request['email_address']:null;
+        $place->menu_link=!empty($request['menu_link']) ? $request['menu_link']:null;
+        $place->website_url=!empty($request['website_url']) ? $request['website_url']:null;
+        $place->facebook_link=!empty($request['facebook_link']) ? $request['facebook_link']:null;
+        $place->instagram_link=!empty($request['instagram_link']) ? $request['instagram_link']:null;
+        $place->google_place_id=!empty($request['google_place_id']) ? $request['google_place_id']:null;
+        $place->has_vegan_options=!empty($request['has_vegan_options']) ;
+        $place->has_gluten_free_options=!empty($request['has_gluten_free_options']);
+        $place->is_food_truck=!empty($request['is_food_truck']) ;
+        $place->serves_full_meals=!empty($request['serves_full_meals']) ? $request['serves_full_meals']:null;
+        $place->serves_alcohol=!empty($request['serves_alcohol']) ? $request['serves_alcohol']:null;
+        $place->has_public_wifi=!empty($request['has_public_wifi']) ? $request['has_public_wifi']:null;
+        $place->has_bike_rack=!empty($request['has_bike_rack']) ? $request['has_bike_rack']:null;
+        $place->has_carryout=!empty($request['has_carryout']) ? $request['has_carryout']:null;
+        $place->save();
+        $place->refresh();
+        $this->buildPlaceInformation($place);
+        return redirect()->route('editPlace',$place->id)->with('success_message', 'Success! You just added this place to EatLocalICT');
+
     }
 
 }//class

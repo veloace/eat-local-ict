@@ -31,6 +31,8 @@ class Place extends Model
     public function getIsOpenAttribute()
     {
 
+        //while we're here, let's make sure there is an address.
+
         try {
             $response = $this->getCachedAPI();
             $now = new Carbon();

@@ -44,7 +44,7 @@ const app = new Vue({
                 description:null
             },
             loading:false,
-            geo:{//center of wichita is default value with timestamp of 10 seconds in the past
+            geo:{//center of wichita is default value with timestamp of 1000 seconds in the past
                 lat:37.6789,
                 lng:-97.3420,
                 timestamp:(Date.now()-10)
@@ -139,17 +139,24 @@ const app = new Vue({
         getUserLocation()
         {
 
-            let options = {
-                enableHighAccuracy: true,
-                timeout: 5000
-            };
-
-            if(navigator.geolocation)
+            //only reset the user location if the data is more than 10 minutes old.
+            if((Date.now()-geo.timestamp) >=1000)
             {
-                navigator.geolocation.getCurrentPosition(this.setGeo, function(error){
-                }, options);
+
+                let options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000
+                };
+
+                if(navigator.geolocation)
+                {
+                    navigator.geolocation.getCurrentPosition(this.setGeo, function(error){
+                    }, options);
+
+                }
 
             }
+
 
         },
         /**

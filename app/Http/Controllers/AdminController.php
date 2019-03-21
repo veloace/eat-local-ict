@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddNewPlaceRequest;
 use App\Http\Requests\DeletePlaceRequest;
 use App\Http\Requests\EditPlaceRequest;
 use App\Http\Requests\EditSuggestionRequest;
@@ -80,6 +81,7 @@ class AdminController extends Controller
         $place->serves_alcohol=!empty($request['serves_alcohol']) ? $request['serves_alcohol']:null;
         $place->has_public_wifi=!empty($request['has_public_wifi']) ? $request['has_public_wifi']:null;
         $place->has_bike_rack=!empty($request['has_bike_rack']) ? $request['has_bike_rack']:null;
+        $place->has_carryout=!empty($request['has_carryout']) ? $request['has_carryout']:null;
         $place->save();
 
         return redirect()->route('editPlace',$place->id)->with('success_message', 'Your changes have been applied to this listing.');
@@ -91,10 +93,7 @@ class AdminController extends Controller
 
     }
 
-    public function saveNewPlace()
-    {
 
-    }
 
 
     public function deletePlace(DeletePlaceRequest $request)
