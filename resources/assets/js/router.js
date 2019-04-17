@@ -25,7 +25,7 @@ const routes =
             path: '/about',
             component: require('./views/About.vue'),
             name:'about'
-        }
+        },
 ];
 
 

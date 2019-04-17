@@ -42,12 +42,29 @@
   <div class="container">
       <div class="navbar-brand">
 
-
           <router-link :to="{name:'home'}"  class="navbar-item has-text-white">
               <img src="/img/logo.svg" alt="EatLocalICT" width="42" height="34">&nbsp;<strong>EatLocalICT</strong>
           </router-link>
       </div>
+      <div class="navbar-menu">
+          <div class="navbar-end" v-if="!$root.user.logged">
+              <div class="navbar-item" >
+                  <a @click="$root.showLoginModal=true" class="has-text-white"><i class="fa fa-sign-in-alt"></i>&nbsp;Login</a>
+
+              </div>
+          </div>
+          <div class="navbar-end" v-else>
+              <div class="navbar-item" >
+                  <a class="has-text-white"><i class="fa fa-cogs"></i></a>
+              </div>
+              <div class="navbar-item" >
+                  <a class="has-text-white"><i class="fa fa-sign-out-alt"></i></a>
+              </div>
+          </div>
+      </div>
+
   </div>
+
     </nav>
 
         <section class="hero is-fullheight ict-flag-bg">
@@ -82,25 +99,10 @@
         @{{notification.message}}
     </div>
 
-    <b-modal :active.sync="descriptionSuggestion.show">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <h2 class="modal-card-title">Suggest a Description</h2>
-            </header>
-            <section class="modal-card-body has-text-white">
-                <label class="heading has-text-white" for="description-suggestion">Suggest a Description for <strong class="has-text-weight-bold has-text-white">@{{descriptionSuggestion.name}}</strong></label>
-                <textarea id="description-suggestion" class="textarea" v-model="descriptionSuggestion.description" :placeholder="'How would you describe \''+descriptionSuggestion.name+'\'?'">
-                        </textarea>
-
-            </section>
-            <footer class="modal-card-foot">
-                <button @click="submitDescriptionSuggestion" class="button is-small is-success">Submit Suggestion</button>
-                <button class="button is-danger is-small" @click="descriptionSuggestion.show=false">Cancel</button>
-            </footer>
-        </div>
-        <button class="modal-close is-large" aria-label="close" @click="descriptionSuggestion.show=false"></button>
-    </b-modal>
+    <login></login>
+    <registration></registration>
+    <description-suggestion></description-suggestion>
+    <legal-info :type="legalInfo" v-if="legalInfo"></legal-info>
 </div>
 <script src="{{ mix('/js/app.js') }}"></script>
 </body>

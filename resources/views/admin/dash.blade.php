@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    <header class="container">
+        <h1>Hi, {{$user->name}}!</h1>
+        <p> Welcome to your EatLocalICT Dashboard! From here you can admin the places that you own.</p>
+        <p>Think you might be in the wrong place? <a href="//www.eatlocalict.com">click here</a> to go back to the EatLocalICT web app.</p>
+    </header>
+    @if($user->has_world_admin_access)
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -78,4 +84,6 @@
             </div>
         </div>
     </div>
+    @else
+    @endif
 @endsection

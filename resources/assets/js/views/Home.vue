@@ -87,8 +87,8 @@
 
                   </section>
                   <footer class="modal-card-foot">
-                     <router-link :disabled="loadingRandom" v-on:click="showPlaceModal=false" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">Sounds Good!</router-link>
-                     <button :disabled="loadingRandom" class="button is-small is-primary" v-on:click="findRandomPlace">Try Something Else</button>
+                     <router-link :disabled="loadingRandom" v-on:click="showPlaceModal=false" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">More Details!</router-link>
+                     <button :disabled="loadingRandom" class="button is-small is-primary" v-on:click="findRandomPlace">Roll Again</button>
                      <button class="button is-danger is-small" v-on:click="showPlaceModal=false">Cancel</button>
                      <hr>
                   </footer>

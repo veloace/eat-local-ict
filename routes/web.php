@@ -16,13 +16,20 @@ $backendDomain =config('app.backend_url');
 Route::domain($backendDomain)
     ->group(function () {
 
+
         Route::middleware(['auth:web','administrators'])->group(function () {
-            //BEGIN ADMIN GROUP
+            //BEGIN REGULAR USERS GROUP
             Route::get('/home',function (){
                 return redirect('/');
             });
-
             Route::get('','AdminController@index');
+
+            //END REGULAR USERS GROUP
+        });
+
+        Route::middleware(['auth:web','administrators'])->group(function () {
+            //BEGIN ADMIN GROUP
+
             Route::post('','AdminController@acceptSuggestion');
             Route::delete('','AdminController@deleteSuggestion');
             Route::prefix('place')->group(function(){
@@ -42,6 +49,25 @@ Route::domain($backendDomain)
 
 
 });//backend
+
+
+/*--AUTH ROUTES OVERRIDE---
+*Using md5() hashes of routes to prevent vue collisions
+*/
+// Authentication Routes...must be outside of subdomain routing to work properly for app and for CSA.
+Route::post('spaLogin','UserController@loginViaSpa')->name('user.spaLogin')->middleware('AddTokenToLogin');
+Route::get('spaLogin',function(){
+    $id = \Illuminate\Support\Facades\Auth::id();
+    $user = \App\User::where('id',$id)->select('name')->first();
+    return($user);
+})->middleware('auth:web');
+
+$this->get('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@showLoginForm')->name('login');
+$this->post('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@login');
+$this->post('4236a440a662cc8253d7536e5aa17942', 'Auth\LoginController@logout')->name('logout');
+$this->get('29a41264ad2fc71b90534753a781e766/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+$this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.request');
+
 
 
 Route::get('/{vue_capture?}',function(){

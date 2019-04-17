@@ -13,9 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+    Route::prefix('user')->group(function(){
+        route::get('','UserController@currentUser');
+        route::post('login','UserController@loginViaSpa');
+        route::post('register','Auth\RegisterController@register');
+
+    });
+
+
+
+
+
+
 
 Route::prefix('places')->group(function () {
     Route::get('index/{place}', 'PlaceController@index');
@@ -24,3 +34,4 @@ Route::prefix('places')->group(function () {
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
     Route::post('missing', 'PlaceController@missingPlaceSuggestion');
 });
+

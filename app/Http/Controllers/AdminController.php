@@ -10,6 +10,7 @@ use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -17,8 +18,14 @@ class AdminController extends Controller
 
     public function index()
     {
-        $data['description_suggestions'] = PlaceDescriptionSuggestion::all();
-        $data['missing_suggestions'] = MissingPlaceSuggestion::orderBy('created_at','desc')->get();
+
+        $data['user'] = Auth::user();
+        if(Auth::user()->has_world_admin_access)
+        {
+            $data['description_suggestions'] = PlaceDescriptionSuggestion::all();
+            $data['missing_suggestions'] = MissingPlaceSuggestion::orderBy('created_at','desc')->get();
+        }
+
         return view('admin.dash',$data);
     }
 
