@@ -1,37 +1,33 @@
 <template>
     <b-modal :active.sync="$root.showRegistrationModal" v-if="!$root.user.logged">
         <div class="modal-background"></div>
-        <div class="modal-card">
+        <div class="modal-card has-background-grey-darker">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Register</p>
+            </header>
             <div class="modal-card-body">
-                <h3 class="title has-text-white">Register</h3>
-                <p class="subtitle has-text-white">You don't need an account to access EatLocalICT, but you can create a <strong class="has-text-white">FREE</strong> account to save favorites, make lists, and claim restaurants!</p>
-                <div class="box">
-                    <b-field :type="errors.name ?'is-danger':''" :message="errors.name"  >
-                        <b-input size="is-large"  minlength="2" maxlength="100" v-model="name" placeholder="Your Name" autofocus></b-input>
+                <p class="subtitle has-text-white">You don't need an account to access EatLocalICT, but you can create a <strong class="has-text-white">FREE</strong> account to save favorites, make lists, and to claim ownership of restaurants!</p>
+                    <b-field  label="Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name"  >
+                        <b-input   minlength="2" maxlength="100" v-model="name" placeholder="Your Name" autofocus></b-input>
                     </b-field>
 
-                    <b-field :type="errors.email ?'is-danger':''" :message="errors.email" >
-                        <b-input size="is-large" minlength="2" maxlength="150" v-model="email" placeholder="Your Email" autofocus></b-input>
+                    <b-field  label="Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email" >
+                        <b-input minlength="2" maxlength="150" v-model="email" placeholder="Your Email" autofocus></b-input>
                     </b-field>
 
-                    <b-field :type="errors.password ?'is-danger':''" :message="errors.password" >
-                        <b-input size="is-large"  v-model="password" type="password" placeholder="Your Password" required></b-input>
+                    <b-field  label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password" >
+                        <b-input   v-model="password" type="password" placeholder="Your Password" required></b-input>
                     </b-field>
 
-                    <b-field :type="errors.password_confirmed ?'is-danger':''" :message="errors.password_confirmed" >
-                        <b-input size="is-large" v-model="password_confirmed" type="password" placeholder="Confirm Password" required></b-input>
+                    <b-field  label="Re-type Password" custom-class="has-text-white" :type="errors.password_confirmed ?'is-danger':''" :message="errors.password_confirmed" >
+                        <b-input v-model="password_confirmed" type="password" placeholder="Confirm Password" required></b-input>
                     </b-field>
-                    <div class="has-text-centered">
-                        <p>By clicking the sign-up button below, you agree to our <a @click="$root.toggleLegalInfoModal('terms')" >terms and conditions</a> and our <a @click="$root.toggleLegalInfoModal('cookies')" >cookie policy</a>.</p>
-                        <button class="button is-block is-success is-large is-fullwidth" @click="register">Sign Up!</button>
-                    </div>
-
-                </div>
-                <p class="has-text-grey has-text-centered">
-                    <a >Login</a> &nbsp;·&nbsp;
-                    <a >Forgot Password</a>
-                </p>
+                    <p class="has-text-white">By clicking the sign-up button below, you agree to our <a @click="$root.toggleLegalInfoModal('terms')" >terms and conditions</a> and our <a @click="$root.toggleLegalInfoModal('cookies')" >cookie policy</a>.</p>
             </div>
+            <footer class="modal-card-foot">
+                <button class="button" @click="$root.showLoginModal=true;$root.showRegistrationModal = false" >Back to Login</button>
+                <invisible-recaptcha :sitekey="$root.recaptcha" class="button is-success" :callback="register" >Sign Up!</invisible-recaptcha >
+            </footer>
         </div>
     </b-modal>
 </template>
@@ -53,25 +49,38 @@
             }
         },
         methods:{
-            register(){
+            register(recaptchaToken){
+                this.errors={
+                    name:null,
+                        email:null,
+                        password:null,
+                        password_confirmed:null
+                };
+                this.$root.isLoading = true;
+                console.log(recaptchaToken);
                 axios.post('/api/user/register',{
                     email:this.email,
                     password:this.password,
                     password_confirmation:this.password_confirmed,
-                    name:this.name
+                    name:this.name,
+                    'g-recaptcha-response':recaptchaToken
                 })
                     .then((response) => {
+                        this.$root.isLoading = false;
                         console.log(response);
                         this.$root.user.name = this.name;
                         this.$root.user.logged = true;
                         let registerMessage = 'Hi, '+this.name +'! Welcome to EatLocalICT!';
                         this.$root.showNotification(registerMessage,'success');
                         this.showLoginModal=false;
+                        this.$root.showRegistrationModal = false;
 
                     })
                     .catch((error) => {
                         if (error.response.status===422)
                         {
+                            this.$root.isLoading = false;
+
                             console.log('Validation Errors');
                             let errors = error.response.data.errors;
                             for (const [key, value] of Object.entries(errors)) {

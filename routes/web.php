@@ -65,8 +65,10 @@ Route::get('spaLogin',function(){
 $this->get('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@showLoginForm')->name('login');
 $this->post('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@login');
 $this->post('4236a440a662cc8253d7536e5aa17942', 'Auth\LoginController@logout')->name('logout');
-$this->get('29a41264ad2fc71b90534753a781e766/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-$this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.request');
+
+//$this->get('29a41264ad2fc71b90534753a781e766', 'Auth\ForgotPasswordController@showLinkRequestForm');
+$this->post('d7dc0e8839444523808953373d057581', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+$this->post('ad7dc0e8839444523808953373d057581', 'Auth\ResetPasswordController@reset');
 
 
 

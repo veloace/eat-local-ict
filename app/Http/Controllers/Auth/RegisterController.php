@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +56,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'g-recaptcha-response'=>'required',
+
         ]);
     }
 
@@ -85,4 +89,51 @@ class RegisterController extends Controller
         return response()->json(["Message" => "Success"]);
 
     }
+
+
+
+    /**
+     * Handle a registration request for the application. (overrides RegistersUsers.php)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        if(!$this->validateRecaptcha($request['g-recaptcha-response']))
+        {
+            return response()->withErrors(['register' => 'Registration failed due to Google Recaptcha failure. Please try again or contact support if this problem persists.']);
+
+        }
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * @param $response
+     * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function validateRecaptcha($response)
+    {
+        try {
+            $grecaptchaClient = new Client(['base_uri' => 'https://www.google.com']);
+            $gresponse = $grecaptchaClient->request('POST', '/recaptcha/api/siteverify', ['form_params' => [
+                'secret' => env('RECAPTCHA_SECRET_KEY'),
+                'response' => $response
+            ]]);
+            return (json_decode($gresponse->getBody())->success);
+        }
+        catch (\Exception $e)
+        {
+            return false;
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ class CreateTagTypesTable extends Migration
     {
         Schema::create('tag_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->index();
+            $table->string('name',175)->index();
             $table->string('description')->nullable();
             $table->timestamps();
         });

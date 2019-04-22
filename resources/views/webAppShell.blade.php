@@ -58,7 +58,7 @@
                   <a class="has-text-white"><i class="fa fa-cogs"></i></a>
               </div>
               <div class="navbar-item" >
-                  <a class="has-text-white"><i class="fa fa-sign-out-alt"></i></a>
+                  <a @click="$root.logout" class="has-text-white"><i class="fa fa-sign-out-alt"></i></a>
               </div>
           </div>
       </div>

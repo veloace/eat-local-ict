@@ -9,11 +9,13 @@ import VueRouter from 'vue-router';
 import router  from './router';
 import Buefy from 'buefy'
 import VueAnalytics from 'vue-analytics'
+import InvisibleRecaptcha from 'vue-invisible-recaptcha';
+
 window.Vue = require('vue');
 window.Vue.use(VueRouter);
 window.Vue.use(Buefy);
 window.Vue.use(VueAnalytics, {
-    id: 'UA-65860722-2',
+    id: process.env.MIX_GOOGLE_ANALYTCS_SITE,
     checkDuplicatedScript: true,
     router
 });
@@ -28,12 +30,14 @@ Vue.component('login', require('./components/Login.vue'));
 Vue.component('registration', require('./components/Register.vue'));
 Vue.component('description-suggestion', require('./components/DescriptionSuggestion.vue'));
 Vue.component('legal-info', require('./components/LegalInfo.vue'));
+Vue.component('invisible-recaptcha', InvisibleRecaptcha);
 
 const app = new Vue({
     el: '#app',
     router,
     data(){
         return{
+            recaptcha:process.env.MIX_RECAPTCHA,
             notification:{
                 show:false,
                 type:'is-info',
@@ -193,6 +197,24 @@ const app = new Vue({
                 this.legalInfo=null;
                 this.showLegalInfo=false;
             }
+        },
+        logout()
+        {
+            this.isLoading = true;
+            axios.post('4236a440a662cc8253d7536e5aa17942')
+                .then((response) => {
+                    this.isLoading = false;
+                    this.showNotification('You have been logged out.','success');
+                    this.user={
+                        name:null,
+                        logged:false
+                    };
+                })
+                .catch((error) => {
+                //todo: something
+                    this.isLoading = false;
+
+                })
         }
 
     },//methods
