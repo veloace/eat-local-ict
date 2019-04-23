@@ -6,14 +6,19 @@ use App\Http\Requests\SPALoginRequest;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Encryption\Encrypter;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
 {
     //
 
-
+    /**
+     * @param SPALoginRequest $request
+     * @param Encrypter $enc
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
     function loginViaSpa(SPALoginRequest $request,Encrypter $enc)
     {
 
@@ -32,6 +37,9 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     function currentUser()
     {
         $id = Auth::id();
@@ -46,4 +54,7 @@ class UserController extends Controller
             return response(null,204);
         }
     }
+
+
+
 }

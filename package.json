@@ -11,25 +11,25 @@
     },
     "devDependencies": {
         "axios": "^0.18",
-        "laravel-mix": "^2.0",
-        "lodash": "^4.17.4",
-        "popper.js": "^1.12",
-        "vue": "^2.5.7",
+        "laravel-mix": "^2.1.14",
+        "lodash": "^4.17.11",
+        "popper.js": "^1.15.0",
+        "vue": "^2.6.10",
         "webpack-livereload-plugin": "^1.2.0"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.2.0",
+        "@fortawesome/fontawesome-free": "^5.8.1",
         "@fortawesome/fontawesome-free-solid": "^5.0.13",
-        "ajv": "^6.5.2",
-        "buefy": "^0.7.2",
-        "bulma": "^0.7.1",
+        "ajv": "^6.10.0",
+        "buefy": "^0.7.4",
+        "bulma": "^0.7.4",
         "dotenv": "^7.0.0",
         "font-awesome": "^4.7.0",
         "livereload": "^0.7.0",
-        "vue-analytics": "^5.16.2",
+        "vue-analytics": "^5.16.4",
         "vue-invisible-recaptcha": "^0.2.1",
-        "vue-router": "^3.0.1",
+        "vue-router": "^3.0.6",
         "vuelidate": "^0.7.4",
-        "vuetify": "^1.1.1"
+        "vuetify": "^1.5.12"
     }
 }

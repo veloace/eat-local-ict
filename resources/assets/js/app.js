@@ -38,11 +38,6 @@ const app = new Vue({
     data(){
         return{
             recaptcha:process.env.MIX_RECAPTCHA,
-            notification:{
-                show:false,
-                type:'is-info',
-                message:''
-            },
             descriptionSuggestion:{
                 show:false,
                 name:null,
@@ -82,26 +77,20 @@ const app = new Vue({
                 case 'success':
                 case 'warning':
                 case 'danger':
-                    this.notification.type='is-'+type;
+                    type='is-'+type;
                     break;
                 default:
-                    this.notification.type='is-info';
+                    type='is-info';
             }//type determination
 
-            this.notification.message=message;
-            this.notification.show=true;
-
-            //Code to auto-hide notification after 10 seconds
-            let self=this;
-            setTimeout(function()
-            {
-
-                self.notification.show=false;
-                self.notification.type='is-info';
-                self.notification.message=null;
-
-            }, 10000);
-
+            this.$notification.open({
+                duration: 10000,
+                message: message,
+                position: 'is-top-right',
+                type: type,
+                hasIcon: true,
+                iconPack:'fa'
+            })
 
         },//showNotification
         /**
@@ -158,14 +147,18 @@ const app = new Vue({
             //
         },//setGeo
 
-        isAuthenticated()
+        isAuthenticated(redirectIfAuthenticated = false)
         {
             axios.get('/api/user')
                 .then((response) => {
                     if (response.status===200)
                     {
                         this.user.name= response.data.name;
-                        this.user.logged= true
+                        this.user.logged= true;
+                        if(redirectIfAuthenticated)
+                        {
+                            this.$router.push({name:'home'});
+                        }
                     }
                     else if (response.status===204)
                     {
@@ -174,9 +167,11 @@ const app = new Vue({
                             logged:false
                         };//set to default values
                         this.showLoginModal=false;
+
                     }
                 })
                 .catch((error) => {
+
                     this.user = {
                         name:null,
                         logged:false
@@ -200,10 +195,10 @@ const app = new Vue({
         },
         logout()
         {
-            this.isLoading = true;
+            this.loading = true;
             axios.post('4236a440a662cc8253d7536e5aa17942')
                 .then((response) => {
-                    this.isLoading = false;
+                    this.loading = false;
                     this.showNotification('You have been logged out.','success');
                     this.user={
                         name:null,
@@ -212,12 +207,15 @@ const app = new Vue({
                 })
                 .catch((error) => {
                 //todo: something
-                    this.isLoading = false;
 
-                })
+                    this.loading = false;
+
+                });
+            this.$router.push({name:'home'})
         }
 
     },//methods
+
     /**
      * Start getting the user's location as soon as possible.
      */

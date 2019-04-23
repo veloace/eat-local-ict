@@ -1,5 +1,5 @@
 <template>
-    <b-modal :active.sync="$root.showLoginModal" v-if="!$root.user.logged">
+    <b-modal :active.sync="$root.showLoginModal" v-if="!$root.user.logged" :width="640" :canCanel="['x', 'outside']">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -18,6 +18,7 @@
                         <b-switch  size="is-small" :value="false" true-value="1" false-value="0" v-model="remember">
                             Remember Me
                         </b-switch>
+
                     </p>
 
                     <p class="has-text-white"> Don't have an account yet?
@@ -25,7 +26,7 @@
                     </p>
             </div>
             <footer class="modal-card-foot">
-                <router-link :to="{name:'passwordResetRequest'}" class="button" type="button" >Forgot Password</router-link>
+                <router-link :to="{name:'passwordResetRequest'}" @click="$root.showLoginModal=false" class="button" type="button" >Forgot Password</router-link>
                 <button class="button is-success" @click="login">Login</button>
             </footer>
         </div>

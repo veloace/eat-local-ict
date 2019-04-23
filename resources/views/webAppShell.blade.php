@@ -35,6 +35,8 @@
     This is your fallback content in case JavaScript fails to load.
 </noscript>
 <div id="app">
+    <b-loading :is-full-page="true" :active.sync="$root.loading" ></b-loading>
+
     <div v-if="false" style="background-color: #292929;position: fixed;z-index:10000000000;top:0;bottom: 0;left: 0;right:0;">
         <p style="text-align: center;color:white;font-size: 25px;padding-top: 30vh">Eat Local ICT Is Loading...Please Wait</p>
     </div>
@@ -93,11 +95,6 @@
             </p>
         </div>
     </footer>
-
-    <div v-if="notification.show" class="notification notification-fixed-bottom has-text-centered" :class="notification.type">
-        <button class="delete" @click="notification.show = !notification.show"></button>
-        @{{notification.message}}
-    </div>
 
     <login></login>
     <registration></registration>

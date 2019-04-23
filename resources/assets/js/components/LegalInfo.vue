@@ -1,5 +1,5 @@
 <template>
-    <b-modal :active.sync="$root.showLegalInfo" @onCancel="$root.toggleLegalInfoModal(false)">
+    <b-modal :active.sync="$root.showLegalInfo" @onCancel="$root.toggleLegalInfoModal(false)" :width="640">
         <div class="modal-background"></div>
         <div class="modal-card">
             <div class="modal-card-body has-text-white" v-html="body">

@@ -91,12 +91,12 @@ class RegisterController extends Controller
     }
 
 
-
     /**
      * Handle a registration request for the application. (overrides RegistersUsers.php)
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function register(Request $request)
     {

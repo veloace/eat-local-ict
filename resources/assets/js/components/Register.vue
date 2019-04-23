@@ -1,5 +1,5 @@
 <template>
-    <b-modal :active.sync="$root.showRegistrationModal" v-if="!$root.user.logged">
+    <b-modal :active.sync="$root.showRegistrationModal" v-if="!$root.user.logged" :width="640" :canCanel="['x', 'outside']">
         <div class="modal-background"></div>
         <div class="modal-card has-background-grey-darker">
             <header class="modal-card-head">
