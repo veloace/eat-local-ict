@@ -57,7 +57,7 @@
           </div>
           <div class="navbar-end" v-else>
               <div class="navbar-item" >
-                  <a class="has-text-white"><i class="fa fa-cogs"></i></a>
+                  <router-link :to="{name:'account'}"  class="has-text-white"><i class="fa fa-cogs"></i></router-link>
               </div>
               <div class="navbar-item" >
                   <a @click="$root.logout" class="has-text-white"><i class="fa fa-sign-out-alt"></i></a>
@@ -73,10 +73,8 @@
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
-
-
-
         </section>
+
     <footer class="footer">
         <div class="content has-text-centered">
 

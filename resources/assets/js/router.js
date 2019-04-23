@@ -36,6 +36,11 @@ const routes =
             component: require('./views/PasswordReset.vue'),
             name:'passwordReset'
         },
+        {
+            path: '/account',
+            component: require('./views/Account.vue'),
+            name:'account'
+        },
 ];
 
 

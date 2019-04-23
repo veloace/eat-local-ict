@@ -84,7 +84,7 @@ const app = new Vue({
             }//type determination
 
             this.$notification.open({
-                duration: 10000,
+                duration: 5000,
                 message: message,
                 position: 'is-top-right',
                 type: type,
@@ -147,17 +147,20 @@ const app = new Vue({
             //
         },//setGeo
 
-        isAuthenticated(redirectIfAuthenticated = false)
+        isAuthenticated(redirectIfAuthenticated = false,redirectIfNotAuthenticated=false,route=null)
         {
+            this.loading= true;
+            route = route===null ? 'home':route;
             axios.get('/api/user')
                 .then((response) => {
+                    this.loading= false;
                     if (response.status===200)
                     {
                         this.user.name= response.data.name;
                         this.user.logged= true;
                         if(redirectIfAuthenticated)
                         {
-                            this.$router.push({name:'home'});
+                            this.$router.push({name:route});
                         }
                     }
                     else if (response.status===204)
@@ -167,17 +170,24 @@ const app = new Vue({
                             logged:false
                         };//set to default values
                         this.showLoginModal=false;
+                        if(redirectIfNotAuthenticated)
+                        {
+                            this.$router.push({name:route});
+                        }
 
                     }
                 })
                 .catch((error) => {
-
+                    this.loading= false;
                     this.user = {
                         name:null,
                         logged:false
                     };//set to default values
                     this.showLoginModal=false;
-
+                    if(redirectIfNotAuthenticated)
+                    {
+                        this.$router.push({name:route});
+                    }
                 });
         },
         toggleLegalInfoModal(type=false)

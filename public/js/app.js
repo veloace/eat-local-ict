@@ -2180,6 +2180,249 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/Account.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            old_password: null,
+            password: null,
+            delete_password: null,
+            password_confirmation: null,
+            errors: {
+                old_password: null,
+                password: null,
+                password_confirmation: null,
+                delete_password: null
+            },
+            showDeleteModal: false
+        };
+    },
+
+    methods: {
+        resetPassword: function resetPassword() {
+            var _this = this;
+
+            this.$root.loading = true;
+            this.errors = {
+                old_password: null,
+                password: null,
+                password_confirmation: null,
+                delete_password: null
+            };
+            axios.post('api/user/password', {
+                old_password: this.old_password,
+                password: this.password,
+                password_confirmation: this.password_confirmation
+            }).then(function (response) {
+                _this.$root.loading = false;
+                _this.$root.showNotification('Your password has been changed', 'success');
+                _this.old_password = null;
+                _this.password = null;
+                _this.password_confirmation = null;
+            }).catch(function (error) {
+                _this.$root.loading = false;
+                if (error.response.status === 422) {
+                    if (error.response.data.message && !error.response.data.errors) {
+                        _this.$root.showNotification('We couldn\'t reset your password. Please check the form and try again..', 'warning');
+                        _this.password = null;
+                    } else {
+                        _this.$root.showNotification('We couldn\'t reset your password. Please check the form for errors and try again', 'warning');
+
+                        var errors = error.response.data.errors;
+                        var _iteratorNormalCompletion = true;
+                        var _didIteratorError = false;
+                        var _iteratorError = undefined;
+
+                        try {
+                            for (var _iterator = Object.entries(errors)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                var _ref = _step.value;
+
+                                var _ref2 = _slicedToArray(_ref, 2);
+
+                                var key = _ref2[0];
+                                var value = _ref2[1];
+
+                                _this.errors[key] = value[0];
+                            }
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+                            } finally {
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        },
+        deleteAccount: function deleteAccount() {
+            var _this2 = this;
+
+            this.$root.loading = true;
+            this.errors = {
+                old_password: null,
+                password: null,
+                password_confirmation: null,
+                delete_password: null
+            };
+            axios.post('api/user/deleteAccount', {
+                delete_password: this.delete_password
+            }).then(function (response) {
+                _this2.$root.loading = false;
+                _this2.$root.showNotification('Your account has been deleted. Please note that you can continue to use certain functions of EatLocalICT even without an account.', 'success');
+                _this2.delete_password = null;
+                _this2.showDeleteModal = false;
+                _this2.$root.isAuthenticated(false, true); //make sure user is logged out on front end
+                _this2.$router.push({ name: 'home' });
+            }).catch(function (error) {
+                _this2.$root.loading = false;
+                if (error.response.status === 422) {
+                    if (error.response.data.message && !error.response.data.errors) {
+                        _this2.$root.showNotification('We couldn\'t delete your account. Please try again or contact customer support.', 'warning');
+                        _this2.password = null;
+                    } else {
+                        _this2.$root.showNotification('We couldn\'t delete your account. Please make sure your provided the correct password', 'warning');
+
+                        var errors = error.response.data.errors;
+                        var _iteratorNormalCompletion2 = true;
+                        var _didIteratorError2 = false;
+                        var _iteratorError2 = undefined;
+
+                        try {
+                            for (var _iterator2 = Object.entries(errors)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                var _ref3 = _step2.value;
+
+                                var _ref4 = _slicedToArray(_ref3, 2);
+
+                                var key = _ref4[0];
+                                var value = _ref4[1];
+
+                                _this2.errors[key] = value[0];
+                            }
+                        } catch (err) {
+                            _didIteratorError2 = true;
+                            _iteratorError2 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                    _iterator2.return();
+                                }
+                            } finally {
+                                if (_didIteratorError2) {
+                                    throw _iteratorError2;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    },
+    activated: function activated() {
+        //this.$root.isAuthenticated(false,true);//make sure user is logged in on front end
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/Backers.vue":
 /***/ (function(module, exports) {
 
@@ -16868,6 +17111,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Account.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.main-container\n{\n    min-height:100vh;\n}\nul\n{\n    list-style-type: circle;\n    padding-left: 15px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e2ac97c\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18196,6 +18454,370 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-049b1b60", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-13b16caa\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/Account.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "has-background-translucent top-spacer" },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "container main-container has-text-white",
+          staticStyle: { "margin-top": "30px" }
+        },
+        [
+          _c("h1", { staticClass: "title has-text-white" }, [
+            _vm._v("Your Account")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column is-half" }, [
+              _c("div", { staticClass: "card" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-content has-background-grey-darker" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Current Password",
+                          "custom-class": "has-text-white",
+                          type: _vm.errors.old_password ? "is-danger" : "",
+                          message: _vm.errors.old_password
+                        }
+                      },
+                      [
+                        _c("b-input", {
+                          attrs: {
+                            type: "password",
+                            placeholder: "Current Password",
+                            autofocus: ""
+                          },
+                          model: {
+                            value: _vm.old_password,
+                            callback: function($$v) {
+                              _vm.old_password = $$v
+                            },
+                            expression: "old_password"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: " New Password",
+                          "custom-class": "has-text-white",
+                          type: _vm.errors.password ? "is-danger" : "",
+                          message: _vm.errors.password
+                        }
+                      },
+                      [
+                        _c("b-input", {
+                          attrs: {
+                            type: "password",
+                            placeholder: "Password",
+                            autofocus: ""
+                          },
+                          model: {
+                            value: _vm.password,
+                            callback: function($$v) {
+                              _vm.password = $$v
+                            },
+                            expression: "password"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Re-Enter New Password",
+                          "custom-class": "has-text-white",
+                          type: _vm.errors.password_confirmation
+                            ? "is-danger"
+                            : "",
+                          message: _vm.errors.password_confirmation
+                        }
+                      },
+                      [
+                        _c("b-input", {
+                          attrs: {
+                            type: "password",
+                            placeholder: "Confirm Password",
+                            autofocus: ""
+                          },
+                          model: {
+                            value: _vm.password_confirmation,
+                            callback: function($$v) {
+                              _vm.password_confirmation = $$v
+                            },
+                            expression: "password_confirmation"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "footer",
+                  { staticClass: "card-footer has-background-black-ter" },
+                  [
+                    _c("p", { staticClass: "card-footer-item" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "button is-success",
+                          on: { click: _vm.resetPassword }
+                        },
+                        [_vm._v("Reset Password")]
+                      )
+                    ])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "column is-half" }, [
+              _c("div", { staticClass: "card" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "footer",
+                  { staticClass: "card-footer has-background-black-ter" },
+                  [
+                    _c("p", { staticClass: "card-footer-item" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "button is-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.showDeleteModal = true
+                            }
+                          }
+                        },
+                        [_vm._v("Delete Account")]
+                      )
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: { active: _vm.showDeleteModal, width: 640, scroll: "keep" },
+          on: {
+            "update:active": function($event) {
+              _vm.showDeleteModal = $event
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-card" }, [
+            _c(
+              "header",
+              { staticClass: "modal-card-head has-background-danger" },
+              [
+                _c("p", { staticClass: "modal-card-title" }, [
+                  _vm._v("Delete Account?")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "modal-card-body  has-background-grey-darker has-text-white"
+              },
+              [
+                _c("p", [
+                  _vm._v("Are you sure you want to delete you account?")
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "has-text-danger" }, [
+                  _vm._v(
+                    "THIS ACTION CANNOT BE UNDONE. ALL YOU DATA ON EAT LOCAL ICT WILL BE LOST."
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "If you still want to delete your account, please enter your password and click 'Delete Account' below."
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "b-field",
+                  {
+                    attrs: {
+                      label: "Password",
+                      "custom-class": "has-text-white",
+                      type: _vm.errors.delete_password ? "is-danger" : "",
+                      message: _vm.errors.delete_password
+                    }
+                  },
+                  [
+                    _c("b-input", {
+                      attrs: {
+                        type: "password",
+                        placeholder: "Password",
+                        autofocus: ""
+                      },
+                      model: {
+                        value: _vm.delete_password,
+                        callback: function($$v) {
+                          _vm.delete_password = $$v
+                        },
+                        expression: "delete_password"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("footer", { staticClass: "modal-card-foot" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button is-success",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.showDeleteModal = false
+                    }
+                  }
+                },
+                [_vm._v("Cancel (Keep Account)")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "button is-danger",
+                  on: { click: _vm.deleteAccount }
+                },
+                [_vm._v("Delete Account")]
+              )
+            ])
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header has-background-black-ter" }, [
+      _c("h1", { staticClass: "card-header-title has-text-white is-size-4" }, [
+        _vm._v("Reset Your Password?")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header has-background-black-ter" }, [
+      _c("h1", { staticClass: "card-header-title has-text-white is-size-4" }, [
+        _vm._v("Delete Your Account")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "card-content has-background-grey-darker has-text-white" },
+      [
+        _c("p", [
+          _vm._v(
+            "You may delete your account at any time, but we must warn you that we take your privacy seriously."
+          ),
+          _c("span", { staticClass: "has-text-danger" }, [
+            _vm._v(
+              " When you delete your account, we will immediately purge all of your data from our database."
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", [_vm._v("This means:")]),
+        _vm._v(" "),
+        _c("ul", [
+          _c("li", [
+            _vm._v(
+              "Your name, email, and all other information is gone, so we will never be able to recover your account."
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _vm._v(
+              "Any saved preferences, lists, favorites, etc. will be deleted and unrecoverable."
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _vm._v(
+              "Any restaurants that you managed will still exist, but they will be open for someone else to claim."
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            "After you delete this account, you can create a new account at any time with the same email or name, but it will be as if you created an entirely new account."
+          )
+        ])
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-13b16caa", module.exports)
   }
 }
 
@@ -23297,6 +23919,33 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Account.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Account.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("314d0201", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Account.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Account.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3e2ac97c\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Login.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23307,7 +23956,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("6bbe4dfa", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("ef1c84cc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -23334,7 +23983,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("67f33b62", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("bd3dcf2e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -23361,7 +24010,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0397ea51", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("25c4fc2a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -23388,7 +24037,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("305bcd26", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4605f466", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -35685,7 +36334,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 window.Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 window.Vue.use(__WEBPACK_IMPORTED_MODULE_2_buefy___default.a);
 window.Vue.use(__WEBPACK_IMPORTED_MODULE_3_vue_analytics___default.a, {
-    id: "FAKEIT",
+    id: "UA-65860722-2",
     checkDuplicatedScript: true,
     router: __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */]
 });
@@ -35755,7 +36404,7 @@ var app = new Vue({
             } //type determination
 
             this.$notification.open({
-                duration: 10000,
+                duration: 5000,
                 message: message,
                 position: 'is-top-right',
                 type: type,
@@ -35811,16 +36460,22 @@ var app = new Vue({
         //setGeo
 
         isAuthenticated: function isAuthenticated() {
-            var _this = this;
-
             var redirectIfAuthenticated = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+            var _this = this;
+
+            var redirectIfNotAuthenticated = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+            var route = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+            this.loading = true;
+            route = route === null ? 'home' : route;
             axios.get('/api/user').then(function (response) {
+                _this.loading = false;
                 if (response.status === 200) {
                     _this.user.name = response.data.name;
                     _this.user.logged = true;
                     if (redirectIfAuthenticated) {
-                        _this.$router.push({ name: 'home' });
+                        _this.$router.push({ name: route });
                     }
                 } else if (response.status === 204) {
                     _this.user = {
@@ -35828,14 +36483,20 @@ var app = new Vue({
                         logged: false
                     }; //set to default values
                     _this.showLoginModal = false;
+                    if (redirectIfNotAuthenticated) {
+                        _this.$router.push({ name: route });
+                    }
                 }
             }).catch(function (error) {
-
+                _this.loading = false;
                 _this.user = {
                     name: null,
                     logged: false
                 }; //set to default values
                 _this.showLoginModal = false;
+                if (redirectIfNotAuthenticated) {
+                    _this.$router.push({ name: route });
+                }
             });
         },
         toggleLegalInfoModal: function toggleLegalInfoModal() {
@@ -36144,6 +36805,10 @@ var routes = [{
     path: '/password/reset/:token',
     component: __webpack_require__("./resources/assets/js/views/PasswordReset.vue"),
     name: 'passwordReset'
+}, {
+    path: '/account',
+    component: __webpack_require__("./resources/assets/js/views/Account.vue"),
+    name: 'account'
 }];
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -36195,6 +36860,58 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-49c1ab4a", Component.options)
   } else {
     hotAPI.reload("data-v-49c1ab4a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/Account.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Account.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/Account.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-13b16caa\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/Account.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/Account.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-13b16caa", Component.options)
+  } else {
+    hotAPI.reload("data-v-13b16caa", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

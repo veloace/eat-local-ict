@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
         route::get('','UserController@currentUser');
         route::post('login','UserController@loginViaSpa');
         route::post('register','Auth\RegisterController@register');
+        route::post('password','UserController@changePassword');
+        route::post('deleteAccount','UserController@deleteAccount');
 
     });
 
