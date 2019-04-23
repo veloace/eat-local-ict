@@ -35,5 +35,13 @@ Route::prefix('places')->group(function () {
     Route::get('random', 'PlaceController@getRandomPlace');
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
     Route::post('missing', 'PlaceController@missingPlaceSuggestion');
+    Route::prefix('lists')->group(function () {
+        Route::get('favorites', 'UserListConroller@showFavorites');
+        Route::get('savedForLater', 'UserListConroller@showSavedForLater');
+        Route::post('favorites', 'UserListConroller@addToFavorites');
+        Route::post('savedForLater', 'UserListConroller@addToSavedForLater');
+    });
+
+
 });
 

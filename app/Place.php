@@ -4,9 +4,11 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Place extends Model
 {
+    use SoftDeletes;
     //
     protected $appends=['user_distance','is_open'];
 

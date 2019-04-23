@@ -41,6 +41,7 @@ class CreatePlacesTable extends Migration
             $table->decimal('latitude',10,8)->nullable()->index();
             $table->decimal('longitude',11,8)->nullable()->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
