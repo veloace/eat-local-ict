@@ -60,6 +60,7 @@
                            (About {{randomPlace.user_distance}} miles away)
                         </span>
                      </p>
+                      <p v-if="randomPlace.is_favorited" class="heading has-text-warning" style="padding-top: 0"><i class="fa fa-star has-text-warning"></i> In your favorites.</p>
                      <p v-if="randomPlace.summary" class="has-text-white is-italic" style="padding-bottom: 10px;">{{randomPlace.summary}}</p>
                      <div v-else class="has-text-white" style="padding-bottom: 10px;">
                         <p class="is-italic"><em>We don't have a description for this place yet.</em></p>
@@ -85,11 +86,13 @@
                         </b-select>
                      </b-field>
 
+                      <router-link :disabled="loadingRandom" v-on:click="showPlaceModal=false" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-success  is-outlined">See Full Listing</router-link>
+
                   </section>
-                  <footer class="modal-card-foot">
-                     <router-link :disabled="loadingRandom" v-on:click="showPlaceModal=false" :to="{name:'listing',params:{id:randomPlace.id},query:{ref:'home'}}" class="button is-small is-success">More Details!</router-link>
-                     <button :disabled="loadingRandom" class="button is-small is-primary" v-on:click="findRandomPlace">Roll Again</button>
-                     <button class="button is-danger is-small" v-on:click="showPlaceModal=false">Cancel</button>
+                  <footer class="modal-card-foot buttons">
+                     <button :disabled="loadingRandom" class="button is-small is-primary is-inverted is-outlined" v-on:click="findRandomPlace">Roll Again</button>
+                     <add-to-list :place="randomPlace" listType="SaveForLater" color="is-warning"></add-to-list>
+                     <button class="button is-small is-danger is-inverted is-outlined" v-on:click="showPlaceModal=false">Cancel</button>
                      <hr>
                   </footer>
 
@@ -100,7 +103,9 @@
    </div>
 </template>
 <script>
+    import AddToList from "../components/AddToList";
     export default {
+        components: {AddToList},
         data(){
             return{
                 loading:false,

@@ -30,6 +30,7 @@ Vue.component('login', require('./components/Login.vue'));
 Vue.component('registration', require('./components/Register.vue'));
 Vue.component('description-suggestion', require('./components/DescriptionSuggestion.vue'));
 Vue.component('legal-info', require('./components/LegalInfo.vue'));
+Vue.component('add-to-list', require('./components/AddToList.vue'));
 Vue.component('invisible-recaptcha', InvisibleRecaptcha);
 
 const app = new Vue({
@@ -222,6 +223,21 @@ const app = new Vue({
 
                 });
             this.$router.push({name:'home'})
+        },
+        /**
+         * programmatically navigates to a route if the user logs in, else the login form is displated
+         */
+        goToProtected(route,params)
+        {
+            if(this.user.logged)
+            {
+                this.$router.push({name:route,params:params});
+            }
+            else
+            {
+                this.showLoginModal=true;
+            }
+
         }
 
     },//methods
@@ -232,5 +248,10 @@ const app = new Vue({
     created(){
         this.isAuthenticated();
         this.getUserLocation();
+        if(window.message)
+        {
+            //there's a laravel flash message showing.
+            this.showNotification(window.message,'info')
+        }
     }
 });

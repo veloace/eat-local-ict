@@ -35,7 +35,9 @@ class PlaceSearchRequest extends FormRequest
             'alcohol'=>'nullable|boolean',
             'wifi'=>'nullable|boolean',
             'bikeRack'=>'nullable|boolean',
-            'meals'=>'nullable|boolean'
+            'meals'=>'nullable|boolean',
+            'favorited'=>'nullable|boolean',
+            'saved'=>'nullable|boolean',
         ];
     }
 }

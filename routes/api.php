@@ -36,10 +36,10 @@ Route::prefix('places')->group(function () {
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
     Route::post('missing', 'PlaceController@missingPlaceSuggestion');
     Route::prefix('lists')->group(function () {
-        Route::get('favorites', 'UserListConroller@showFavorites');
-        Route::get('savedForLater', 'UserListConroller@showSavedForLater');
         Route::post('favorites', 'UserListConroller@addToFavorites');
+        Route::post('favorites/delete', 'UserListConroller@deleteFavorites');
         Route::post('savedForLater', 'UserListConroller@addToSavedForLater');
+        Route::post('savedForLater/delete', 'UserListConroller@deleteSavedForLater');
     });
 
 

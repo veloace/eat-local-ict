@@ -189,7 +189,7 @@ export default {
     },
     activated()
     {
-        //this.$root.isAuthenticated(false,true);//make sure user is logged in on front end
+        this.$root.isAuthenticated(false,true);//make sure user is logged in on front end
     }
 }
 </script>

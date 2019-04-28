@@ -21,7 +21,7 @@ class CreateUserPlaceOwnershipClaimsTable extends Migration
             $table->string('admin_comments',175)->nullable();
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_rejected')->default(false);
-            $table->timestamp('reviewed_at')->default(false);
+            $table->timestamp('reviewed_at')->nullable()->default(null);
             //
             $table->timestamps();
             $table->softDeletes();

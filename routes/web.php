@@ -62,13 +62,16 @@ Route::get('spaLogin',function(){
     return($user);
 })->middleware('auth:web');
 
-$this->get('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@showLoginForm')->name('login');
-$this->post('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@login');
-$this->post('4236a440a662cc8253d7536e5aa17942', 'Auth\LoginController@logout')->name('logout');
+Route::get('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('d56b699830e77ba53855679cb1d252da', 'Auth\LoginController@login');
+Route::post('4236a440a662cc8253d7536e5aa17942', 'Auth\LoginController@logout')->name('logout');
 
 //$this->get('29a41264ad2fc71b90534753a781e766', 'Auth\ForgotPasswordController@showLinkRequestForm');
-$this->post('d7dc0e8839444523808953373d057581', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-$this->post('ad7dc0e8839444523808953373d057581', 'Auth\ResetPasswordController@reset');
+Route::post('d7dc0e8839444523808953373d057581', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('ad7dc0e8839444523808953373d057581', 'Auth\ResetPasswordController@reset');
+
+
+Auth::routes(['verify' => true]);
 
 
 
@@ -78,3 +81,7 @@ Route::get('/{vue_capture?}',function(){
     return view('webAppShell',$data);
 })->where('vue_capture', '[\/\w\.-]*')
     ->name('app');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -41,6 +41,16 @@ const routes =
             component: require('./views/Account.vue'),
             name:'account'
         },
+        {
+            path: '/favorites',
+            component: require('./views/Favorites.vue'),
+            name:'favorites'
+        },
+        {
+            path: '/saved',
+            component: require('./views/Saved.vue'),
+            name:'saved'
+        },
 ];
 
 

@@ -56,8 +56,7 @@
                         password:null,
                         password_confirmed:null
                 };
-                this.$root.isLoading = true;
-                console.log(recaptchaToken);
+                this.$root.loading = true;
                 axios.post('/api/user/register',{
                     email:this.email,
                     password:this.password,
@@ -66,8 +65,7 @@
                     'g-recaptcha-response':recaptchaToken
                 })
                     .then((response) => {
-                        this.$root.isLoading = false;
-                        console.log(response);
+                        this.$root.loading = false;
                         this.$root.user.name = this.name;
                         this.$root.user.logged = true;
                         let registerMessage = 'Hi, '+this.name +'! Welcome to EatLocalICT!';
@@ -77,16 +75,21 @@
 
                     })
                     .catch((error) => {
+                        this.$root.loading = false;
                         if (error.response.status===422)
                         {
-                            this.$root.isLoading = false;
+                            this.$root.loading = false;
 
-                            console.log('Validation Errors');
                             let errors = error.response.data.errors;
                             for (const [key, value] of Object.entries(errors)) {
                                 this.errors[key] = value[0];
                             }
                             this.$root.showNotification('We found errors with your registration. Please check the form and try again.','danger')
+                        }
+                        else
+                        {
+                            this.$root.showNotification('We encountered an error while trying to process your registration. Please try again, or refresh the page if the problem persists.','danger')
+
                         }
                     });
             }

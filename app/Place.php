@@ -5,14 +5,15 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Place extends Model
 {
     use SoftDeletes;
     //
-    protected $appends=['user_distance','is_open'];
+    protected $appends=['user_distance','is_open','is_favorited','user_comment'];
 
-
+    protected $favorite;
     /**
      * Generates the Apple Maps navigation link for use by the frontend
      * @return string
@@ -23,6 +24,33 @@ class Place extends Model
         $address = "{$this->name} {$this->address} {$this->city}, {$this->state}";
         $query= urlencode($query);
         return "http://maps.apple.com/?q={$query}&address={$address}";
+    }
+
+
+    /**
+     * @return bool
+     */
+    function getIsFavoritedAttribute()
+    {
+        if(Auth::check())
+        {
+            $fav = UserFavorite::where([
+                ['user_id',Auth::id()],
+                ['place_id',$this->id],
+            ])
+                ->first();
+            if($fav)
+            {
+                $this->favorite = $fav;
+                return true;
+            }//if collection
+        }//if user is logged in
+        return false;
+    }
+
+    function getUserCommentAttribute()
+    {
+        return !empty($this->favorite) ? $this->favorite->comment : null;
     }
 
 

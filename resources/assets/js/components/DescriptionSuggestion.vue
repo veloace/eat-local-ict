@@ -1,7 +1,7 @@
 <template>
-    <b-modal :active.sync="descriptionSuggestion.show">
+    <b-modal :active.sync="descriptionSuggestion.show" :width="640">
         <div class="modal-background"></div>
-        <div class="modal-card">
+        <div class="modal-card"  >
             <header class="modal-card-head">
                 <h2 class="modal-card-title">Suggest a Description</h2>
             </header>

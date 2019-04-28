@@ -58,6 +58,7 @@
 
             resetPassword()
             {
+                this.$root.loading=true;
                 axios.post('ad7dc0e8839444523808953373d057581',{
                     email:this.email,
                     password:this.password,
@@ -65,10 +66,14 @@
                     token:this.token,
                 })
                     .then((response)=>{
+                        this.$root.loading=false;
 
-
+                        this.$root.isAuthenticated(true,false,'home');
+                        this.$root.showNotification('Your password has been reset','success');
                     })
                     .catch((error) => {
+                        this.$root.loading=false;
+                        console.log(error);
                         if (error.response.status===422)
                         {
                             if(error.response.data.message && !error.response.data.errors)

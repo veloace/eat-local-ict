@@ -13,8 +13,7 @@
             </div>
             <div class="columns">
                 <div class="column">
-                    <h1  class="title has-text-centered has-text-white">{{listing.name}}
-
+                    <h1  class="title has-text-centered has-text-white"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
                     </h1>
                     <p class="subtitle has-text-centered">
                         <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
@@ -25,6 +24,13 @@
                            (About {{listing.user_distance}} miles away)
                         </span>
                     </p>
+                    <p class="heading has-text-centered has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
+                    <p v-else>Have you been here before? <add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
+                    <div v-if="listing.user_comment">
+                        <p  class="heading has-text-warning has-text-centered">You said..
+                            <span class="has-text-warning is-italic has-text-centered">"{{listing.user_comment}}"</span>
+                        </p>
+                    </div>
                     <p class="subtitle has-text-centered">
                         <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</small>
                         <small class="has-text-centered subtitle has-text-danger" v-else="">Closed Now</small>
@@ -100,6 +106,7 @@
                         <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fab fa-facebook fa-2x"></i></a>
                         <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fab fa-instagram fa-2x"></i></a>
                     </p>
+
                 </div>
                 <div class="column">
                     <h2 class="has-text-centered subtitle has-text-white has-text-weight-bold">Hours</h2>
@@ -228,6 +235,10 @@
             },
             suggestDescription(){
                 this.$root.showDescriptionSuggestionModal(this.listing.id,this.listing.name);
+            },
+            favorited()
+            {
+                this.listing.is_favorited=true;
             }
         },
         activated() {
@@ -240,3 +251,14 @@
         }
     }
 </script>
+<style>
+    .underlined
+    {
+        text-decoration: underline;
+    }
+    ul
+    {
+        list-style-type: none;
+        padding-left: 0;
+    }
+</style>

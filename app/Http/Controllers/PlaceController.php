@@ -11,6 +11,8 @@ use App\Http\Requests\PlaceSearchRequest;
 use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
+use App\UserFavorite;
+use App\UserSavedForLater;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -478,7 +480,25 @@ class PlaceController extends Controller
             $places->where('has_carryout',true);
 
         }//search  places with full meals
+        if(!empty($request['favorited']))
+        {
+            $favorites = UserFavorite::where('user_id',Auth::id())
+                ->get()
+                ->pluck('place_id')
+                ->toArray();
+            $places->whereIn('id',$favorites);
 
+        }//search  places the user added to favorites
+
+        if(!empty($request['saved']))
+        {
+            $saved = UserSavedForLater::where('user_id',Auth::id())
+                ->get()
+                ->pluck('place_id')
+                ->toArray();
+            $places->whereIn('id',$saved);
+
+        }//search  places the user added to saved for later list
 
         if($useRadius)
         {

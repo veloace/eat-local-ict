@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class AddToListRequest extends FormRequest
+class DeleteFromListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,7 @@ class AddToListRequest extends FormRequest
     {
         return [
             //
-            'place'=>'required|exists:places,id',
-            'comment'=>'nullable|max:175'
+            'id'=>'required|exists:places,id'
         ];
     }
 }

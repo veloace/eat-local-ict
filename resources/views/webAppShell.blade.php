@@ -28,6 +28,9 @@
     <base href="/">
     <script>
         window.Laravel = {!! $token!!};
+        @if (session('message'))
+              window.message =  "{!!  session('message') !!}";
+        @endif
     </script>
 </head>
 <body>
@@ -49,24 +52,32 @@
           </router-link>
       </div>
       <div class="navbar-menu">
-          <div class="navbar-end" v-if="!$root.user.logged">
+          <div class="navbar-end" >
+
               <div class="navbar-item" >
-                  <a @click="$root.showLoginModal=true" class="has-text-white"><i class="fa fa-sign-in-alt"></i>&nbsp;Login</a>
+                  <b-dropdown aria-role="list">
+                      <a class="has-text-white"  slot="trigger"><i class="fa fa-list"></i><span class="is-hidden-mobile">&nbsp;Lists</span></a>
+                      <b-dropdown-item aria-role="listitem" @click="goToProtected('favorites')">Your Favorites</b-dropdown-item>
+                      <b-dropdown-item aria-role="listitem" @click="goToProtected('saved')">Saved for Later</b-dropdown-item>
+                  </b-dropdown>
+              </div>
+
+
+
+               <div class="navbar-item" v-if="$root.user.logged">
+                      <router-link :to="{name:'account'}"  class="has-text-white"><i class="fa fa-cogs"></i></router-link>
+              </div>
+              <div class="navbar-item" v-if="!$root.user.logged">
+                  <a @click="$root.showLoginModal=true" class="has-text-white"><i class="fa fa-sign-in-alt"></i><span class="is-hidden-mobile">&nbsp;Login</span></a>
 
               </div>
-          </div>
-          <div class="navbar-end" v-else>
-              <div class="navbar-item" >
-                  <router-link :to="{name:'account'}"  class="has-text-white"><i class="fa fa-cogs"></i></router-link>
-              </div>
-              <div class="navbar-item" >
-                  <a @click="$root.logout" class="has-text-white"><i class="fa fa-sign-out-alt"></i></a>
+              <div class="navbar-item" v-else>
+                      <a @click="$root.logout" class="has-text-white"><i class="fa fa-sign-out-alt"></i> <span class="is-hidden-mobile">&nbsp;Logout</span>  </a>
               </div>
           </div>
       </div>
 
   </div>
-
     </nav>
 
         <section class="hero is-fullheight ict-flag-bg">
