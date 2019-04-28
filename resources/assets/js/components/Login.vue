@@ -48,6 +48,7 @@
         },
         methods:{
             login(){
+                this.$root.loading = true;
                 this.errors={
                     email:null,
                     password:null
