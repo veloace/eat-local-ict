@@ -72,6 +72,7 @@
                         this.password=null;
                     })
                     .catch((error) => {
+                        this.$root.loading = false;
                         if (error.response.status===422)
                         {
                             if(error.response.data.message && !error.response.data.errors)
