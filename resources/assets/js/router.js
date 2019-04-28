@@ -4,7 +4,8 @@ const routes =
         {
             path: '/',
             component: require('./views/Home.vue'),
-            name: 'home'
+            name: 'home',
+            alias:['/home','/login','/register']
         },
         {
             path: '/listing/:id',

@@ -71,8 +71,7 @@ Route::post('d7dc0e8839444523808953373d057581', 'Auth\ForgotPasswordController@s
 Route::post('ad7dc0e8839444523808953373d057581', 'Auth\ResetPasswordController@reset');
 
 
-Auth::routes(['verify' => true]);
-
+Route::get('email/verify/{id}','Auth\VerificationController@verify');
 
 
 Route::get('/{vue_capture?}',function(){
