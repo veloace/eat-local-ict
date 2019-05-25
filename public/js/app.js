@@ -2423,6 +2423,29 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -2437,7 +2460,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 password_confirmation: null,
                 delete_password: null
             },
-            showDeleteModal: false
+            showDeleteModal: false,
+            places: []
         };
     },
 
@@ -2566,10 +2590,21 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     }
                 }
             });
+        },
+        getOwnedRestaurants: function getOwnedRestaurants() {
+            var _this3 = this;
+
+            axios.get('/api/places/owner').then(function (response) {
+
+                _this3.places = response.data;
+            }).catch(function () {
+                _this3.$root.showNotification('We encountered an error and couldn\'t load your restaurants.', 'warning');
+            });
         }
     },
     activated: function activated() {
         this.$root.isAuthenticated(false, true); //make sure user is logged in on front end
+        this.getOwnedRestaurants();
     }
 });
 
@@ -3140,6 +3175,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -3169,8 +3236,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 reviews: null,
                 facebook_link: null,
                 instagram_link: null,
-                user_distance: null
+                user_distance: null,
+                claim_status: null
             },
+            showClaimModal: false,
             tags: [],
             lastPage: {
                 name: 'home',
@@ -3199,7 +3268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.loading = false;
             }).catch(function (error) {
                 _this.loading = false;
-                _this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.', 'danger');
+                _this.$root.showNotification('We encountered an error and were unable to load this place. If this problem persists, try refreshing the page.', 'danger');
             });
         },
         suggestDescription: function suggestDescription() {
@@ -3207,6 +3276,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         favorited: function favorited() {
             this.listing.is_favorited = true;
+        },
+        claimOwnership: function claimOwnership() {
+            var _this2 = this;
+
+            this.loading = true;
+            axios.post('/api/places/owner/', { place: this.listing.id }).then(function (response) {
+                _this2.showClaimModal = false;
+                _this2.loading = false;
+                _this2.$root.showNotification('Your ownership claim for ' + _this2.listing.name + ' has been submitted.', 'success');
+                _this2.listing.claim_status = 'pending';
+            }).catch(function (error) {
+                _this2.loading = false;
+                _this2.$root.showNotification('We encountered an error and were unable to process your ownership claim. If this problem persists, try refreshing the page.', 'danger');
+            });
         }
     },
     activated: function activated() {
@@ -18501,471 +18584,665 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
-    !_vm.loading
-      ? _c("div", { staticClass: "container has-text-white" }, [
-          _c("div", { staticClass: "columns" }, [
-            _c(
-              "div",
-              { staticClass: "column", staticStyle: { "margin-top": "30px" } },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "button is-small is-link is-outlined",
-                    on: {
-                      click: function($event) {
-                        return _vm.$router.go(-1)
-                      }
-                    }
-                  },
-                  [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("Go Back")])]
-                )
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "columns" }, [
-            _c("div", { staticClass: "column" }, [
+  return _c(
+    "div",
+    { staticClass: "has-background-translucent top-spacer" },
+    [
+      !_vm.loading
+        ? _c("div", { staticClass: "container has-text-white" }, [
+            _c("div", { staticClass: "columns" }, [
               _c(
-                "h1",
-                { staticClass: "title has-text-centered has-text-white" },
+                "div",
+                {
+                  staticClass: "column",
+                  staticStyle: { "margin-top": "30px" }
+                },
                 [
-                  _vm.listing.is_favorited
-                    ? _c("i", { staticClass: "fa fa-star has-text-warning" })
-                    : _vm._e(),
-                  _vm._v(" " + _vm._s(_vm.listing.name) + "\n                ")
+                  _c(
+                    "a",
+                    {
+                      staticClass: "button is-small is-link is-outlined",
+                      on: {
+                        click: function($event) {
+                          return _vm.$router.go(-1)
+                        }
+                      }
+                    },
+                    [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("Go Back")])]
+                  )
                 ]
-              ),
-              _vm._v(" "),
-              _c("p", { staticClass: "subtitle has-text-centered" }, [
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "columns" }, [
+              _c("div", { staticClass: "column" }, [
                 _c(
-                  "a",
+                  "h1",
                   {
-                    attrs: {
-                      href: _vm.listing.map_link,
-                      target: "_blank",
-                      rel: "nofollow noopener"
-                    }
+                    staticClass: "title has-text-centered has-text-white",
+                    staticStyle: { "margin-bottom": "0" }
                   },
                   [
-                    _c("i", { staticClass: "fa fa-map-marker" }),
+                    _vm.listing.is_favorited
+                      ? _c("i", { staticClass: "fa fa-star has-text-warning" })
+                      : _vm._e(),
                     _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm.listing.address) +
-                        " " +
-                        _vm._s(_vm.listing.city) +
-                        ", " +
-                        _vm._s(_vm.listing.state_code) +
-                        "\n                    "
+                      " " + _vm._s(_vm.listing.name) + "\n                "
                     )
                   ]
                 ),
                 _vm._v(" "),
-                _vm.listing.user_distance
-                  ? _c("span", { staticClass: "has-text-info" }, [
-                      _vm._v(
-                        "\n                       (About " +
-                          _vm._s(_vm.listing.user_distance) +
-                          " miles away)\n                    "
-                      )
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _vm.listing.is_favorited
-                ? _c(
-                    "p",
-                    {
-                      staticClass:
-                        "heading has-text-centered has-text-warning has-text-italic"
-                    },
-                    [
-                      _vm._v("In your "),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "has-text-warning underlined",
-                          attrs: { to: { name: "favorites" } }
-                        },
-                        [_vm._v("favorites")]
-                      ),
-                      _vm._v(".")
-                    ],
-                    1
-                  )
-                : _c(
-                    "p",
-                    [
-                      _vm._v("Have you been here before? "),
-                      _c("add-to-list", {
-                        attrs: { place: _vm.listing, listType: "Favorite" },
-                        on: { "add-success": _vm.favorited }
-                      })
-                    ],
-                    1
-                  ),
-              _vm._v(" "),
-              _vm.listing.user_comment
-                ? _c("div", [
-                    _c(
+                _vm.listing.is_favorited
+                  ? _c(
                       "p",
                       {
                         staticClass:
-                          "heading has-text-warning has-text-centered"
+                          "heading has-text-centered has-text-warning has-text-italic",
+                        staticStyle: {
+                          "margin-bottom": "0",
+                          "padding-bottom": "0"
+                        }
                       },
                       [
-                        _vm._v("You said..\n                        "),
+                        _vm._v("In your "),
                         _c(
-                          "span",
+                          "router-link",
+                          {
+                            staticClass: "has-text-warning underlined",
+                            attrs: { to: { name: "favorites" } }
+                          },
+                          [_vm._v("favorites")]
+                        ),
+                        _vm._v(".")
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.listing.user_comment
+                  ? _c(
+                      "div",
+                      {
+                        staticStyle: {
+                          "margin-bottom": "0",
+                          "padding-bottom": "0"
+                        }
+                      },
+                      [
+                        _c(
+                          "p",
                           {
                             staticClass:
-                              "has-text-warning is-italic has-text-centered"
-                          },
-                          [_vm._v('"' + _vm._s(_vm.listing.user_comment) + '"')]
-                        )
-                      ]
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("p", { staticClass: "subtitle has-text-centered" }, [
-                _vm.listing.is_open
-                  ? _c(
-                      "small",
-                      {
-                        staticClass:
-                          "has-text-centered subtitle has-text-success"
-                      },
-                      [_vm._v("Open Now!")]
-                    )
-                  : _c(
-                      "small",
-                      {
-                        staticClass:
-                          "has-text-centered subtitle has-text-danger"
-                      },
-                      [_vm._v("Closed Now")]
-                    )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "columns" }, [
-            _c("div", { staticClass: "column" }, [
-              _vm.listing.summary
-                ? _c("p", [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.listing.summary) +
-                        "\n                "
-                    )
-                  ])
-                : _c("div", { staticClass: "has-text-white" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "button is-info is-outlined is-small",
-                        on: { click: _vm.suggestDescription }
-                      },
-                      [_vm._v("Suggest a Description")]
-                    )
-                  ]),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v("Price:\n                    "),
-                _c(
-                  "span",
-                  { staticClass: "is-size-6" },
-                  [
-                    _vm._l(_vm.listing.price, function(i) {
-                      return _c("i", {
-                        staticClass: " has-text-success fas fa-dollar-sign"
-                      })
-                    }),
-                    _vm._l(5 - _vm.listing.price, function(c) {
-                      return _c("i", {
-                        staticClass: "fas fa-dollar-sign has-text-grey-lighter"
-                      })
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v("Rating:\n                    "),
-                _c(
-                  "span",
-                  { staticClass: " is-size-6" },
-                  [
-                    _vm._l(Math.round(_vm.listing.rating), function(d) {
-                      return _c("i", {
-                        staticClass: "fa fa-star fa-2x has-text-warning"
-                      })
-                    }),
-                    _vm._l(5 - Math.round(_vm.listing.rating), function(e) {
-                      return _c("i", {
-                        staticClass: "fa fa-star has-text-grey-lighter"
-                      })
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "buttons" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "button is-small is-danger is-outlined",
-                    attrs: {
-                      href: _vm.listing.map_link,
-                      target: "_blank",
-                      rel: "nofollow noopener"
-                    }
-                  },
-                  [
-                    _vm._v("Let's Go!\n                     "),
-                    _c("i", { staticClass: "fa fa-location-arrow" })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.listing.phone_number
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "button is-small is-primary is-outlined",
-                        attrs: { href: "tel:" + _vm.listing.phone_number }
-                      },
-                      [
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _c("span", [_vm._v(_vm._s(_vm.listing.phone_number))])
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.listing.email_address
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "button is-small is-success  is-outlined",
-                        attrs: { href: "mailto:" + _vm.listing.email_address }
-                      },
-                      [_vm._m(3), _vm._v(" "), _c("span", [_vm._v(" Email")])]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.listing.website_url
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "button is-small is-link  is-outlined",
-                        attrs: {
-                          href: _vm.listing.website_url,
-                          target: "_blank"
-                        }
-                      },
-                      [_vm._m(4), _vm._v(" "), _c("span", [_vm._v(" Website")])]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.listing.menu_link
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "button is-small is-info  is-outlined",
-                        attrs: { href: _vm.listing.menu_link, target: "_blank" }
-                      },
-                      [_vm._m(5), _vm._v(" "), _c("span", [_vm._v(" Menu")])]
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("p", [
-                _vm.listing.facebook_link
-                  ? _c(
-                      "a",
-                      {
-                        attrs: {
-                          href:
-                            "https://facebook.com/" + _vm.listing.facebook_link,
-                          target: "_blank",
-                          rel: "nofollow"
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fab fa-facebook fa-2x",
-                          staticStyle: { color: "#fff" }
-                        })
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.listing.instagram_link
-                  ? _c(
-                      "a",
-                      {
-                        attrs: {
-                          href:
-                            "https://instagram.com/" +
-                            _vm.listing.instagram_link,
-                          target: "_blank",
-                          rel: "nofollow"
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fab fa-instagram fa-2x",
-                          staticStyle: { color: "#FFF" }
-                        })
-                      ]
-                    )
-                  : _vm._e()
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "column" }, [
-              _c(
-                "h2",
-                {
-                  staticClass:
-                    "has-text-centered subtitle has-text-white has-text-weight-bold"
-                },
-                [_vm._v("Hours")]
-              ),
-              _vm._v(" "),
-              _c(
-                "ul",
-                _vm._l(_vm.listing.hours, function(hour, idx) {
-                  return _c("li", { staticClass: "has-text-centered" }, [
-                    idx === _vm.today
-                      ? _c(
-                          "strong",
-                          {
-                            staticClass: "has-text-weight-bold has-text-white"
+                              "heading has-text-warning has-text-centered"
                           },
                           [
-                            _c("i", {
-                              staticClass: "fa fa-arrow-circle-right"
-                            }),
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(hour) +
-                                "\n                        "
+                            _vm._v("You said..\n                        "),
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "has-text-warning is-italic has-text-centered"
+                              },
+                              [
+                                _vm._v(
+                                  '"' + _vm._s(_vm.listing.user_comment) + '"'
+                                )
+                              ]
                             )
                           ]
                         )
-                      : _c("span", [_vm._v(_vm._s(hour))])
-                  ])
-                }),
-                0
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _vm.listing.reviews
-            ? _c(
-                "div",
-                [
-                  _c(
-                    "h2",
-                    { staticClass: "title has-text-centered has-text-white" },
-                    [_vm._v("Recent Google Reviews")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.listing.reviews, function(review) {
-                    return _c("article", { staticClass: "media" }, [
-                      _c("figure", { staticClass: "media-left" }, [
-                        _c("p", { staticClass: "image is-64x64" }, [
-                          _c("img", {
-                            attrs: { src: review.profile_photo_url }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "media-content" }, [
-                        _c("div", { staticClass: "content" }, [
-                          _c("p", [
-                            _c(
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("p", { staticClass: "has-text-centered heading" }, [
+                  _vm.listing.claim_status === "unclaimed"
+                    ? _c("span", { staticClass: "has-text-grey" }, [
+                        _vm._v(
+                          "This place is unclaimed.\n                        "
+                        ),
+                        _vm.$root.user.logged
+                          ? _c(
                               "a",
                               {
-                                attrs: {
-                                  href: review.author_url,
-                                  target: "_blank",
-                                  rel: "nofollow"
+                                on: {
+                                  click: function($event) {
+                                    _vm.showClaimModal = true
+                                  }
                                 }
                               },
-                              [_vm._v(_vm._s(review.author_name))]
-                            ),
-                            _vm._v(" "),
-                            _c("small", [
-                              _vm._v(_vm._s(review.relative_time_description))
+                              [_vm._v(" Claim ownership?")]
+                            )
+                          : _c(
+                              "a",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    _vm.$root.showLoginModal = true
+                                  }
+                                }
+                              },
+                              [_vm._v(" Login to claim ownership.")]
+                            )
+                      ])
+                    : _vm.listing.claim_status === "claimed"
+                    ? _c("span", { staticClass: "has-text-grey" }, [
+                        _vm._v("Claimed.")
+                      ])
+                    : _vm.listing.claim_status === "approved"
+                    ? _c("span", { staticClass: "has-text-grey" }, [
+                        _vm._v("You own this place.")
+                      ])
+                    : _vm.listing.claim_status === "denied"
+                    ? _c("span", { staticClass: "has-text-danger" }, [
+                        _vm._v("Your ownership claim has been denied.")
+                      ])
+                    : _vm.listing.claim_status === "pending"
+                    ? _c("span", { staticClass: "has-text-grey" }, [
+                        _vm._v(
+                          "Your ownership claim is pending approval by an EatLocalICT Admin."
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "subtitle has-text-centered" }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: _vm.listing.map_link,
+                        target: "_blank",
+                        rel: "nofollow noopener"
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "fa fa-map-marker" }),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.listing.address) +
+                          " " +
+                          _vm._s(_vm.listing.city) +
+                          ", " +
+                          _vm._s(_vm.listing.state_code) +
+                          "\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.listing.user_distance
+                    ? _c("span", { staticClass: "has-text-info" }, [
+                        _vm._v(
+                          "\n                       (About " +
+                            _vm._s(_vm.listing.user_distance) +
+                            " miles away)\n                    "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                !_vm.listing.is_favorited
+                  ? _c(
+                      "p",
+                      {
+                        staticStyle: {
+                          "margin-bottom": "0",
+                          "padding-bottom": "0"
+                        }
+                      },
+                      [
+                        _vm._v("Have you been here before? "),
+                        _c("add-to-list", {
+                          attrs: { place: _vm.listing, listType: "Favorite" },
+                          on: { "add-success": _vm.favorited }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("p", { staticClass: "subtitle has-text-centered" }, [
+                  _vm.listing.is_open
+                    ? _c(
+                        "small",
+                        {
+                          staticClass:
+                            "has-text-centered subtitle has-text-success"
+                        },
+                        [_vm._v("Open Now!")]
+                      )
+                    : _c(
+                        "small",
+                        {
+                          staticClass:
+                            "has-text-centered subtitle has-text-danger"
+                        },
+                        [_vm._v("Closed Now")]
+                      )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "columns" }, [
+              _c("div", { staticClass: "column" }, [
+                _vm.listing.summary
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.listing.summary) +
+                          "\n                "
+                      )
+                    ])
+                  : _c("div", { staticClass: "has-text-white" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "button is-info is-outlined is-small",
+                          on: { click: _vm.suggestDescription }
+                        },
+                        [_vm._v("Suggest a Description")]
+                      )
+                    ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("Price:\n                    "),
+                  _c(
+                    "span",
+                    { staticClass: "is-size-6" },
+                    [
+                      _vm._l(_vm.listing.price, function(i) {
+                        return _c("i", {
+                          staticClass: " has-text-success fas fa-dollar-sign"
+                        })
+                      }),
+                      _vm._l(5 - _vm.listing.price, function(c) {
+                        return _c("i", {
+                          staticClass:
+                            "fas fa-dollar-sign has-text-grey-lighter"
+                        })
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("Rating:\n                    "),
+                  _c(
+                    "span",
+                    { staticClass: " is-size-6" },
+                    [
+                      _vm._l(Math.round(_vm.listing.rating), function(d) {
+                        return _c("i", {
+                          staticClass: "fa fa-star fa-2x has-text-warning"
+                        })
+                      }),
+                      _vm._l(5 - Math.round(_vm.listing.rating), function(e) {
+                        return _c("i", {
+                          staticClass: "fa fa-star has-text-grey-lighter"
+                        })
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "buttons" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "button is-small is-danger is-outlined",
+                      attrs: {
+                        href: _vm.listing.map_link,
+                        target: "_blank",
+                        rel: "nofollow noopener"
+                      }
+                    },
+                    [
+                      _vm._v("Let's Go!\n                     "),
+                      _c("i", { staticClass: "fa fa-location-arrow" })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.listing.phone_number
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button is-small is-primary is-outlined",
+                          attrs: { href: "tel:" + _vm.listing.phone_number }
+                        },
+                        [
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(_vm._s(_vm.listing.phone_number))])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.listing.email_address
+                    ? _c(
+                        "a",
+                        {
+                          staticClass:
+                            "button is-small is-success  is-outlined",
+                          attrs: { href: "mailto:" + _vm.listing.email_address }
+                        },
+                        [_vm._m(3), _vm._v(" "), _c("span", [_vm._v(" Email")])]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.listing.website_url
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button is-small is-link  is-outlined",
+                          attrs: {
+                            href: _vm.listing.website_url,
+                            target: "_blank"
+                          }
+                        },
+                        [
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(" Website")])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.listing.menu_link
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "button is-small is-info  is-outlined",
+                          attrs: {
+                            href: _vm.listing.menu_link,
+                            target: "_blank"
+                          }
+                        },
+                        [_vm._m(5), _vm._v(" "), _c("span", [_vm._v(" Menu")])]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm.listing.facebook_link
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href:
+                              "https://facebook.com/" +
+                              _vm.listing.facebook_link,
+                            target: "_blank",
+                            rel: "nofollow"
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fab fa-facebook fa-2x",
+                            staticStyle: { color: "#fff" }
+                          })
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.listing.instagram_link
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href:
+                              "https://instagram.com/" +
+                              _vm.listing.instagram_link,
+                            target: "_blank",
+                            rel: "nofollow"
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fab fa-instagram fa-2x",
+                            staticStyle: { color: "#FFF" }
+                          })
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column" }, [
+                _c(
+                  "h2",
+                  {
+                    staticClass:
+                      "has-text-centered subtitle has-text-white has-text-weight-bold"
+                  },
+                  [_vm._v("Hours")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  _vm._l(_vm.listing.hours, function(hour, idx) {
+                    return _c("li", { staticClass: "has-text-centered" }, [
+                      idx === _vm.today
+                        ? _c(
+                            "strong",
+                            {
+                              staticClass: "has-text-weight-bold has-text-white"
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-arrow-circle-right"
+                              }),
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(hour) +
+                                  "\n                        "
+                              )
+                            ]
+                          )
+                        : _c("span", [_vm._v(_vm._s(hour))])
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm.listing.reviews
+              ? _c(
+                  "div",
+                  [
+                    _c(
+                      "h2",
+                      { staticClass: "title has-text-centered has-text-white" },
+                      [_vm._v("Recent Google Reviews")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.listing.reviews, function(review) {
+                      return _c("article", { staticClass: "media" }, [
+                        _c("figure", { staticClass: "media-left" }, [
+                          _c("p", { staticClass: "image is-64x64" }, [
+                            _c("img", {
+                              attrs: { src: review.profile_photo_url }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "media-content" }, [
+                          _c("div", { staticClass: "content" }, [
+                            _c("p", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: {
+                                    href: review.author_url,
+                                    target: "_blank",
+                                    rel: "nofollow"
+                                  }
+                                },
+                                [_vm._v(_vm._s(review.author_name))]
+                              ),
+                              _vm._v(" "),
+                              _c("small", [
+                                _vm._v(_vm._s(review.relative_time_description))
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(review.text) +
+                                  "\n                        "
+                              )
                             ]),
                             _vm._v(" "),
-                            _c("br"),
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(review.text) +
-                                "\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _c(
-                              "span",
-                              { staticClass: " is-size-6" },
-                              [
-                                _vm._l(Math.round(review.rating), function(d) {
-                                  return _c("i", {
-                                    staticClass: "fa  fa-star has-text-warning"
-                                  })
-                                }),
-                                _vm._l(5 - Math.round(review.rating), function(
-                                  e
-                                ) {
-                                  return _c("i", {
-                                    staticClass:
-                                      "fa fa-xs fa-star has-text-grey-lighter"
-                                  })
-                                })
-                              ],
-                              2
-                            )
+                            _c("p", [
+                              _c(
+                                "span",
+                                { staticClass: " is-size-6" },
+                                [
+                                  _vm._l(Math.round(review.rating), function(
+                                    d
+                                  ) {
+                                    return _c("i", {
+                                      staticClass:
+                                        "fa  fa-star has-text-warning"
+                                    })
+                                  }),
+                                  _vm._l(
+                                    5 - Math.round(review.rating),
+                                    function(e) {
+                                      return _c("i", {
+                                        staticClass:
+                                          "fa fa-xs fa-star has-text-grey-lighter"
+                                      })
+                                    }
+                                  )
+                                ],
+                                2
+                              )
+                            ])
                           ])
                         ])
                       ])
-                    ])
-                  })
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "button is-small is-link is-outlined",
-              staticStyle: { "margin-bottom": "30px" },
-              on: {
-                click: function($event) {
-                  return _vm.$router.go(-1)
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "button is-small is-link is-outlined",
+                staticStyle: { "margin-bottom": "30px" },
+                on: {
+                  click: function($event) {
+                    return _vm.$router.go(-1)
+                  }
                 }
-              }
-            },
-            [_vm._m(6), _vm._v(" "), _c("span", [_vm._v("Go Back")])]
-          )
-        ])
-      : _c("div", { staticClass: "hero is-fullheight" }, [_vm._m(7)])
-  ])
+              },
+              [_vm._m(6), _vm._v(" "), _c("span", [_vm._v("Go Back")])]
+            )
+          ])
+        : _c("div", { staticClass: "hero is-fullheight" }, [_vm._m(7)]),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: { active: _vm.showClaimModal, width: 640 },
+          on: {
+            "update:active": function($event) {
+              _vm.showClaimModal = $event
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-background" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-card" }, [
+            _c("header", { staticClass: "modal-card-head" }, [
+              _c("h2", { staticClass: "modal-card-title" }, [
+                _vm._v("Claim Ownership?")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("section", { staticClass: "modal-card-body has-text-white" }, [
+              _c("p", [
+                _vm._v(
+                  "Are you sure you want to claim ownership of " +
+                    _vm._s(_vm.listing.name) +
+                    "? Doing so will grant you access to update and maintain this listing, and you will be responsible for this content of this listing."
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Once you claim ownership, you will "),
+                _c("strong", { staticClass: "has-text-danger" }, [
+                  _vm._v("NOT")
+                ]),
+                _vm._v(
+                  " have immediate access to edit this listing. Your ownership claim will trigger a manual review process to verify that your are the actual owner of " +
+                    _vm._s(_vm.listing.name) +
+                    " or a party authorized by the owner."
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v("This process may take several days.")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "If your claim is rejected, we will send you a response explaining why your claim has been rejected and you will have to opportunity to re-submit your claim."
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "If you are not the owner of or authorized to manage social media for " +
+                    _vm._s(_vm.listing.name) +
+                    ", and we determine that this ownership claim was submitted in bad faith, "
+                ),
+                _c("span", { staticClass: "has-text-danger" }, [
+                  _vm._v("your account may be deleted or suspended")
+                ]),
+                _vm._v(".")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("footer", { staticClass: "modal-card-foot" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button is-small is-success",
+                  on: { click: _vm.claimOwnership }
+                },
+                [_vm._v("Claim Ownership")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "button is-small is-danger",
+                  on: {
+                    click: function($event) {
+                      _vm.showClaimModal = false
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              )
+            ])
+          ])
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -19118,7 +19395,7 @@ var render = function() {
             _vm._v("Your Account")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "columns" }, [
+          _c("div", { staticClass: "columns is-multiline" }, [
             _c("div", { staticClass: "column is-half" }, [
               _c("div", { staticClass: "card" }, [
                 _vm._m(0),
@@ -19242,7 +19519,81 @@ var render = function() {
               _c("div", { staticClass: "card" }, [
                 _vm._m(1),
                 _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "card-content has-background-grey-darker has-text-white"
+                  },
+                  [
+                    _c("p", [
+                      _vm._v(
+                        "Below are a list of the restaurants that you own and have claimed ownership of in EatLocalICT"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm.places
+                      ? _c(
+                          "ul",
+                          _vm._l(_vm.places, function(place) {
+                            return _c("li", { key: _vm.id }, [
+                              _c(
+                                "p",
+                                {
+                                  staticStyle: {
+                                    "padding-bottom": "0",
+                                    "margin-bottom": "0"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(place.name) +
+                                      "\n                                "
+                                  )
+                                ]
+                              ),
+                              _c("p", { staticClass: "heading" }, [
+                                place.claim_status === "approved"
+                                  ? _c("span", {
+                                      staticClass: "has-text-white"
+                                    })
+                                  : place.claim_status === "denied"
+                                  ? _c(
+                                      "span",
+                                      { staticClass: "has-text-danger" },
+                                      [
+                                        _vm._v(
+                                          "Your ownership claim has been denied."
+                                        )
+                                      ]
+                                    )
+                                  : place.claim_status === "pending"
+                                  ? _c(
+                                      "span",
+                                      { staticClass: "has-text-info" },
+                                      [
+                                        _vm._v(
+                                          "Your ownership claim is pending approval by an EatLocalICT Admin."
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      : _vm._e()
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "column is-half" }, [
+              _c("div", { staticClass: "card" }, [
                 _vm._m(2),
+                _vm._v(" "),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "footer",
@@ -19386,6 +19737,16 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header has-background-black-ter" }, [
       _c("h1", { staticClass: "card-header-title has-text-white is-size-4" }, [
         _vm._v("Reset Your Password?")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header has-background-black-ter" }, [
+      _c("h1", { staticClass: "card-header-title has-text-white is-size-4" }, [
+        _vm._v("Your Restaurants")
       ])
     ])
   },
@@ -20186,6 +20547,23 @@ var render = function() {
                         type: "password",
                         placeholder: "Your Password"
                       },
+                      nativeOn: {
+                        keyup: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.login($event)
+                        }
+                      },
                       model: {
                         value: _vm.password,
                         callback: function($$v) {
@@ -20596,7 +20974,8 @@ var render = function() {
                   _c(
                     "router-link",
                     {
-                      staticClass: "has-text-white has-text-weight-bold",
+                      staticClass:
+                        "button is-link is-inverted  is-outlined has-text-weight-bold",
                       attrs: { to: { name: "search" } }
                     },
                     [_vm._v("Advanced Search")]

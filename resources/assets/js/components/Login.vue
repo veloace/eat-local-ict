@@ -12,7 +12,7 @@
                         </b-field>
 
                         <b-field label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password">
-                            <b-input  v-model="password" password-reveal type="password" placeholder="Your Password"></b-input>
+                            <b-input @keyup.native.enter="login" v-model="password" password-reveal type="password" placeholder="Your Password"></b-input>
                         </b-field>
                     <p class="has-text-white">
                         <b-switch  size="is-small" :value="false" true-value="1" false-value="0" v-model="remember">

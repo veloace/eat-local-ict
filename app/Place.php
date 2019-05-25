@@ -11,7 +11,7 @@ class Place extends Model
 {
     use SoftDeletes;
     //
-    protected $appends=['user_distance','is_open','is_favorited','user_comment'];
+    protected $appends=['user_distance','is_open','is_favorited','user_comment','claim_status'];
 
     protected $favorite;
     /**
@@ -214,6 +214,70 @@ class Place extends Model
         $c = 2*atan2(sqrt($a), sqrt(1-$a));
         return (round($radiusEarth*$c,2));
     }
+
+    /**
+     * @return string
+     */
+    public function getClaimStatusAttribute()
+    {
+        /*
+         * There are five types of claim status
+         *
+         * 1. 'unclaimed' Means this place has not been claimed by anyone and is open to being claimed
+         * 2. 'claimed' Means this place has been claimed, but it is claimed by someone who is not the current user
+         * 3. 'pending' Means this place has been claimed by the current user, but the ownership has not been verified by an admin.
+         * 4. 'approved' means the current user has claimed this place and it has been approved by and admin. Logically similar to 'claimed'
+         * 5. 'denied' means the current user has claimed this place, but it was denied by an admin
+         */
+
+
+        if(!Auth::check())
+        {
+            //if the current user is  NOT logged in only unclaimed and claimed are possible, so let's get the simplest query possible
+            return  UserPlaceOwnershipClaim::where([
+                ['place_id',$this->id],
+                ['is_approved',true]
+            ])->count() > 0 ? 'claimed':'unclaimed';//as long as there is at least one that is approved, then return 'claimed' else return 'unclaimed'
+
+        }
+        else
+        {
+            //first, get all of the ownership claims belonging to this user.
+            $claims = UserPlaceOwnershipClaim::where([
+                ['place_id',$this->id],
+                ['requester_user_id',Auth::id()],
+            ])
+            ->orderBy('created_at','desc')
+            ->first();//only get the most recent claim from this user, if there is more than one.
+
+            if($claims)
+            {//if there are claims, we need to sort through them
+                if($claims->is_approved)
+                {
+                    return 'approved';
+                }
+                elseif($claims->is_rejected)
+                {
+                    return 'denied';
+                }
+                else
+                {
+                    return 'pending';
+                }
+            }
+            else
+            {//just return the same as if the user wasn't logged in.
+                return  UserPlaceOwnershipClaim::where([
+                    ['place_id',$this->id],
+                    ['is_approved',true]
+                ])->count() > 0 ? 'claimed':'unclaimed';//as long as there is at least one that is approved, then return 'claimed' else return 'unclaimed'
+
+            }//else
+        }//else
+
+
+
+    }//function getClaimStatusAttribute.
 
 
 

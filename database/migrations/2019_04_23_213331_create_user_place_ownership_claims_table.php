@@ -17,7 +17,7 @@ class CreateUserPlaceOwnershipClaimsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('requester_user_id');
             $table->unsignedInteger('place_id');
-            $table->unsignedInteger('admin_approval_user_id');
+            $table->unsignedInteger('admin_approval_user_id')->nullable();
             $table->string('admin_comments',175)->nullable();
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_rejected')->default(false);

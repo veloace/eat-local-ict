@@ -7,11 +7,13 @@ use App\Http\Requests\AddNewPlaceRequest;
 use App\Http\Requests\GetRandomPlaceRequest;
 use App\Http\Requests\MissingPlaceSuggestionRequest;
 use App\Http\Requests\PlaceDescriptionSuggestionRequest;
+use App\Http\Requests\PlaceOwnershipRequest;
 use App\Http\Requests\PlaceSearchRequest;
 use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use App\UserFavorite;
+use App\UserPlaceOwnershipClaim;
 use App\UserSavedForLater;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -540,6 +542,39 @@ class PlaceController extends Controller
         $this->buildPlaceInformation($place);
         return redirect()->route('editPlace',$place->id)->with('success_message', 'Success! You just added this place to EatLocalICT');
 
+    }
+
+
+    public function claimOwnership(PlaceOwnershipRequest $request)
+    {
+        $claim = new UserPlaceOwnershipClaim();
+        $claim->requester_user_id = Auth::id();
+        $claim->place_id = $request['place'];
+        $claim->save();
+
+        return response(null,204);
+
+    }
+
+    public function showLocationsOwnedByUser()
+    {
+        if(Auth::check())
+        {
+            $ids = UserPlaceOwnershipClaim::select('place_id')
+                ->distinct()
+                ->where('requester_user_id',Auth::id())
+                ->get()
+                ->pluck('place_id')
+                ->toArray();
+
+            return Place::whereIn('id',$ids)
+                ->select('id','name')
+                ->get();
+        }
+        else
+        {
+            return [];
+        }
     }
 
 }//class

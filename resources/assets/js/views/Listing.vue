@@ -13,8 +13,24 @@
             </div>
             <div class="columns">
                 <div class="column">
-                    <h1  class="title has-text-centered has-text-white"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
+                    <h1  class="title has-text-centered has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
                     </h1>
+                    <p style="margin-bottom: 0; padding-bottom: 0" class="heading has-text-centered has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
+                    <div v-if="listing.user_comment" style="margin-bottom: 0; padding-bottom: 0">
+                        <p  class="heading has-text-warning has-text-centered">You said..
+                            <span class="has-text-warning is-italic has-text-centered">"{{listing.user_comment}}"</span>
+                        </p>
+                    </div>
+                    <p class="has-text-centered heading">
+                       <span v-if="listing.claim_status==='unclaimed'" class="has-text-grey">This place is unclaimed.
+                            <a v-if="$root.user.logged" @click="showClaimModal=true"> Claim ownership?</a>
+                            <a v-else="$root.user.logged" @click="$root.showLoginModal=true"> Login to claim ownership.</a>
+                       </span>
+                       <span v-else-if="listing.claim_status==='claimed'" class="has-text-grey">Claimed.</span>
+                       <span v-else-if="listing.claim_status==='approved'" class="has-text-grey">You own this place.</span>
+                       <span v-else-if="listing.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
+                       <span v-else-if="listing.claim_status==='pending'" class="has-text-grey">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
+                    </p>
                     <p class="subtitle has-text-centered">
                         <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
                             <i class="fa fa-map-marker"></i>
@@ -24,17 +40,13 @@
                            (About {{listing.user_distance}} miles away)
                         </span>
                     </p>
-                    <p class="heading has-text-centered has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
-                    <p v-else>Have you been here before? <add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
-                    <div v-if="listing.user_comment">
-                        <p  class="heading has-text-warning has-text-centered">You said..
-                            <span class="has-text-warning is-italic has-text-centered">"{{listing.user_comment}}"</span>
-                        </p>
-                    </div>
+                    <p style="margin-bottom: 0; padding-bottom: 0"  v-if="!listing.is_favorited">Have you been here before? <add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
+
                     <p class="subtitle has-text-centered">
                         <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</small>
                         <small class="has-text-centered subtitle has-text-danger" v-else="">Closed Now</small>
                     </p>
+
                 </div>
             </div>
             <div class="columns">
@@ -168,6 +180,26 @@
                 </div>
             </div>
         </div>
+
+        <b-modal :active.sync="showClaimModal" :width="640" >
+            <div class="modal-background"></div>
+            <div class="modal-card" >
+                <header class="modal-card-head">
+                    <h2 class="modal-card-title">Claim Ownership?</h2>
+                </header>
+                <section class="modal-card-body has-text-white">
+                    <p>Are you sure you want to claim ownership of {{listing.name}}? Doing so will grant you access to update and maintain this listing, and you will be responsible for this content of this listing.</p>
+                    <p>Once you claim ownership, you will <strong class="has-text-danger">NOT</strong> have immediate access to edit this listing. Your ownership claim will trigger a manual review process to verify that your are the actual owner of {{listing.name}} or a party authorized by the owner.</p>
+                    <p>This process may take several days.</p>
+                    <p>If your claim is rejected, we will send you a response explaining why your claim has been rejected and you will have to opportunity to re-submit your claim.</p>
+                    <p>If you are not the owner of or authorized to manage social media for {{listing.name}}, and we determine that this ownership claim was submitted in bad faith, <span class="has-text-danger">your account may be deleted or suspended</span>.</p>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-small is-success" @click="claimOwnership">Claim Ownership</button>
+                    <button class="button is-small is-danger" @click="showClaimModal=false">Cancel</button>
+                </footer>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -200,8 +232,10 @@
                     reviews:null,
                     facebook_link:null,
                     instagram_link:null,
-                    user_distance:null
+                    user_distance:null,
+                    claim_status:null
                 },
+                showClaimModal:false,
                 tags: [],
                 lastPage: {
                     name: 'home',
@@ -230,7 +264,7 @@
                     })
                     .catch((error) => {
                         this.loading = false;
-                        this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
+                        this.$root.showNotification('We encountered an error and were unable to load this place. If this problem persists, try refreshing the page.','danger');
                     })
             },
             suggestDescription(){
@@ -239,6 +273,22 @@
             favorited()
             {
                 this.listing.is_favorited=true;
+            },
+            claimOwnership()
+            {
+                this.loading=true;
+                axios.post('/api/places/owner/',{place:this.listing.id})
+                    .then((response) => {
+                        this.showClaimModal=false;
+                        this.loading = false;
+                        this.$root.showNotification('Your ownership claim for '+this.listing.name+' has been submitted.','success');
+                        this.listing.claim_status='pending';
+
+                    })
+                    .catch((error) => {
+                        this.loading = false;
+                        this.$root.showNotification('We encountered an error and were unable to process your ownership claim. If this problem persists, try refreshing the page.','danger');
+                    })
             }
         },
         activated() {

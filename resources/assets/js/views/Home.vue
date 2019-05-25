@@ -16,7 +16,7 @@
                   <button @click="findRandomPlace" class="button is-link is-inverted  is-outlined is-large has-text-weight-bold	">Random Place</button>
                </p>
                <p>
-                  <router-link :to="{name:'search'}"  class="has-text-white has-text-weight-bold">Advanced Search</router-link>
+                  <router-link :to="{name:'search'}"  class="button is-link is-inverted  is-outlined has-text-weight-bold">Advanced Search</router-link>
                </p>
                <hr>
                <p class="has-text-white">Help us add features and keep our servers running!</p>

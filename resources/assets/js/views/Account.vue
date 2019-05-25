@@ -2,7 +2,7 @@
     <div class="has-background-translucent top-spacer">
         <div class="container main-container has-text-white" style="margin-top: 30px;">
             <h1 class="title has-text-white">Your Account</h1>
-            <div class="columns">
+            <div class="columns is-multiline">
                 <div class="column is-half">
                     <div class="card">
                         <div class="card-header has-background-black-ter">
@@ -31,6 +31,29 @@
 
                 </div>
 
+                <div class="column is-half">
+                    <div class="card">
+                        <div class="card-header has-background-black-ter">
+                            <h1 class="card-header-title has-text-white is-size-4">Your Restaurants</h1>
+                        </div>
+                        <div class="card-content has-background-grey-darker has-text-white">
+                            <p>Below are a list of the restaurants that you own and have claimed ownership of in EatLocalICT</p>
+                            <ul v-if="places">
+                                <li v-for="place in places" :key="id">
+                                    <p style="padding-bottom: 0;margin-bottom: 0">{{place.name}}
+                                    <p class="heading">
+                                        <span v-if="place.claim_status==='approved'" class="has-text-white"></span>
+                                        <span v-else-if="place.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
+                                        <span v-else-if="place.claim_status==='pending'" class="has-text-info">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
+                                   </p>
+
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
 
                 <div class="column is-half">
                     <div class="card">
@@ -96,7 +119,8 @@ export default {
                 password_confirmation:null,
                 delete_password:null,
             },
-            showDeleteModal:false
+            showDeleteModal:false,
+            places:[]
         }
     },
     methods:{
@@ -185,11 +209,24 @@ export default {
                     }
                 })
 
+        },
+        getOwnedRestaurants()
+        {
+            axios.get('/api/places/owner')
+                .then((response)=>{
+
+                    this.places = response.data;
+                })
+                .catch(()=>{
+                    this.$root.showNotification('We encountered an error and couldn\'t load your restaurants.','warning');
+
+                })
         }
     },
     activated()
     {
         this.$root.isAuthenticated(false,true);//make sure user is logged in on front end
+        this.getOwnedRestaurants();
     }
 }
 </script>
