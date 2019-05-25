@@ -49,7 +49,7 @@ const app = new Vue({
             geo:{//center of wichita is default value with timestamp of 1000 seconds in the past
                 lat:37.6789,
                 lng:-97.3420,
-                timestamp:(Date.now()-10)
+                timestamp:(Date.now()-1000)
             },
             user:{
                 name:null,
@@ -110,10 +110,10 @@ const app = new Vue({
          */
         getUserLocation()
         {
-
             //only reset the user location if the data is more than 10 minutes old.
             if((Date.now()-this.geo.timestamp) >=1000)
             {
+                console.log('getting location');
 
                 let options = {
                     enableHighAccuracy: true,
@@ -122,7 +122,9 @@ const app = new Vue({
 
                 if(navigator.geolocation)
                 {
+                    self=this;
                     navigator.geolocation.getCurrentPosition(this.setGeo, function(error){
+                        self.showNotification("We couldn't get your current location, so we are pretending that you are in the middle of Wichita.",'info');
                     }, options);
 
                 }
@@ -139,14 +141,58 @@ const app = new Vue({
         {
             let crd = position.coords;
 
-            this.geo.lat = crd.latitude;
-            this.geo.lng =crd.longitude;
-            this.geo.timestamp =crd.timestamp;
+            //we have coordinates, so we should check them first to make sure the user is in Wichita
+            if(this.calculateDistance(crd)<20)
+            {//if less than 20 miles, use the coordinates we got from geolocation
+                console.log(crd);
+                this.geo={
+                    lat:crd.latitude,
+                    lng:crd.longitude,
+                    timestamp:Date.now()
+                };
+            }
+            else
+            {//else, we are way outside of Wichita, so bring them in
+                self.showNotification("It looks like you're not in Wichita, so we are using the middle of Wichita for your distance calculations.",'info');
 
-
-
+                this.geo={//center of wichita
+                    lat:37.6789,
+                    lng:-97.3420,
+                    timestamp:Date.now()
+                };
+            }
             //
         },//setGeo
+        /**
+         *calculates the distance (in miles) between two geographic coordinates. If only one coordinate is supplied, then
+         * just calculate the distance from the center of Wichita.
+         * @param pointA the starting point to calculate the distance from
+         * @param pointB optional, the ending point to calculate distance to. Defaults to center of Wichita
+         */
+        calculateDistance(pointA,pointB=null)
+        {
+            if (pointB===null)
+            {//if null, use center of Wichita
+                pointB= {
+                        latitude:37.6789,
+                        longitude:-97.3420
+                };
+            }
+            
+            let radLatA = Math.PI * pointA.latitude/180;
+            let radLatB = Math.PI * pointB.latitude/180;
+            let theta = pointA.longitude- pointB.longitude;
+            let radTheta = Math.PI * theta/180;
+            let dist = Math.sin(radLatA) * Math.sin(radLatB) + Math.cos(radLatA) * Math.cos(radLatB) * Math.cos(radTheta);
+            if (dist > 1) {
+                dist = 1;
+            }
+            dist = Math.acos(dist);
+            dist = dist * 180/Math.PI;
+            dist = dist * 60 * 1.1515;
+            return dist;
+
+        },
 
         isAuthenticated(redirectIfAuthenticated = false,redirectIfNotAuthenticated=false,route=null)
         {

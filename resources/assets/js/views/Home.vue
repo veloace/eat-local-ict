@@ -126,7 +126,7 @@
                   is_open:1,
                  lat:this.$root.geo.lat,
                  lng:this.$root.geo.lng,
-                    distance:0
+                    distance:4
                 },
                 showPlaceModal:false,
                 distances:[

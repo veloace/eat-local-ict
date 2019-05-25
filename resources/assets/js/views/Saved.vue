@@ -1,6 +1,6 @@
 <template>
     <div class="has-background-translucent top-spacer">
-        <div class="container has-text-white has-background-translucent" style="margin-top: 25px;">
+        <div class="container has-text-white has-background-translucent" style="margin-top: 25px;min-height: 100vh">
             <header>
                 <h1 class="title has-text-white">Saved Locations</h1>
                 <p class="heading">These are restaurants that you have marked as "Save for Later"</p>

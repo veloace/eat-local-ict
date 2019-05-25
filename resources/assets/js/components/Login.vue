@@ -89,6 +89,12 @@
                             }
 
                         }
+                        else
+                        {
+                            this.password=null;
+                            this.$root.showNotification('LOGIN FAILED. Please refresh the page and try again.','warning');
+
+                        }
                     });
             },
             register(){
