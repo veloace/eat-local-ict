@@ -124,7 +124,7 @@ const app = new Vue({
                 {
                     self=this;
                     navigator.geolocation.getCurrentPosition(this.setGeo, function(error){
-                        self.showNotification("We couldn't get your current location, so we are pretending that you are in the middle of Wichita.",'info');
+                        self.showNotification("We couldn't get your current location, so we are using the middle of Wichita for your location.",'info');
                     }, options);
 
                 }
@@ -191,6 +191,7 @@ const app = new Vue({
             dist = dist * 180/Math.PI;
             dist = dist * 60 * 1.1515;
             return dist;
+
 
         },
 

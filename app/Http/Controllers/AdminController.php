@@ -6,9 +6,12 @@ use App\Http\Requests\AddNewPlaceRequest;
 use App\Http\Requests\DeletePlaceRequest;
 use App\Http\Requests\EditPlaceRequest;
 use App\Http\Requests\EditSuggestionRequest;
+use App\Http\Requests\ProcessOwnershipClaimRequest;
 use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
+use App\User;
+use App\UserPlaceOwnershipClaim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,15 +21,59 @@ class AdminController extends Controller
 
     public function index()
     {
+        $data['token']=json_encode(['csrfToken' => csrf_token()]);
+        return view('admin.dash',$data);
+    }
 
-        $data['user'] = Auth::user();
-        if(Auth::user()->has_world_admin_access)
+    public function loadDashboard()
+    {
+       $data['description_suggestions'] =PlaceDescriptionSuggestion::count();
+       $data['missing_place_suggestions']=MissingPlaceSuggestion::count();
+       $data['ownership_claims']=UserPlaceOwnershipClaim::where(
+           [
+               ['is_approved',false],
+               ['is_rejected',false]
+           ]
+       )
+           ->count();
+        $data['places'] = Place::count();
+       $data['users'] = User::count();
+
+       return $data;
+    }
+
+
+    public function showOwnershipClaims()
+    {
+        $data['ownership_claims']=UserPlaceOwnershipClaim::where(
+            [
+                ['is_approved',false],
+                ['is_rejected',false]
+            ]
+        )
+            ->with('place','user')
+            ->get();
+        return $data;
+    }
+
+    public function processOwnershipClaim(ProcessOwnershipClaimRequest $request)
+    {
+        $owner = UserPlaceOwnershipClaim::where('id',$request['id'])->first();
+
+        if($request['is_approved'])
         {
-            $data['description_suggestions'] = PlaceDescriptionSuggestion::all();
-            $data['missing_suggestions'] = MissingPlaceSuggestion::orderBy('created_at','desc')->get();
+            $place = Place::find($owner->place_id);
+            $place->owner_user_id = $owner->requester_user_id;
+            $place->save();
+
         }
 
-        return view('admin.dash',$data);
+        $owner->is_approved=$request['is_approved'];
+        $owner->is_rejected=$request['is_rejected'];
+        $owner->admin_comments=$request['admin_comments'];
+        $owner->save();
+
+        return response(null,204);
     }
 
     public function dataEditRequest()

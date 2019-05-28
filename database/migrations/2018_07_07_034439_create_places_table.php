@@ -22,6 +22,7 @@ class CreatePlacesTable extends Migration
             $table->string('address')->nullable();//nullable because food trucks may not have a set address
             $table->string('city')->default('Wichita');
             $table->char('state_code',2)->default('KS');
+            $table->unsignedInteger('owner_user_id')->nullable();
             //
             //contact info
             $table->string('phone_number')->nullable();
@@ -34,7 +35,16 @@ class CreatePlacesTable extends Migration
             //extra special attributes
             $table->boolean('has_vegan_options')->default(false);
             $table->boolean('has_gluten_free_options')->default(false);
+            $table->boolean('has_bike_rack')->default(false);
+            $table->boolean('has_ev_charger')->default(false);
+            $table->boolean('has_carryout')->default(false);
+            $table->boolean('has_public_wifi')->default(false);
+            $table->boolean('serves_alcohol')->default(false);
+            $table->boolean('serves_full_meals')->default(false);
+            $table->boolean('serves_brunch')->default(false);
+
             $table->boolean('is_food_truck')->default(false);
+
             //location info
             //
             $table->string('google_place_id')->nullable();

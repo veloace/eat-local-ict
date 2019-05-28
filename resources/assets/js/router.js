@@ -43,6 +43,11 @@ const routes =
             name:'account'
         },
         {
+            path: '/account/edit/:id',
+            component: require('./views/EditListing.vue'),
+            name:'EditListing'
+        },
+        {
             path: '/favorites',
             component: require('./views/Favorites.vue'),
             name:'favorites'
@@ -52,7 +57,17 @@ const routes =
             component: require('./views/Saved.vue'),
             name:'saved'
         },
-];
+        {
+            path: '/404',
+            component: require('./views/404.vue'),
+            name:'404'
+        },
+        {
+            path: '*',
+            redirect: '/404'
+        },
+
+    ];
 
 
     export default new VueRouter({

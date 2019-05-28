@@ -1,89 +1,94 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>{{ config('app.name', 'Eat Local ICT') }}</title>
+    <meta name="description" content="Eat Local in Wichita, KS. Use this web app to find a locally-owned and operate restaurant, bar, or cafe in Wichita.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/fav/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png">
+    <link rel="manifest" href="/fav/site.webmanifest">
+    <link rel="mask-icon" href="/fav/safari-pinned-tab.svg" color="#292929">
+    <link rel="shortcut icon" href="/fav/favicon.ico">
+    <meta name="msapplication-TileColor" content="#292929">
+    <meta name="msapplication-config" content="/fav/browserconfig.xml">
+    <meta name="theme-color" content="#292929">
 
-@section('content')
-    <header class="container">
-        <h1>Hi, {{$user->name}}!</h1>
-        <p> Welcome to your EatLocalICT Dashboard! From here you can admin the places that you own.</p>
-        <p>Think you might be in the wrong place? <a href="//www.eatlocalict.com">click here</a> to go back to the EatLocalICT web app.</p>
-    </header>
-    @if($user->has_world_admin_access)
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
 
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <h2>Place Description Suggestions</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <td>Place Name</td>
-                                        <td>Existing Description</td>
-                                        <td>Suggested Description</td>
-                                        <td>Action</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($description_suggestions as $sugg)
-                                        <tr>
-                                            <td>{{$sugg->place->name}}</td>
-                                            <td>{{$sugg->place->summary}}</td>
-                                            <td>{{$sugg->description}}</td>
-                                            <td>
-                                                <form method="post">
-                                                    {{csrf_field()}}
-                                                    <input type="hidden" name="id" value="{{$sugg->id}}">
-                                                    <button class="btn btn-success">Accept</button>
-                                                </form>
-                                                <form method="post">
-                                                    {{csrf_field()}}
-                                                    {{method_field('DELETE')}}
-                                                    <input type="hidden" name="id" value="{{$sugg->id}}">
-                                                    <button class="btn btn-danger">Decline</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    @if(count($description_suggestions)<1)
-                                        <tr>
-                                            <td colspan="4">No results found.</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-12">
-                            <h2>Missing Place Suggestions</h2>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Created</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($missing_suggestions as $missing)
-                                        <tr>
-                                            <td>{{$missing->name}}</td>
-                                            <td>{{$missing->description}}</td>
-                                            <td>{{$missing->created_at->toDateTimeString()}}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-b">
-                            <a href="{{route('indexPlaces')}}" class="btn btn-info">Manage All Places</a>
-                            <a href="{{route('addPlace')}}" class="btn btn-success">Add New Place</a>
-                        </div>
+    <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
+
+
+    <base href="/">
+    <script>
+        window.Laravel = {!! $token!!};
+        @if (session('message'))
+            window.message =  "{!!  session('message') !!}";
+        @endif
+    </script>
+</head>
+<body>
+<noscript>
+    This is your fallback content in case JavaScript fails to load.
+</noscript>
+<div id="app">
+    <b-loading :is-full-page="true" :active.sync="$root.loading" ></b-loading>
+
+    <div v-if="false" style="background-color: #292929;position: fixed;z-index:10000000000;top:0;bottom: 0;left: 0;right:0;">
+        <p style="text-align: center;color:white;font-size: 25px;padding-top: 30vh">Eat Local ICT Is Loading...Please Wait</p>
+    </div>
+    <nav class="navbar is-fixed-top is-translucent" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+
+                <router-link :to="{name:'home'}"  class="navbar-item has-text-white">
+                    <img src="/img/logo.svg" alt="EatLocalICT" width="42" height="34">&nbsp;<strong>EatLocalICT</strong>
+                </router-link>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end" >
+                    <div class="navbar-item">
+                        <a @click="$root.logout" class="has-text-white"><i class="fa fa-sign-out-alt"></i> <span class="is-hidden-mobile">&nbsp;Logout</span>  </a>
                     </div>
                 </div>
             </div>
+
         </div>
-    </div>
-    @else
-    @endif
-@endsection
+    </nav>
+
+    <section class="hero is-fullheight ">
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
+    </section>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+
+            <p>
+                <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
+            </p>
+            <p>Want to help out? Check out our stuff on <a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" target="_blank" rel="nofollow">Teespring</a>
+                or buy us a coffee on <a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Ko-Fi</a>.
+            </p>
+            <p>
+                <img src="/img/logo.svg" alt="EatLocalICT" width="102" height="68">
+            </p>
+            <p>
+                Copyright &copy; 2018-2019. View our repository <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>.
+            </p>
+            </p>
+
+        </div>
+    </footer>
+
+</div>
+<script src="{{ mix('/js/csa.js') }}"></script>
+</body>
+</html>

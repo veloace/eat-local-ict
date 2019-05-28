@@ -39,8 +39,8 @@
                         <div class="card-content has-background-grey-darker has-text-white">
                             <p>Below are a list of the restaurants that you own and have claimed ownership of in EatLocalICT</p>
                             <ul v-if="places">
-                                <li v-for="place in places" :key="id">
-                                    <p style="padding-bottom: 0;margin-bottom: 0">{{place.name}}
+                                <li v-for="place in places" >
+                                    <p style="padding-bottom: 0;margin-bottom: 0">{{place.name}} <router-link :to="{name:'EditListing',params:{id:place.id}}"  v-if="place.claim_status==='approved' || place.claim_status==='pending'" >Edit Listing</router-link>
                                     <p class="heading">
                                         <span v-if="place.claim_status==='approved'" class="has-text-white"></span>
                                         <span v-else-if="place.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>

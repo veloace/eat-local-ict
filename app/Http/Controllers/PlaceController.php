@@ -203,6 +203,24 @@ class PlaceController extends Controller
         return($return);
     }
 
+    /**
+     * returns a Place object
+     * @param Place $place
+     * @param Request $request
+     * @return
+     */
+    public function indexLocationOwnedByUser(Place $place)
+    {
+        if($place->claim_status=='approved' ||$place->claim_status=='pending')
+        {//only send the data if they have appropriate clearance
+            return $place;
+        }
+        else
+        {
+            return response("You do not have access to edit {$place->name} .",422);
+        }
+    }
+
 
 
     /**

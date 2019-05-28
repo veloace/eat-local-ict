@@ -18,30 +18,32 @@ Route::domain($backendDomain)
 
 
         Route::middleware(['auth:web','administrators'])->group(function () {
-            //BEGIN REGULAR USERS GROUP
-            Route::get('/home',function (){
-                return redirect('/');
-            });
-            Route::get('','AdminController@index');
-
-            //END REGULAR USERS GROUP
-        });
-
-        Route::middleware(['auth:web','administrators'])->group(function () {
             //BEGIN ADMIN GROUP
 
-            Route::post('','AdminController@acceptSuggestion');
-            Route::delete('','AdminController@deleteSuggestion');
-            Route::prefix('place')->group(function(){
-                Route::get('','AdminController@indexPlaces')->name('indexPlaces');
-                Route::delete('','AdminController@deletePlace')->name('deletePlace');
-                Route::get('edit/{place}','AdminController@editPlace')->name('editPlace');
-                Route::post('edit/{id}','AdminController@savePlaceEdits')->name('savePlaceEdits');
-                Route::get('add','AdminController@addPlace')->name('addPlace');
-                Route::post('add','PlaceController@saveNewPlace')->name('saveNewPlace');
 
 
-            });//place prefix
+            Route::prefix('webAPI')->group(function() {
+                Route::get('', 'AdminController@loadDashboard');
+                Route::get('/claims', 'AdminController@showOwnershipClaims');
+                Route::post('/claims', 'AdminController@processOwnershipClaim');
+
+                Route::post('', 'AdminController@acceptSuggestion');
+                Route::delete('', 'AdminController@deleteSuggestion');
+
+
+                Route::prefix('place')->group(function () {
+                    Route::get('', 'AdminController@indexPlaces')->name('indexPlaces');
+                    Route::delete('', 'AdminController@deletePlace')->name('deletePlace');
+                    Route::get('edit/{place}', 'AdminController@editPlace')->name('editPlace');
+                    Route::post('edit/{id}', 'AdminController@savePlaceEdits')->name('savePlaceEdits');
+                    Route::get('add', 'AdminController@addPlace')->name('addPlace');
+                    Route::post('add', 'PlaceController@saveNewPlace')->name('saveNewPlace');
+
+
+                });//place prefix
+            });//webAPI prefix
+
+            Route::get('/{vue_capture?}','AdminController@index')->where('vue_capture', '[\/\w\.-]*');
 
         });//ADMIN GROUP
 

@@ -32,6 +32,7 @@ use Illuminate\Http\Request;
 Route::prefix('places')->group(function () {
     Route::get('index/{place}', 'PlaceController@index');
     Route::get('/owner', 'PlaceController@showLocationsOwnedByUser');
+    Route::get('/owner/{place}', 'PlaceController@indexLocationOwnedByUser');
     Route::post('/owner', 'PlaceController@claimOwnership');
     Route::get('search', 'PlaceController@search');
     Route::get('random', 'PlaceController@getRandomPlace');

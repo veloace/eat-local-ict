@@ -2309,6 +2309,30 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/404.vue":
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/About.vue":
 /***/ (function(module, exports) {
 
@@ -2629,6 +2653,358 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/EditListing.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            listing: null
+        };
+    },
+    //data
+    methods: {
+        loadListing: function loadListing() {
+            var _this = this;
+
+            this.$root.loading = true;
+            axios.get('/api/places/owner/' + this.$route.params.id).then(function (response) {
+                _this.listing = response.data;
+                _this.$root.loading = false;
+            }).catch(function (error) {
+                _this.$root.loading = false;
+                if (error.response.status = 422) {
+                    _this.$root.showNotification(error.response.data, 'danger');
+                } else {
+                    _this.$root.showNotification('We encountered an error and were unable to load the listing', 'danger');
+                }
+                _this.$router.push({ name: 'account' });
+            });
+        }
+    },
+    activated: function activated() {
+        this.loadListing();
+    }
+});
 
 /***/ }),
 
@@ -3995,8 +4371,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.loading = false;
                 _this.$root.showNotification('We encountered an error and were unable to load your search results. If this problem persists, try refreshing the page.', 'danger');
             });
-            //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
-            this.$root.getUserLocation();
         },
         //findRandomPlace
         loadNext: function loadNext(next) {
@@ -19536,7 +19910,7 @@ var render = function() {
                       ? _c(
                           "ul",
                           _vm._l(_vm.places, function(place) {
-                            return _c("li", { key: _vm.id }, [
+                            return _c("li", [
                               _c(
                                 "p",
                                 {
@@ -19546,11 +19920,24 @@ var render = function() {
                                   }
                                 },
                                 [
-                                  _vm._v(
-                                    _vm._s(place.name) +
-                                      "\n                                "
-                                  )
-                                ]
+                                  _vm._v(_vm._s(place.name) + " "),
+                                  place.claim_status === "approved" ||
+                                  place.claim_status === "pending"
+                                    ? _c(
+                                        "router-link",
+                                        {
+                                          attrs: {
+                                            to: {
+                                              name: "EditListing",
+                                              params: { id: place.id }
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Edit Listing")]
+                                      )
+                                    : _vm._e()
+                                ],
+                                1
                               ),
                               _c("p", { staticClass: "heading" }, [
                                 place.claim_status === "approved"
@@ -20230,6 +20617,77 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-2c8b2294", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-30b290d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/404.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "hero is-fullheight has-background-translucent" },
+    [
+      _c("div", { staticClass: "hero-body" }, [
+        _c("div", { staticClass: "container has-text-centered" }, [
+          _c("h1", { staticClass: "title has-text-white" }, [
+            _vm._v("\n                Page Not Found\n            ")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "has-text-white" }, [
+            _vm._v(
+              "It looks like the page you are looking for doesn't exist. Why not try one of the links below?"
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "p",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass:
+                    "button is-link is-inverted  is-outlined has-text-weight-bold",
+                  attrs: { to: { name: "home" } }
+                },
+                [_vm._v("Go Home")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "p",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass:
+                    "button is-link is-inverted  is-outlined has-text-weight-bold",
+                  attrs: { to: { name: "search" } }
+                },
+                [_vm._v("Advanced Search")]
+              )
+            ],
+            1
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-30b290d5", module.exports)
   }
 }
 
@@ -20923,6 +21381,1177 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-4e3fbec8", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4f1ace97\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/EditListing.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+    _vm.listing
+      ? _c(
+          "div",
+          {
+            staticClass: "container has-text-white is-translucent",
+            staticStyle: { "margin-bottom": "15px" }
+          },
+          [
+            _c("div", { staticClass: "columns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "column",
+                  staticStyle: { "margin-top": "30px" }
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "button is-small is-link is-outlined",
+                      on: {
+                        click: function($event) {
+                          return _vm.$router.go(-1)
+                        }
+                      }
+                    },
+                    [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("Go Back")])]
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "columns" }, [
+              _c("div", { staticClass: "column" }, [
+                _c(
+                  "h1",
+                  {
+                    staticClass: "title has-text-centered has-text-white",
+                    staticStyle: { "margin-bottom": "0" }
+                  },
+                  [
+                    _vm._v("You are editing "),
+                    _c(
+                      "span",
+                      { staticClass: "has-text-weight-bold has-text-success" },
+                      [_vm._v(_vm._s(_vm.listing.name))]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.listing.claim_status == "pending"
+                  ? _c("div", { staticClass: "notification is-warning" }, [
+                      _vm._v(
+                        "\n                    Your ownership claim is still pending approval. You will be unable to make or save changes to this listing.\n                "
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _c("form", { staticClass: "columns is-multiline" }, [
+              _c("div", { staticClass: "column is-half" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "columns",
+                    staticStyle: { "margin-bottom": "0" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "column",
+                        staticStyle: { "padding-bottom": "0" }
+                      },
+                      [
+                        _c(
+                          "b-field",
+                          {
+                            attrs: {
+                              label: "Name",
+                              "custom-class": "has-text-white"
+                            }
+                          },
+                          [
+                            _c("b-input", {
+                              attrs: {
+                                disabled:
+                                  _vm.listing.claim_status !== "approved",
+                                maxlength: "75"
+                              },
+                              model: {
+                                value: _vm.listing.name,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.listing, "name", $$v)
+                                },
+                                expression: "listing.name"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "columns" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "column",
+                      staticStyle: { "padding-top": "0" }
+                    },
+                    [
+                      _c(
+                        "b-field",
+                        {
+                          attrs: {
+                            label: "Google Place ID (Uneditable)",
+                            "custom-class": "has-text-white"
+                          }
+                        },
+                        [
+                          _c("b-input", {
+                            attrs: { disabled: "", maxlength: "75" },
+                            model: {
+                              value: _vm.listing.google_place_id,
+                              callback: function($$v) {
+                                _vm.$set(_vm.listing, "google_place_id", $$v)
+                              },
+                              expression: "listing.google_place_id"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-half" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label:
+                          "Short Description (This snippet appears in search results)",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175",
+                          type: "textarea"
+                        },
+                        model: {
+                          value: _vm.listing.summary,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "summary", $$v)
+                          },
+                          expression: "listing.summary"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-two-fifths" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Street Address",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.address,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "address", $$v)
+                          },
+                          expression: "listing.address"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-two-fifths" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: { label: "City", "custom-class": "has-text-white" }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.city,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "city", $$v)
+                          },
+                          expression: "listing.city"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-fifth" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "State",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "2"
+                        },
+                        model: {
+                          value: _vm.listing.state_code,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "state_code", $$v)
+                          },
+                          expression: "listing.state_code"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Phone Number",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "10"
+                        },
+                        model: {
+                          value: _vm.listing.phone_number,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "phone_number", $$v)
+                          },
+                          expression: "listing.phone_number"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Email Address",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.email_address,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "email_address", $$v)
+                          },
+                          expression: "listing.email_address"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Website URL",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.website_url,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "website_url", $$v)
+                          },
+                          expression: "listing.website_url"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Link to Your Menu",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.menu_link,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "menu_link", $$v)
+                          },
+                          expression: "listing.menu_link"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Facebook Page Name",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.facebook_link,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "facebook_link", $$v)
+                          },
+                          expression: "listing.facebook_link"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "column is-one-third" },
+                [
+                  _c(
+                    "b-field",
+                    {
+                      attrs: {
+                        label: "Instagram Username",
+                        "custom-class": "has-text-white"
+                      }
+                    },
+                    [
+                      _c("b-input", {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          maxlength: "175"
+                        },
+                        model: {
+                          value: _vm.listing.instagram_link,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "instagram_link", $$v)
+                          },
+                          expression: "listing.instagram_link"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_vegan_options,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_vegan_options", $$v)
+                          },
+                          expression: "listing.has_vegan_options"
+                        }
+                      },
+                      [
+                        _vm.listing.has_vegan_options
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_gluten_free_options,
+                          callback: function($$v) {
+                            _vm.$set(
+                              _vm.listing,
+                              "has_gluten_free_options",
+                              $$v
+                            )
+                          },
+                          expression: "listing.has_gluten_free_options"
+                        }
+                      },
+                      [
+                        _vm.listing.has_gluten_free_options
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [_vm._v("Do you serve alcohol?")]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.serves_alcohol,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "serves_alcohol", $$v)
+                          },
+                          expression: "listing.serves_alcohol"
+                        }
+                      },
+                      [
+                        _vm.listing.serves_alcohol
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Do you serve full meals (breakfast, lunch, or dinner)?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.serves_full_meals,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "serves_full_meals", $$v)
+                          },
+                          expression: "listing.serves_full_meals"
+                        }
+                      },
+                      [
+                        _vm.listing.serves_full_meals
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v("Do you serve brunch on any day of the week?")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.serves_brunch,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "serves_brunch", $$v)
+                          },
+                          expression: "listing.serves_brunch"
+                        }
+                      },
+                      [
+                        _vm.listing.serves_brunch
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v("Do you have carryout or a drive-thru?")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_carryout,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_carryout", $$v)
+                          },
+                          expression: "listing.has_carryout"
+                        }
+                      },
+                      [
+                        _vm.listing.has_carryout
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Do you have delivery, either in-house or through a third-party service like Uber Eats?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_delivery,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_delivery", $$v)
+                          },
+                          expression: "listing.has_delivery"
+                        }
+                      },
+                      [
+                        _vm.listing.has_delivery
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(6),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Do you have a physical store-front, or is this a food truck?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.is_food_truck,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "is_food_truck", $$v)
+                          },
+                          expression: "listing.is_food_truck"
+                        }
+                      },
+                      [
+                        _vm.listing.is_food_truck
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            FOOD TRUCK\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            STOREFRONT\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v("Do you have public Wi-Fi available to customers?")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_public_wifi,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_public_wifi", $$v)
+                          },
+                          expression: "listing.has_public_wifi"
+                        }
+                      },
+                      [
+                        _vm.listing.has_public_wifi
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _vm.listing.has_public_wifi
+                ? _c(
+                    "div",
+                    { staticClass: "column is-full" },
+                    [
+                      _c(
+                        "b-field",
+                        {
+                          attrs: {
+                            label: "Wi-Fi Password (OPTIONAL)",
+                            message:
+                              "Provide your public wi-fi password to make life easier for your customers. IMPORTANT NOTICE: IF you chose to publish the wi-fi password, keep in mind that people will no longer have to physically be in your store to get access to your Wi-Fi.",
+                            "custom-class": "has-text-white"
+                          }
+                        },
+                        [
+                          _c("b-input", {
+                            attrs: {
+                              maxlength: "175",
+                              disabled: _vm.listing.claim_status !== "approved"
+                            },
+                            model: {
+                              value: _vm.listing.wifi_password,
+                              callback: function($$v) {
+                                _vm.$set(_vm.listing, "wifi_password", $$v)
+                              },
+                              expression: "listing.wifi_password"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Is there a bike rack for secure storage of customer bicycles within 1 block?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_bike_rack,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_bike_rack", $$v)
+                          },
+                          expression: "listing.has_bike_rack"
+                        }
+                      },
+                      [
+                        _vm.listing.has_bike_rack
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Is there free parking available within a reasonable distance?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_free_parking,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_free_parking", $$v)
+                          },
+                          expression: "listing.has_free_parking"
+                        }
+                      },
+                      [
+                        _vm.listing.has_free_parking
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full" }, [
+                _c(
+                  "div",
+                  { staticClass: "field" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        "Is there a public electric vehicle (EV) charging station within walking distance?"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-switch",
+                      {
+                        attrs: {
+                          disabled: _vm.listing.claim_status !== "approved",
+                          size: "is-small",
+                          "true-value": "1"
+                        },
+                        model: {
+                          value: _vm.listing.has_ev_charger,
+                          callback: function($$v) {
+                            _vm.$set(_vm.listing, "has_ev_charger", $$v)
+                          },
+                          expression: "listing.has_ev_charger"
+                        }
+                      },
+                      [
+                        _vm.listing.has_ev_charger
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            YES\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            NO\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "column is-full has-text-centered" }, [
+                _c("hr"),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "button is-success",
+                    attrs: { disabled: _vm.listing.claim_status !== "approved" }
+                  },
+                  [_vm._v("Submit Changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fa fa-arrow-left " })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "column is-full" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h1", { staticClass: "has-text-white title is-4" }, [
+        _vm._v("Location Information")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "column is-full" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h1", { staticClass: "has-text-white title is-4" }, [
+        _vm._v("Contact & Social Media Information")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "column is-full" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h1", { staticClass: "has-text-white title is-4" }, [
+        _vm._v("Service Information")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _vm._v("Do you have any "),
+      _c("em", [_vm._v("vegan")]),
+      _vm._v(" options available to customers?")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _vm._v("Do you have any "),
+      _c("em", [_vm._v("gluten-free")]),
+      _vm._v(" options available to customers?")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "column is-full" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h1", { staticClass: "has-text-white title is-4" }, [
+        _vm._v("Accommodations")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4f1ace97", module.exports)
   }
 }
 
@@ -38529,7 +40158,7 @@ var app = new Vue({
                 if (navigator.geolocation) {
                     self = this;
                     navigator.geolocation.getCurrentPosition(this.setGeo, function (error) {
-                        self.showNotification("We couldn't get your current location, so we are pretending that you are in the middle of Wichita.", 'info');
+                        self.showNotification("We couldn't get your current location, so we are using the middle of Wichita for your location.", 'info');
                     }, options);
                 }
             }
@@ -39014,6 +40643,10 @@ var routes = [{
     component: __webpack_require__("./resources/assets/js/views/Account.vue"),
     name: 'account'
 }, {
+    path: '/account/edit/:id',
+    component: __webpack_require__("./resources/assets/js/views/EditListing.vue"),
+    name: 'EditListing'
+}, {
     path: '/favorites',
     component: __webpack_require__("./resources/assets/js/views/Favorites.vue"),
     name: 'favorites'
@@ -39021,6 +40654,13 @@ var routes = [{
     path: '/saved',
     component: __webpack_require__("./resources/assets/js/views/Saved.vue"),
     name: 'saved'
+}, {
+    path: '/404',
+    component: __webpack_require__("./resources/assets/js/views/404.vue"),
+    name: '404'
+}, {
+    path: '*',
+    redirect: '/404'
 }];
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -39032,6 +40672,54 @@ var routes = [{
         return { x: 0, y: 0 };
     }
 }));
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/404.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/404.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-30b290d5\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/404.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/404.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-30b290d5", Component.options)
+  } else {
+    hotAPI.reload("data-v-30b290d5", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 
@@ -39172,6 +40860,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-4e3fbec8", Component.options)
   } else {
     hotAPI.reload("data-v-4e3fbec8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/views/EditListing.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/EditListing.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4f1ace97\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/views/EditListing.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/EditListing.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f1ace97", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f1ace97", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

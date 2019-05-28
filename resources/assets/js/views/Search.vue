@@ -330,8 +330,6 @@
 
 
                     });
-                //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
-                this.$root.getUserLocation();
             },//findRandomPlace
             loadNext(next)
             {

@@ -9,4 +9,15 @@ class UserPlaceOwnershipClaim extends Model
 {
     //
     use SoftDeletes;
+
+
+    public function user()
+    {
+        return $this->hasOne(User::class,'id','requester_user_id');
+    }
+
+    public function place()
+    {
+        return $this->hasOne(Place::class,'id','place_id');
+    }
 }
