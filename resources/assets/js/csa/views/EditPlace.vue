@@ -364,7 +364,7 @@
             },
             save()
             {
-                axios.post('/webAPI/place/edit/',this.listing)
+                axios.post('/webAPI/place/edit',this.listing)
                     .then((response)=>{
                         this.$root.loading=false;
                         this.$root.showNotification('We saved your changes','success');

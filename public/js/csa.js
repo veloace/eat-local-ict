@@ -2099,7 +2099,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         save: function save() {
             var _this2 = this;
 
-            axios.post('/webAPI/place/edit/', this.listing).then(function (response) {
+            axios.post('/webAPI/place/edit', this.listing).then(function (response) {
                 _this2.$root.loading = false;
                 _this2.$root.showNotification('We saved your changes', 'success');
                 _this2.loadListing(); //reload it
