@@ -47,7 +47,11 @@ class EditPlaceRequest extends FormRequest
             'serves_alcohol'=>'nullable|boolean',
             'has_public_wifi'=>'nullable|boolean',
             'has_bike_rack'=>'nullable|boolean',
-            'has_carryout'=>'nullable|boolean'
+            'has_carryout'=>'nullable|boolean',
+            'serves_brunch'=>'nullable|boolean',
+            'has_delivery'=>'nullable|boolean',
+            'tags'=>'nullable|array',
+            'tags.*.id'=>'nullable|exists:tags,id'
         ];
     }
 }

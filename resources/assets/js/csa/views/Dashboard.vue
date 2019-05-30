@@ -9,7 +9,7 @@
             <div class="column has-text-centered is-half">
                 <p class="heading">Total Places</p>
                 <p class="is-size-3">{{places}}</p>
-                <a class="heading">Manage Places</a>
+                <router-link :to="{name:'places'}" class="heading">Manage Places</router-link>
             </div>
 
 

@@ -13,6 +13,16 @@ const routes =
             name: 'claims'
         },
         {
+            path: '/places',
+            component: require('./views/Places.vue'),
+            name: 'places'
+        },
+        {
+            path: '/place/:id',
+            component: require('./views/EditPlace.vue'),
+            name: 'editPlace'
+        },
+        {
             path: '/404',
             component: require('./views/404.vue'),
             name:'404'

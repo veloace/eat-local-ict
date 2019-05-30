@@ -279,6 +279,11 @@ class Place extends Model
 
     }//function getClaimStatusAttribute.
 
+     function tags()
+    {
+        return $this->hasManyThrough(Tag::class,PlaceTag::class,'place_id','id','id','tag_id');
+    }
+
 
 
 }
