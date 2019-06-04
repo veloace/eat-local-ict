@@ -33219,12 +33219,13 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+if ('serviceWorker' in navigator) {
+    if (!navigator.serviceWorker.controller) {
 
-if (navigator.serviceWorker.controller) {} else {
-
-    navigator.serviceWorker.register('offline.js', {
-        scope: './'
-    }).then(function (reg) {});
+        navigator.serviceWorker.register('offline.js', {
+            scope: './'
+        }).then(function (reg) {});
+    }
 }
 
 /***/ }),
