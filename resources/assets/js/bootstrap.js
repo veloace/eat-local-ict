@@ -23,15 +23,15 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+if ('serviceWorker' in navigator)
+{
+    if (!navigator.serviceWorker.controller) {
 
-if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register('offline.js', {
+            scope: './'
+        }).then(function(reg) {
 
-
-} else {
-
-    navigator.serviceWorker.register('offline.js', {
-        scope: './'
-    }).then(function(reg) {
-
-    });
+        });
+    }
 }
+
