@@ -17,8 +17,7 @@
     <meta name="msapplication-TileColor" content="#292929">
     <meta name="msapplication-config" content="/fav/browserconfig.xml">
     <meta name="theme-color" content="#292929">
-
-
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
 

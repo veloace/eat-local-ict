@@ -405,7 +405,7 @@
                 }
                 if(this.search.wifi)
                 {
-                    options.push(' have public wiki');
+                    options.push(' have public wi-fi');
 
                 }
 

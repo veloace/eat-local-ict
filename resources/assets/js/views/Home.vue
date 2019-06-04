@@ -180,8 +180,7 @@
 
                        this.$root.showNotification('We encountered an error and were unable to load a random place. If this problem persists, try refreshing the page.','danger');
                     });
-                //always try to update the position--even if it isn't available in time for this request, we'll have it for the next ones
-                this.$root.getUserLocation();
+
 
             },//findRandomPlace
             suggestDescription()

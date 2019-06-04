@@ -35,8 +35,13 @@ class PlaceController extends Controller
     public function getRandomPlace(GetRandomPlaceRequest $request,$iterator = 0)
     {
 
+        if($iterator >5)
+        {
+            //if we've got here, we're border on a race condition, so just sent an empty response.
+            return response('Could not find a random place close to you.',404);
+        }
         $useRadius=false;
-        $radius = 10000;//default fail-safe value
+        $radius = 40;//default fail-safe value
         $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
 
         //get the reruns from the session, if they are there
@@ -57,9 +62,6 @@ class PlaceController extends Controller
                 $useRadius = true;
                 switch($request['distance'])
                 {
-                    case 0:
-                        $useRadius = false;
-                        break;
                     case 1:
                         $radius=1;
                         break;
@@ -99,39 +101,48 @@ class PlaceController extends Controller
 
         $place = $place->whereNotIn('id',$runs);//prevent duplicates in randomization
         $place = $place->inRandomOrder()
-            ->first()
-            ->append(['is_open','user_distance']);
+            ->first();
 
 
+
+        if(!$place)
+        {//we couldn't get a place
+            //first thing to look at is if or $runs is too full
+            if(count($runs)>0)
+            {//remove the runs restriction for now
+                $runs = [];
+                session(['runs'=>$runs]);//save to session
+                $iterator++;
+                return $this->getRandomPlace($request,$iterator);
+            }
+            else
+            {//nothing in the runs array--so lets try upping the distance restriction
+                $request['distance'] = $request['distance']+1;
+                $iterator++;
+                return $this->getRandomPlace($request,$iterator);
+            }
+        }
+        $place = $place->append(['is_open','user_distance']);
 
         //to prevent a r rerun, save the id to the session so that we ignore it in the future
         $runs[] = $place->id;
-        //if the rerun array exceeds 50, clear out the first element
-        if(count($runs)>50)
+        //if the rerun array exceeds 25, clear out the first element
+        if(count($runs)>25)
         {
             array_shift($runs);//removes the first item
         }
         session(['runs'=>$runs]);//save to session
-
-
-        if(($requires_open && ($place->is_open==false))&& $iterator<10)
+        //
+        //final preflight; TODO: consider adding a scheduled task to update open status in database so that we can query it directly
+        if(($requires_open && ($place->is_open==false))&& $iterator<5)
         {
             //this place must be open, but it's not, so try another place
             $iterator++;
             return $this->getRandomPlace($request,$iterator);
         }//the place is required to be open but it is not open
-        elseif(!$place)
-        {
-            //we didn't find a place, so that must mean that there is something preventing results from returning to us.
-            //if that's the case, we need to remove some restrictions, then rerun it.
-            //easiest to remove is the reruns array, so let's do that
-            session(['runs'=>[]]);//reset runs to an empty array
-            $iterator++;
-            return $this->getRandomPlace($request,$iterator);
-        }
         else
         {
-            //either this place is good to go, or we couldn't find a place after 10 iterations.
+            //either this place is good to go, or we couldn't find a place after 5 iterations.
             //either way, we need to send something to the user, even if it isn't perfect
             return $place;
         }//else
