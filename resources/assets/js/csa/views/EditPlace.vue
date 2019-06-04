@@ -311,10 +311,11 @@
                                 allow-new
                                 icon="tags"
                                 icon-pack="fa"
-                                :data="tags"
+                                :data="filteredTags"
                                 field="name"
                                 closable
                                 placeholder="Add a tag"
+                                @typing="getFilteredTags"
                                 >
                         </b-taginput>
                     </b-field>
@@ -334,6 +335,7 @@
 
         data() {
             return {
+                filteredTags:[],
                 listing:null,
                 previous:null,
                 next:null,
@@ -378,6 +380,15 @@
                     });
 
 
+            },
+            getFilteredTags(text)
+            {
+                this.filteredTags = this.tags.filter((option) => {
+                    return option.name
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(text.toLowerCase()) >= 0
+                })
             }
         },
         watch: {

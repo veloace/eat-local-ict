@@ -8,7 +8,7 @@
             <div class="modal-card-body  has-background-grey-darker">
                 <p class="subtitle has-text-white">Please login to access your lists, favorites, and more!</p>
                         <b-field label="Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email">
-                            <b-input v-model="email" placeholder="Your Email" autofocus></b-input>
+                            <b-input v-model="email" placeholder="Your Email" ></b-input>
                         </b-field>
 
                         <b-field label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password">

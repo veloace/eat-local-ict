@@ -8,11 +8,11 @@
             <div class="modal-card-body">
                 <p class="subtitle has-text-white">You don't need an account to access EatLocalICT, but you can create a <strong class="has-text-white">FREE</strong> account to save favorites, make lists, and to claim ownership of restaurants!</p>
                     <b-field  label="Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name"  >
-                        <b-input   minlength="2" maxlength="100" v-model="name" placeholder="Your Name" autofocus></b-input>
+                        <b-input   minlength="2" maxlength="100" v-model="name" placeholder="Your Name" ></b-input>
                     </b-field>
 
                     <b-field  label="Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email" >
-                        <b-input minlength="2" maxlength="150" v-model="email" placeholder="Your Email" autofocus></b-input>
+                        <b-input minlength="2" maxlength="150" v-model="email" placeholder="Your Email" ></b-input>
                     </b-field>
 
                     <b-field  label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password" >

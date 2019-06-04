@@ -35,10 +35,11 @@
                                         autocomplete
                                         icon="tags"
                                         icon-pack="fa"
-                                        :data="$root.tags"
+                                        :data="filteredTags"
                                         field="name"
                                         closable
                                         placeholder="Start typing to select a tag"
+                                        @typing="getFilteredTags"
                                 >
                                 </b-taginput>
                             </b-field>
@@ -259,6 +260,7 @@
         data(){
             return{
                 showMissingPlaceModal:false,
+                filteredTags:this.$root.tags,
                 search:{
                     name:null,
                     lat:null,
@@ -520,6 +522,15 @@
                 });
 
                 return returnable;
+            },
+            getFilteredTags(text)
+            {
+                this.filteredTags = this.$root.tags.filter((option) => {
+                    return option.name
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(text.toLowerCase()) >= 0
+                })
             }
         },
 

@@ -317,10 +317,11 @@
                                 autocomplete
                                 icon="tags"
                                 icon-pack="fa"
-                                :data="$root.tags"
+                                :data="filteredTags"
                                 field="name"
                                 closable
                                 placeholder="Add a tag"
+                                @typing="getFilteredTags"
                         >
                         </b-taginput>
                     </b-field>
@@ -340,6 +341,7 @@
 
         data() {
             return {
+                filteredTags:this.$root.tags,
                 listing:null,
             }
         },//data
@@ -384,7 +386,17 @@
                         });
                 }
 
+            },
+            getFilteredTags(text)
+            {
+                this.filteredTags = this.$root.tags.filter((option) => {
+                    return option.name
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(text.toLowerCase()) >= 0
+                })
             }
+
         },
         activated(){
             this.loadListing();
