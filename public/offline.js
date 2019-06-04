@@ -6,7 +6,6 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         fetch(offlineRequest).then(function(response) {
             return caches.open('offline').then(function(cache) {
-                console.log('[oninstall] Cached offline page', response.url);
                 return cache.put(offlineRequest, response);
             });
         })
@@ -24,10 +23,7 @@ self.addEventListener('fetch', function(event) {
             fetch(request).catch(function(error) {
                 // `fetch()` throws an exception when the server is unreachable but not
                 // for valid HTTP responses, even `4xx` or `5xx` range.
-                console.error(
-                    '[onfetch] Failed. Serving cached offline fallback ' +
-                    error
-                );
+
                 return caches.open('offline').then(function(cache) {
                     return cache.match('offline.html');
                 });

@@ -27,20 +27,11 @@ if (token) {
 if (navigator.serviceWorker.controller) {
 
 
-    console.log(
-        navigator.serviceWorker.controller.scriptURL +
-        ' (onload)', 'controller'
-    );
-    console.log(
-        'An active service worker controller was found, ' +
-        'no need to register'
-    );
 } else {
 
     navigator.serviceWorker.register('offline.js', {
         scope: './'
     }).then(function(reg) {
-        console.log(reg.scope, 'register');
-        console.log('Service worker change, registered the service worker');
+
     });
 }

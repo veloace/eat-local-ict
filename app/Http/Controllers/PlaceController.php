@@ -14,6 +14,7 @@ use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use App\PlaceTag;
+use App\PlaceUpdateLog;
 use App\Tag;
 use App\UserFavorite;
 use App\UserPlaceOwnershipClaim;
@@ -682,6 +683,17 @@ class PlaceController extends Controller
         $this->updateTags($place,$request);
 
         $place->save();
+
+        $place->fresh();
+
+        $log = new PlaceUpdateLog();
+        $log->place_id = $place->id;
+        $log->edited_by_user_id = Auth::id();
+        $log->request_json = $request->getContent();
+        $log->new_model_json = $place->toJson(JSON_PRETTY_PRINT);
+        $log->save();
+
+
         return response(null,204);
     }
 

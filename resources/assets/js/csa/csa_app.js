@@ -60,10 +60,13 @@ const app = new Vue({
                         name:null,
                         logged:false
                     };
+
+                    setTimeout(function(){
+                        window.location.reload();
+                    });
                 })
                 .catch((error) => {
                     //todo: something
-
                     this.loading = false;
 
                 });
