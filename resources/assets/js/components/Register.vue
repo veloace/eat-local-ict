@@ -22,6 +22,11 @@
                     <b-field  label="Re-type Password" custom-class="has-text-white" :type="errors.password_confirmed ?'is-danger':''" :message="errors.password_confirmed" >
                         <b-input v-model="password_confirmed" type="password" placeholder="Confirm Password" required></b-input>
                     </b-field>
+                    <p class="has-text-white heading">In the future, we are considering adding a periodic newsletter of updates to the app and information about new and updated restaurants. Would you like to opt-in to receiving this newsletter if we decide to do it? (You can opt out at any time)</p>
+                    <b-switch class="has-text-white" size="is-small" :value="false" :true-value="1" :false-value="0" v-model="newsletter">
+                        <span v-if="newsletter===1">You are opted in!</span>
+                        <span v-else>You are NOT opted in</span>
+                    </b-switch>
                     <p class="has-text-white">By clicking the sign-up button below, you agree to our <a @click="$root.toggleLegalInfoModal('terms')" >terms and conditions</a> and our <a @click="$root.toggleLegalInfoModal('cookies')" >cookie policy</a>.</p>
             </div>
             <footer class="modal-card-foot">
@@ -45,7 +50,8 @@
                     password:null,
                     password_confirmed:null
                 },
-                showLoginModal:true
+                showLoginModal:true,
+                newsletter:1
             }
         },
         methods:{
@@ -62,7 +68,8 @@
                     password:this.password,
                     password_confirmation:this.password_confirmed,
                     name:this.name,
-                    'g-recaptcha-response':recaptchaToken
+                    'g-recaptcha-response':recaptchaToken,
+                    newsletter:this.newsletter
                 })
                     .then((response) => {
                         this.$root.loading = false;

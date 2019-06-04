@@ -28,6 +28,7 @@
     <base href="/">
     <script>
         window.Laravel = {!! $token!!};
+        window.tags = {!! $tags!!};
         @if (session('message'))
               window.message =  "{!!  session('message') !!}";
         @endif
@@ -35,7 +36,8 @@
 </head>
 <body>
 <noscript>
-    This is your fallback content in case JavaScript fails to load.
+   <h1>Hi there</h1>
+    <p>Please allow JavaScript :)</p>
 </noscript>
 <div id="app">
     <b-loading :is-full-page="true" :active.sync="$root.loading" ></b-loading>

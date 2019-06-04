@@ -5,6 +5,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('./bootstrap');
+
+
+
+
 import VueRouter from 'vue-router';
 import router  from './router';
 import Buefy from 'buefy'
@@ -58,7 +62,8 @@ const app = new Vue({
             showLoginModal:false,
             showRegistrationModal:false,
             legalInfo:null,
-            showLegalInfo:false
+            showLegalInfo:false,
+            tags:[]
 
         }
     },
@@ -87,10 +92,11 @@ const app = new Vue({
             this.$notification.open({
                 duration: 5000,
                 message: message,
-                position: 'is-top-right',
+                position: 'is-bottom',
                 type: type,
                 hasIcon: true,
-                iconPack:'fa'
+                iconPack:'fa',
+                queue:false
             })
 
         },//showNotification
@@ -113,11 +119,9 @@ const app = new Vue({
             //only reset the user location if the data is more than 10 minutes old.
             if((Date.now()-this.geo.timestamp) >=1000)
             {
-                console.log('getting location');
-
                 let options = {
                     enableHighAccuracy: true,
-                    timeout: 5000
+                    timeout: 10000
                 };
 
                 if(navigator.geolocation)
@@ -144,7 +148,6 @@ const app = new Vue({
             //we have coordinates, so we should check them first to make sure the user is in Wichita
             if(this.calculateDistance(crd)<20)
             {//if less than 20 miles, use the coordinates we got from geolocation
-                console.log(crd);
                 this.geo={
                     lat:crd.latitude,
                     lng:crd.longitude,
@@ -262,6 +265,9 @@ const app = new Vue({
                         name:null,
                         logged:false
                     };
+                    window.setTimeout(function(){
+                        location.reload();//clear 419 problems
+                    },1500)
                 })
                 .catch((error) => {
                 //todo: something
@@ -293,6 +299,10 @@ const app = new Vue({
      * Start getting the user's location as soon as possible.
      */
     created(){
+        if (window.tags)
+        {
+            this.tags=window.tags;
+        }
         this.isAuthenticated();
         this.getUserLocation();
         if(window.message)

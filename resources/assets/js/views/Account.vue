@@ -23,22 +23,45 @@
                         </div>
                         <footer class="card-footer has-background-black-ter">
                             <p class="card-footer-item">
-
                                 <button class="button is-success" @click="resetPassword">Reset Password</button>
                             </p>
                         </footer>
                     </div>
 
                 </div>
-
                 <div class="column is-half">
+                    <div class="card">
+                        <div class="card-header has-background-black-ter">
+                            <h1 class="card-header-title has-text-white is-size-4">Account Settings</h1>
+
+                        </div>
+                        <div class="card-content has-background-grey-darker">
+                            <b-field label="Your Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name">
+                                <b-input v-model="name"  type="text"  placeholder="Current Password" autofocus></b-input>
+                            </b-field>
+                            <b-field label="You Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email">
+                                <b-input v-model="email"  type="email"  placeholder="Current Password" autofocus></b-input>
+                            </b-field>
+                            <b-switch class="has-text-white" size="is-small" :value="false" :true-value="1" :false-value="0" v-model="newsletter">
+                                <span v-if="newsletter===1">You are opted in to receive our periodic newsletter!</span>
+                                <span v-else>You are NOT opted in to receive our newsletter... :(</span>
+                            </b-switch>
+                        </div>
+                        <footer class="card-footer has-background-black-ter">
+                            <p class="card-footer-item">
+                                <button class="button is-success" @click="updateUser">Update Account</button>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <div class="column is-half" v-if="places.length > 0">
                     <div class="card">
                         <div class="card-header has-background-black-ter">
                             <h1 class="card-header-title has-text-white is-size-4">Your Restaurants</h1>
                         </div>
                         <div class="card-content has-background-grey-darker has-text-white">
                             <p>Below are a list of the restaurants that you own and have claimed ownership of in EatLocalICT</p>
-                            <ul v-if="places">
+                            <ul >
                                 <li v-for="place in places" >
                                     <p style="padding-bottom: 0;margin-bottom: 0">{{place.name}} <router-link :to="{name:'EditListing',params:{id:place.id}}"  v-if="place.claim_status==='approved' || place.claim_status==='pending'" >Edit Listing</router-link>
                                     <p class="heading">
@@ -50,6 +73,7 @@
                                 </li>
                             </ul>
                         </div>
+
 
                     </div>
 
@@ -113,11 +137,16 @@ export default {
             password:null,
             delete_password:null,
             password_confirmation:null,
+            name:'',
+            email:'',
+            newsletter:0,
             errors:{
                 old_password:null,
                 password:null,
                 password_confirmation:null,
                 delete_password:null,
+                email:null,
+                name:null
             },
             showDeleteModal:false,
             places:[]
@@ -127,12 +156,7 @@ export default {
         resetPassword()
         {
             this.$root.loading= true;
-            this.errors={
-                old_password:null,
-                password:null,
-                password_confirmation:null,
-                delete_password:null,
-            };
+            this.resetErrors();
             axios.post('api/user/password',{
                 old_password:this.old_password,
                 password:this.password,
@@ -170,12 +194,7 @@ export default {
         deleteAccount()
         {
             this.$root.loading= true;
-            this.errors={
-                old_password:null,
-                password:null,
-                password_confirmation:null,
-                delete_password:null,
-            };
+            this.resetErrors();
             axios.post('api/user/deleteAccount',{
                 delete_password:this.delete_password,
             })
@@ -207,6 +226,11 @@ export default {
                         }
 
                     }
+                    else
+                    {
+                        this.$root.showNotification('We couldn\'t delete your account. Please try again or contact customer support.','warning');
+                        this.password=null;
+                    }
                 })
 
         },
@@ -221,12 +245,83 @@ export default {
                     this.$root.showNotification('We encountered an error and couldn\'t load your restaurants.','warning');
 
                 })
+        },
+        getUserInfo()
+        {
+            axios.get('/api/user')
+                .then((response)=>{
+
+                    this.name = response.data.name;
+                    this.email = response.data.email;
+                    this.newsletter = response.data.can_get_newsletter;
+                })
+                .catch(()=>{
+                    this.$root.showNotification('We encountered an error and couldn\'t load your restaurants.','warning');
+
+                })
+        },
+        updateUser()
+        {
+            this.resetErrors();
+            this.$root.loading= true;
+            axios.post('/api/user',{
+                name:this.name,
+                email:this.email,
+                newsletter:this.newsletter,
+                _method:'PATCH'
+            })
+                .then((response)=>{
+                    if(response.status===204)
+                    {
+                        this.$root.showNotification('You account has been updated!','success');
+                    }
+                    else if (response.data.message)
+                    {
+                        this.$root.showNotification(response.data.message,'success');
+
+                    }
+                    this.$root.loading= false;
+
+                })
+                .catch((error)=>{
+
+                    if (error.response.status===422)
+                    {
+                        let errors = error.response.data.errors;
+                        for (const [key, value] of Object.entries(errors)) {
+                            this.errors[key] = value[0];
+                            console.log(key,value);
+
+                        }
+                        this.$root.showNotification('Looks like there was an error in the data you provided. Please check the form for errors.','warning');
+
+                    }
+                    else
+                    {
+                        this.$root.showNotification('We encountered an error and couldn\'t update your account.','warning');
+
+                    }
+                    this.$root.loading= false;
+
+                })
+        },
+        resetErrors()
+        {
+            this.errors={
+                old_password:null,
+                password:null,
+                password_confirmation:null,
+                delete_password:null,
+                email:null,
+                name:null
+            };
         }
     },
     activated()
     {
         this.$root.isAuthenticated(false,true);//make sure user is logged in on front end
         this.getOwnedRestaurants();
+        this.getUserInfo();
     }
 }
 </script>

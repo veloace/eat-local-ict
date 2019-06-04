@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 
     Route::prefix('user')->group(function(){
         route::get('','UserController@currentUser');
+        route::patch('','UserController@updateUser');
         route::post('login','UserController@loginViaSpa');
         route::post('register','Auth\RegisterController@register');
         route::post('password','UserController@changePassword');
@@ -33,6 +34,7 @@ Route::prefix('places')->group(function () {
     Route::get('index/{place}', 'PlaceController@index');
     Route::get('/owner', 'PlaceController@showLocationsOwnedByUser');
     Route::get('/owner/{place}', 'PlaceController@indexLocationOwnedByUser');
+    Route::post('/owner/edit', 'PlaceController@editListing');
     Route::post('/owner', 'PlaceController@claimOwnership');
     Route::get('search', 'PlaceController@search');
     Route::get('random', 'PlaceController@getRandomPlace');

@@ -15,6 +15,6 @@
     ],
     "theme_color": "#292929",
     "background_color": "#292929",
-    "start_url": "https://eatlocalict.com",
+    "start_url": "/?utm_source=homescreen",
     "display": "standalone"
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SPALoginRequest;
+use App\Http\Requests\UpdateUserSelfRequest;
 use App\Http\Requests\UserAccountDeletionRequest;
 use App\Http\Requests\UserPasswordSelfServiceChangeRequest;
 use App\User;
@@ -45,7 +46,9 @@ class UserController extends Controller
     function currentUser()
     {
         $id = Auth::id();
-        $user = User::where('id',$id)->select('name')->first();
+        $user = User::where('id',$id)
+            ->select('name','email','can_get_newsletter')
+            ->first();
         if($user)
         {
             return($user);
@@ -110,6 +113,51 @@ class UserController extends Controller
             return response(null,204);
         }
         return response()->json(['message'=>'The given data was invalid', 'errors'=>['delete_password'=>['Password is incorrect.']]],422);
+    }
+
+
+    /**
+     * @param UpdateUserSelfRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function updateUser(UpdateUserSelfRequest $request)
+    {
+
+        //first, check if the email changed
+        $hasEmailChanged = Auth::user()->email != $request['email'];
+
+        if($hasEmailChanged)
+        {
+            //first, check email to make sure it doesn't belong to someone else
+            $emailInUse = User::where('email',$request['email'])
+                    ->where('id','<>',Auth::id())
+                    ->count() > 0;
+
+            if($emailInUse)
+            {
+                return response()->json(['errors'=>['email'=>['That email is already in use by another user.']]],422);
+
+            }
+        }//email Changed
+            $user = User::where('id', Auth::id())
+                ->first();
+
+            $user->name = $request['name'];
+            $user->email =$request['email'];
+            $user->can_get_newsletter = !empty($request['newsletter']);
+            $user->email_verified_at  = $hasEmailChanged ? null: $user->email_verified_at;
+            //
+
+            if($hasEmailChanged)
+            {
+                $user->fresh();
+                $user->sendEmailVerificationNotification();//resendEmailVerification
+
+                return response()->json(['message'=>'It looks like you changed your email, so for security purposes we are requiring you to re-verify your email. Please check your email for a message from us.'],200);
+            }
+
+            return response(null,204);
+
     }
 
 }

@@ -26,7 +26,7 @@
         <div class="modal-background"></div>
         <div class="modal-card" >
             <header class="modal-card-head">
-                <h2 class="modal-card-title">Add a Note?</h2>
+                <h2 class="modal-card-title">Add to Favorites</h2>
             </header>
             <section class="modal-card-body has-text-white">
                 <p>Would you like to add a note to yourself as to why you love this place? (this is optional)</p>

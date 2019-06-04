@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'g-recaptcha-response'=>'required',
+            'newsletter'=>'nullable|boolean'
 
         ]);
     }
@@ -69,9 +70,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'can_get_newsletter' => !empty($data['newsletter']),
             'password' => Hash::make($data['password']),
         ]);
         $user->sendEmailVerificationNotification();

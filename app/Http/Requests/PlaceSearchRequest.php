@@ -38,6 +38,11 @@ class PlaceSearchRequest extends FormRequest
             'meals'=>'nullable|boolean',
             'favorited'=>'nullable|boolean',
             'saved'=>'nullable|boolean',
+            'delivery'=>'nullable|boolean',
+            'brunch'=>'nullable|boolean',
+            'charger'=>'nullable|boolean',
+            'parking'=>'nullable|boolean',
+            'tags'=>'nullable|array'
         ];
     }
 }

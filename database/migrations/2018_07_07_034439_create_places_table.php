@@ -39,6 +39,7 @@ class CreatePlacesTable extends Migration
             $table->boolean('has_ev_charger')->default(false);
             $table->boolean('has_carryout')->default(false);
             $table->boolean('has_public_wifi')->default(false);
+            $table->boolean('has_delivery')->default(false);
             $table->boolean('serves_alcohol')->default(false);
             $table->boolean('serves_full_meals')->default(false);
             $table->boolean('serves_brunch')->default(false);

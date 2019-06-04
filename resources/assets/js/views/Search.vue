@@ -4,28 +4,19 @@
 
     <div class="container has-text-white has-background-translucent" style="margin-top: 30px;">
 
-        <b-collapse class="panel panel-form-heading" :open.sync="filtersVisible">
-            <div slot="trigger" class="panel-heading has-background-black">
-                <strong class="has-text-white">Advanced Search Filters <i v-if="!filtersVisible" class="fas fa-plus"></i> <i v-else class="fas fa-times"></i></strong>
+        <b-collapse class="card" :open.sync="filtersVisible" animation="translate-y">
+            <div slot="trigger" class="card-header has-background-black">
+                <strong class="has-text-white card-header-title">Advanced Search Filters&nbsp;<i v-if="!filtersVisible" class="fas fa-plus"></i> <i v-else class="fas fa-times"></i></strong>
             </div>
-            <div class="container has-background-grey-darker">
+            <div class="card-content has-background-grey-darker">
+                <div class="content">
                 <div class="columns">
-                    <div class="column is-6">
+                    <div class="column is-8">
                         <b-field >
                             <b-input  v-model="search.name" placeholder="Search by Name or Partial Name"></b-input>
                         </b-field>
                     </div>
-                   <!-- <div class="column is-3">
-                        <b-select v-model="search.genre" placeholder="Select Genre" :expanded="true">
-                            <option
-                                    v-for="option in genres"
-                                    :value="option.id"
-                                    :key="option.id">
-                                {{option.name }}
-                            </option>
-                        </b-select>
-                    </div>-->
-                    <div class="column is-3" v-if="$root.geo.lat && $root.geo.lng">
+                    <div class="column is-4" v-if="$root.geo.lat && $root.geo.lng">
                             <b-select v-model="search.distance" placeholder="Select Distance" :expanded="true">
                                 <option
                                         v-for="option in distances"
@@ -36,10 +27,29 @@
                             </b-select>
                     </div>
                 </div>
-                <div class="columns">
+                    <div class="columns">
+                        <div class="column is-full">
+                            <b-field label="Search by Tag" custom-class="has-text-white">
+                                <b-taginput
+                                        v-model="search.tags"
+                                        autocomplete
+                                        icon="tags"
+                                        icon-pack="fa"
+                                        :data="$root.tags"
+                                        field="name"
+                                        closable
+                                        placeholder="Start typing to select a tag"
+                                >
+                                </b-taginput>
+                            </b-field>
+                        </div>
+                    </div>
+                    <p class="heading has-text-white">Service Options</p>
+
+                    <div class="columns is-multiline">
                     <div class="column is-3">
                         <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.vegan">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.vegan">
                                 Vegan Options
                             </b-switch>
                         </div>
@@ -47,7 +57,7 @@
 
                     <div class="column is-3">
                         <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.glutenFree">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.glutenFree">
                                 Gluten-Free Options
                             </b-switch>
                         </div>
@@ -55,74 +65,96 @@
 
                     <div class="column is-3">
                         <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.alcohol">
-                                Serves Alcohol
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.alcohol">
+                                Alcohol
                             </b-switch>
                         </div>
                     </div>
+
+                        <div class="column is-3">
+                            <div class="field">
+                                <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.meals">
+                                    Full Meals
+                                </b-switch>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <div class="field">
+                                <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.brunch">
+                                     Brunch
+                                </b-switch>
+                            </div>
+                        </div>
+
+                        <div class="column is-3">
+                            <div class="field">
+                                <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.carryout">
+                                    Carryout/Drive-thru
+                                </b-switch>
+                            </div>
+                        </div>
+
+                        <div class="column is-3">
+                            <div class="field">
+                                <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.delivery">
+                                    Delivery
+                                </b-switch>
+                            </div>
+                        </div>
+
+                    </div>
+
+                <p class="heading has-text-white">Accommodations</p>
+                <div class="columns is-multiline">
                     <div class="column is-3">
                         <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.wifi">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.wifi">
                                 Public Wi-Fi
                             </b-switch>
                         </div>
                     </div>
 
+                    <div class="column is-3">
+                        <div class="field">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.parking">
+                               Free Parking
+                            </b-switch>
+                        </div>
+                    </div>
+                    <div class="column is-3">
+                        <div class="field">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.bikeRack">
+                                Bike Rack Close By
+                            </b-switch>
+                        </div>
+                    </div>
 
 
-
+                    <div class="column is-3">
+                        <div class="field">
+                            <b-switch class="has-text-white" size="is-small" :value="false" true-value="1" false-value="0" v-model="search.charger">
+                                EV Charger Close By
+                            </b-switch>
+                        </div>
+                    </div>
                 </div>
-                <div class="columns">
-                    <div class="column is-3">
-                        <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.bikeRack">
-                                Has Bike Rack
-                            </b-switch>
-                        </div>
-                    </div>
 
-                    <div class="column is-3">
-                        <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.meals">
-                                Has Full Meals
-                            </b-switch>
-                        </div>
-                    </div>
-
-                    <div class="column is-3">
-                        <div class="field">
-                            <b-switch size="is-small" :value="false" true-value="1" false-value="0" v-model="search.carryout">
-                                Carryout/Drive-thru
-                            </b-switch>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="columns">
+                    <div class="columns">
                     <div class="column">
                         <button class="button is-success" @click="getPlaces">Search</button>
                         <button class="button is-info" @click="reset">Reset Filters</button>
 
                     </div>
                 </div>
-                <p class="has-text-info heading">Searching for:
-                    <span >All locations</span>
-                    <span v-if="search.distance && search.distance !=0">within
-                        <span v-if="search.distance==1">one mile</span>
-                        <span v-else-if="search.distance==2">3 miles</span>
-                        <span v-else-if="search.distance==3">5 miles</span>
-                        <span v-else-if="search.distance==4">10 miles</span>
-                        <span v-else-if="search.distance==5">20 miles</span>
-                    </span>
-                    <span v-if="search.name">where the name has the term "{{search.name}}" in it</span>
-
-                </p>
+                </div>
             </div>
         </b-collapse>
         <div v-if="!loading">
             <p  class="has-text-white" >Found <strong class="has-text-info">{{totalResults}}</strong> results.</p>
         </div>
-
+        <p class="has-text-info heading">
+          {{searchLabel}}
+        </p>
 
         <div class="tile is-ancestor" v-if="!loading && items.length>0">
             <div class="tile is-parent is-4" v-for="item in items" :key="item.id">
@@ -231,17 +263,22 @@
                     name:null,
                     lat:null,
                     lng:null,
-                    distance:null,
-                    genre:null,
+                    distance:0,
                     vegan:0,
                     glutenFree:0,
                     alcohol:0,
                     wifi:0,
                     bikeRack:0,
                     meals:0,
-                    carryout:0
+                    carryout:0,
+                    brunch:0,
+                    delivery:0,
+                    charger:0,
+                    parking:0,
+                    tags:[]
 
                 },
+                searchLabel:'Searching for all locations.',
                 loading:false,
                 items:[],
                 currentPage:1,
@@ -293,7 +330,7 @@
             /**
              * Make the API call to get the places that match the user's search
              * */
-            getPlaces(){
+            getPlaces(forReset = false){
                 this.loading = true;
                 this.search.lat=this.$root.geo.lat;
                 this.search.lng=this.$root.geo.lng;
@@ -310,11 +347,21 @@
                         wifi:this.search.wifi,
                         bikeRack:this.search.bikeRack,
                         meals:this.search.meals,
-                        carryout:this.search.carryout
+                        carryout:this.search.carryout,
+                        charger:this.search.charger,
+                        brunch:this.search.brunch,
+                        delivery:this.search.delivery,
+                        parking:this.search.parking,
+                        tags:this.convertTagsToIDs(this.search.tags)
                     }
                 };
                 axios.get('/api/places/search',params)
                     .then((response)=> {
+                        this.generateSearchLabel();
+                        if(!forReset)
+                        {
+                            this.filtersVisible=false
+                        }
                         this.scrollToTop();
                         this.loading = false;
                         this.items=response.data.data;
@@ -328,9 +375,81 @@
                         this.loading = false;
                         this.$root.showNotification('We encountered an error and were unable to load your search results. If this problem persists, try refreshing the page.','danger');
 
-
                     });
             },//findRandomPlace
+            generateSearchLabel()
+            {
+                let labelString='Searching for all locations';
+                if(this.search.distance!==0)
+                {
+                    labelString = labelString + " "+this.distances[this.search.distance].text+ ' from your current location'
+                }
+
+                let options = [];
+
+                if(this.search.vegan)
+                {
+                    options.push(' have vegan options');
+                }
+                if(this.search.glutenFree)
+                {
+                    options.push(' have gluten-free options');
+
+                }
+                if(this.search.alcohol)
+                {
+                    options.push(' serves alcohol');
+
+                }
+                if(this.search.wifi)
+                {
+                    options.push(' have public wiki');
+
+                }
+
+                if(this.search.bikeRack)
+                {
+                    options.push(' have a bike rack close by');
+
+                }
+                if(this.search.meals)
+                {
+                    options.push(' serve full meal (breakfast, lunch, or dinner)');
+                }
+                if(this.search.carryout)
+                {
+                    options.push(' have carryout');
+
+                }
+
+                if(this.search.charger)
+                {
+                    options.push(' have an electric vehicle (EV) charger within walking distance');
+                }
+
+                if(this.search.brunch)
+                {
+                    options.push(' serve brunch');
+                }
+
+                if(this.search.delivery)
+                {
+                    options.push(' have delivery');
+                }
+                if(this.search.parking)
+                {
+                    options.push(' have free parking close by');
+
+                }
+
+                if(options.length>0)
+                {
+                    labelString = labelString+" that" + options.join(' and');
+                }
+
+                this.searchLabel=labelString+'.';
+
+            },
             loadNext(next)
             {
                 this.currentPage=next;
@@ -345,20 +464,25 @@
                  name:null,
                  lat:this.$root.geo.lat,
                  lng:this.$root.geo.lng,
-                 distance:null,
+                 distance:0,
                  genre:null,
                  vegan:0,
                  glutenFree:0,
                  alcohol:0,
                  wifi:0,
                  bikeRack:0,
-                 meals:0
+                 meals:0,
+                 brunch:0,
+                 delivery:0,
+                 charger:0,
+                 parking:0,
+                 tags:[]
              };
                 this.currentPage=1;
                 this.totalResults=1;
                 this.perPage=20;
                 this.item=[];
-                this.getPlaces();
+                this.getPlaces(true);
             },//reset
             scrollToTop() {
                 window.scrollTo(0,0);
@@ -387,6 +511,15 @@
                     this.missingSuggestion = null;
                     this.$root.showNotification('Thanks, we appreciate people like you! We have received your suggestion and will review its suitability for use on EatLocalICT! ','success')
                     this.showMissingPlaceModal=false;
+            },
+            convertTagsToIDs(tags)
+            {
+                let returnable = [];
+                tags.forEach((tag)=>{
+                    returnable.push(tag.id);
+                });
+
+                return returnable;
             }
         },
 
@@ -417,11 +550,5 @@
     {
         color:#fff;
     }
-    .panel-form-heading
-    {
-        margin-left:-10px ;
-        margin-right:-10px ;
-    }
-
 
 </style>

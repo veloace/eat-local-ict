@@ -22,7 +22,6 @@ Route::domain($backendDomain)
             //BEGIN ADMIN GROUP
 
 
-
             Route::prefix('webAPI')->group(function() {
                 Route::get('', 'AdminController@loadDashboard');
                 Route::get('/claims', 'AdminController@showOwnershipClaims');
@@ -100,6 +99,8 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 Route::get('/{vue_capture?}',function(){
 
     $data['token']=json_encode(['csrfToken' => csrf_token()]);
+    $data['tags'] = \App\Tag::select('id','name')->get();
+
     return view('webAppShell',$data);
 })->where('vue_capture', '[\/\w\.-]*')
     ->name('app');

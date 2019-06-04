@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <form class="columns is-multiline" >
+            <section class="columns is-multiline" >
                 <div class="column is-half">
                     <div class="columns" style="margin-bottom: 0">
                         <div class="column" style="padding-bottom: 0">
@@ -66,7 +66,14 @@
                         <b-input :disabled="listing.claim_status!=='approved'" v-model="listing.state_code"  maxlength="2" ></b-input>
                     </b-field>
                 </div>
-
+                <div class="column is-full">
+                    <hr>
+                    <h1 class="has-text-white title is-4">Hours of Operation</h1>
+                </div>
+                <div class="column is-full">
+                   <p>Due to the complexity in managing hours of operation, we are currently pulling your open hours from the Google Places API.</p>
+                    <p>In the future, we plan to add the ability for you to manage your hours from here, but that feature is still under development.</p>
+                </div>
                 <div class="column is-full">
                     <hr>
                     <h1 class="has-text-white title is-4">Contact & Social Media Information</h1>
@@ -301,12 +308,29 @@
                         </b-switch>
                     </div>
                 </div>
+
+                <div class="column is-full">
+                    <b-field label="Enter some tags" custom-class="has-text-white">
+                        <b-taginput
+                                :disabled="listing.claim_status!=='approved'"
+                                v-model="listing.tags"
+                                autocomplete
+                                icon="tags"
+                                icon-pack="fa"
+                                :data="$root.tags"
+                                field="name"
+                                closable
+                                placeholder="Add a tag"
+                        >
+                        </b-taginput>
+                    </b-field>
+                </div>
                 <div class="column is-full has-text-centered">
                     <hr>
-                    <button class="button is-success" :disabled="listing.claim_status!=='approved'">Submit Changes</button>
+                    <button  @click="save" class="button is-success" :disabled="listing.claim_status!=='approved'">Submit Changes</button>
                 </div>
 
-            </form>
+            </section>
         </div>
 
     </div>
@@ -342,6 +366,24 @@
                         this.$router.push({name:'account'})
 
                     })
+            },
+            save()
+            {
+                if(confirm("Are you sure you want to save your edits?")) {
+                    axios.post('/api/places/owner/edit', this.listing)
+                        .then((response) => {
+                            this.$root.loading = false;
+                            this.$root.showNotification('We saved your changes', 'success');
+                            this.loadListing();//reload it
+
+                        })
+                        .catch((error) => {
+                            this.$root.loading = false;
+                            this.$root.showNotification('We encountered an error and were unable to update the listing', 'danger')
+
+                        });
+                }
+
             }
         },
         activated(){

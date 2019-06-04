@@ -9,9 +9,12 @@ use App\Http\Requests\MissingPlaceSuggestionRequest;
 use App\Http\Requests\PlaceDescriptionSuggestionRequest;
 use App\Http\Requests\PlaceOwnershipRequest;
 use App\Http\Requests\PlaceSearchRequest;
+use App\Http\Requests\UserEditPlaceRequest;
 use App\MissingPlaceSuggestion;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
+use App\PlaceTag;
+use App\Tag;
 use App\UserFavorite;
 use App\UserPlaceOwnershipClaim;
 use App\UserSavedForLater;
@@ -136,13 +139,16 @@ class PlaceController extends Controller
 
 
     /**
-     * returns a Place object
-     * @param Place $place
-     * @param Request $request
+     * @param $place
      * @return array
      */
-    public function index(Place $place)
+    public function index($place)
     {
+
+        $place = Place::where('id',$place)
+            ->with('tags')
+            ->first
+            ();
 
         $place->append('user_distance');
         if(!empty($_GET['lat']) && !empty($_GET['lng']) )
@@ -204,13 +210,12 @@ class PlaceController extends Controller
     }
 
     /**
-     * returns a Place object
-     * @param Place $place
-     * @param Request $request
-     * @return
+     * @param $place
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function indexLocationOwnedByUser(Place $place)
+    public function indexLocationOwnedByUser($place)
     {
+        $place = Place::where('id',$place)->with('tags')->first();
         if($place->claim_status=='approved' ||$place->claim_status=='pending')
         {//only send the data if they have appropriate clearance
             return $place;
@@ -499,7 +504,46 @@ class PlaceController extends Controller
         {
             $places->where('has_carryout',true);
 
-        }//search  places with full meals
+        }//search  places with carryout
+
+
+        if(!empty($request['delivery']))
+        {
+            $places->where('has_delivery',true);
+
+        }//search  places with delivery
+
+
+        if(!empty($request['brunch']))
+        {
+            $places->where('serves_brunch',true);
+
+        }//search  places with brunch
+
+         if(!empty($request['charger']))
+        {
+            $places->where('has_ev_charger',true);
+
+        }//search  places with ev charger
+
+        if(!empty($request['parking']))
+        {
+            $places->where('has_free_parking',true);
+
+        }//search  places with free parking
+        if(!empty($request['tags']))
+        {
+
+            $tagged = PlaceTag::select('place_id')
+                ->whereIn('tag_id',$request['tags'])
+                ->get()
+                ->pluck('place_id')
+                ->toArray();
+
+            $places->whereIn('id',$tagged);
+
+        }//search  places with free parking
+
         if(!empty($request['favorited']))
         {
             $favorites = UserFavorite::where('user_id',Auth::id())
@@ -535,6 +579,10 @@ class PlaceController extends Controller
         return $places->paginate(20);
     }
 
+    /**
+     * @param AddNewPlaceRequest $request
+     * @return $this
+     */
     public function saveNewPlace(AddNewPlaceRequest $request)
     {
         $place = new Place();
@@ -563,6 +611,10 @@ class PlaceController extends Controller
     }
 
 
+    /**
+     * @param PlaceOwnershipRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function claimOwnership(PlaceOwnershipRequest $request)
     {
         $claim = new UserPlaceOwnershipClaim();
@@ -574,6 +626,9 @@ class PlaceController extends Controller
 
     }
 
+    /**
+     * @return array
+     */
     public function showLocationsOwnedByUser()
     {
         if(Auth::check())
@@ -594,5 +649,84 @@ class PlaceController extends Controller
             return [];
         }
     }
+
+
+    /**
+     * @param UserEditPlaceRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function editListing(UserEditPlaceRequest $request)
+    {
+        $place = Place::find($request['id']);
+        $place->name=!empty($request['name']) ? $request['name']:null;
+        $place->image_url=!empty($request['image_url']) ? $request['image_url']:null;
+        $place->summary=!empty($request['summary']) ? $request['summary']:null;
+        $place->email_address=!empty($request['email_address']) ? $request['email_address']:null;
+        $place->menu_link=!empty($request['menu_link']) ? $request['menu_link']:null;
+        $place->website_url=!empty($request['website_url']) ? $request['website_url']:null;
+        $place->facebook_link=!empty($request['facebook_link']) ? $request['facebook_link']:null;
+        $place->instagram_link=!empty($request['instagram_link']) ? $request['instagram_link']:null;
+        $place->has_vegan_options=!empty($request['has_vegan_options']) ;
+        $place->has_gluten_free_options=!empty($request['has_gluten_free_options']);
+        $place->is_food_truck=!empty($request['is_food_truck']) ;
+        $place->serves_full_meals=!empty($request['serves_full_meals']) ? $request['serves_full_meals']:null;
+        $place->serves_alcohol=!empty($request['serves_alcohol']) ? $request['serves_alcohol']:null;
+        $place->has_public_wifi=!empty($request['has_public_wifi']) ? $request['has_public_wifi']:null;
+        $place->has_bike_rack=!empty($request['has_bike_rack']) ? $request['has_bike_rack']:null;
+        $place->has_carryout=!empty($request['has_carryout']) ? $request['has_carryout']:null;
+        $place->serves_brunch=!empty($request['serves_brunch']) ? $request['serves_brunch']:null;
+        $place->has_delivery=!empty($request['has_delivery']) ? $request['has_delivery']:null;
+        $place->has_ev_charger=!empty($request['has_ev_charger']) ? $request['has_ev_charger']:null;
+        $place->wifi_password=!empty($request['wifi_password']) ? $request['wifi_password']:null;
+
+        $this->updateTags($place,$request);
+
+        $place->save();
+        return response(null,204);
+    }
+
+    /**
+     * @param Place $place
+     * @param UserEditPlaceRequest $request
+     */
+    public function updateTags(Place $place, UserEditPlaceRequest $request)
+    {
+        $existing = PlaceTag::select('tag_id')
+            ->where('place_id',$place->id)
+            ->get()
+            ->pluck('tag_id')
+            ->toArray();
+        $incoming = [];
+        if(!empty($request['tags']))
+        {
+            foreach ($request['tags'] as $tag)
+            {
+                if(!empty($tag['id']))
+                {
+                    $incoming[]=$tag['id'];
+                    //id exists, so this tag is in our database
+                    if(!in_array($tag['id'],$existing))
+                    {//it's not in the existing, so we must add it
+                        PlaceTag::create([
+                            'place_id'=>$place->id,
+                            'tag_id'=>$tag['id']
+                        ]);
+                    }
+
+                }
+            }
+        }
+
+        //now delete all that don't need to be there anymore
+
+        PlaceTag::where('place_id',$place->id)
+            ->whereNotIn('tag_id',$incoming)
+            ->delete();
+
+    }
+
+
+
+
 
 }//class

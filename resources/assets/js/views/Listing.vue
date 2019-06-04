@@ -11,27 +11,22 @@
                     </a>
                 </div>
             </div>
+
             <div class="columns">
-                <div class="column">
-                    <h1  class="title has-text-centered has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
+                <div class="column is-three-quarters">
+                    <h1  class="title  has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
                     </h1>
-                    <p style="margin-bottom: 0; padding-bottom: 0" class="heading has-text-centered has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
-                    <div v-if="listing.user_comment" style="margin-bottom: 0; padding-bottom: 0">
-                        <p  class="heading has-text-warning has-text-centered">You said..
-                            <span class="has-text-warning is-italic has-text-centered">"{{listing.user_comment}}"</span>
-                        </p>
-                    </div>
-                    <p class="has-text-centered heading">
+                    <p class=" heading">
                        <span v-if="listing.claim_status==='unclaimed'" class="has-text-grey">This place is unclaimed.
                             <a v-if="$root.user.logged" @click="showClaimModal=true"> Claim ownership?</a>
                             <a v-else="$root.user.logged" @click="$root.showLoginModal=true"> Login to claim ownership.</a>
                        </span>
-                       <span v-else-if="listing.claim_status==='claimed'" class="has-text-grey">Claimed.</span>
-                       <span v-else-if="listing.claim_status==='approved'" class="has-text-grey">You own this place.</span>
-                       <span v-else-if="listing.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
-                       <span v-else-if="listing.claim_status==='pending'" class="has-text-grey">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
+                        <span v-else-if="listing.claim_status==='claimed'" class="has-text-grey">Claimed.</span>
+                        <span v-else-if="listing.claim_status==='approved'" class="has-text-grey">You own this place.</span>
+                        <span v-else-if="listing.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
+                        <span v-else-if="listing.claim_status==='pending'" class="has-text-grey">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
                     </p>
-                    <p class="subtitle has-text-centered">
+                    <p class="subtitle">
                         <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
                             <i class="fa fa-map-marker"></i>
                             {{listing.address}} {{listing.city}}, {{listing.state_code}}
@@ -40,17 +35,6 @@
                            (About {{listing.user_distance}} miles away)
                         </span>
                     </p>
-                    <p style="margin-bottom: 0; padding-bottom: 0"  v-if="!listing.is_favorited">Have you been here before? <add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
-
-                    <p class="subtitle has-text-centered">
-                        <small class="has-text-centered subtitle has-text-success" v-if="listing.is_open">Open Now!</small>
-                        <small class="has-text-centered subtitle has-text-danger" v-else="">Closed Now</small>
-                    </p>
-
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
                     <p v-if="listing.summary">
                         {{listing.summary}}
                     </p>
@@ -72,11 +56,34 @@
             </span>
                     </p>
 
+                    <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
+                    <p  class="heading" v-else>Do you love {{listing.name}}? Consider adding it your your favorites so you can find it later. <br><add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
+                    <div v-if="listing.user_comment" style="margin-bottom: 0; padding-bottom: 0">
+                        <p  class="heading has-text-warning">You said..
+                            <span class="has-text-warning is-italic">"{{listing.user_comment}}"</span>
+                        </p>
+                    </div>
 
+                </div>
+                <div class="column">
+                    <h2 class="has-text-centered is-size-3 has-text-white has-text-weight-bold">Hours</h2>
+                        <p class="has-text-centered  has-text-success is-size-4" v-if="listing.is_open">Open Now!</p>
+                        <p class="has-text-centered  has-text-danger is-size-4" v-else="">Closed Now</p>
+                    <ul>
+                        <li v-for="(hour,idx) in listing.hours" class="has-text-centered">
+                            <strong v-if="idx===today" class="has-text-weight-bold has-text-white">
+                                <i class="fa fa-arrow-circle-right"></i>
+                                {{hour}}
+                            </strong>
+                            <span v-else>{{hour}}</span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
                     <p class="buttons">
-                        <a :href="listing.map_link" target="_blank" rel="nofollow noopener" class="button is-small is-danger is-outlined">Let's Go!
-                        &nbsp;<i class="fa fa-location-arrow"></i>
-                        </a>
 
                         <a v-if="listing.phone_number" :href="'tel:'+listing.phone_number"
                            class="button is-small is-primary is-outlined">
@@ -118,24 +125,14 @@
                         <a v-if="listing.facebook_link" :href="'https://facebook.com/'+listing.facebook_link" target="_blank" rel="nofollow"><i style="color:#fff" class="fab fa-facebook fa-2x"></i></a>
                         <a v-if="listing.instagram_link" :href="'https://instagram.com/'+listing.instagram_link" target="_blank" rel="nofollow"><i style="color:#FFF" class="fab fa-instagram fa-2x"></i></a>
                     </p>
-
                 </div>
-                <div class="column">
-                    <h2 class="has-text-centered subtitle has-text-white has-text-weight-bold">Hours</h2>
-                    <ul>
-                        <li v-for="(hour,idx) in listing.hours" class="has-text-centered">
-                            <strong v-if="idx===today" class="has-text-weight-bold has-text-white">
-                                <i class="fa fa-arrow-circle-right"></i>
-                                {{hour}}
-                            </strong>
-                            <span v-else>{{hour}}</span>
-                        </li>
-                    </ul>
-
-                </div>
-
             </div>
-            <hr>
+                    <b-taglist class="no-bottom">
+                        <b-tag type="is-dark" v-for="tag in listing.tags" :key="tag.id">{{tag.name}}</b-tag>
+
+                    </b-taglist>
+
+            <hr class="no-top">
             <div v-if="listing.reviews">
                 <h2  class="title has-text-centered has-text-white">Recent Google Reviews</h2>
                 <article class="media"  v-for="review in listing.reviews">
@@ -233,10 +230,10 @@
                     facebook_link:null,
                     instagram_link:null,
                     user_distance:null,
-                    claim_status:null
+                    claim_status:null,
+                    tags: []
                 },
                 showClaimModal:false,
-                tags: [],
                 lastPage: {
                     name: 'home',
                     params: {}
@@ -310,5 +307,15 @@
     {
         list-style-type: none;
         padding-left: 0;
+    }
+
+    .no-bottom
+    {
+       margin-bottom: 0!important;
+    }
+    .no-top
+    {
+        margin-top: 0!important;
+
     }
 </style>
