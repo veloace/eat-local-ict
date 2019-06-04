@@ -10,15 +10,15 @@
                         </div>
                         <div class="card-content has-background-grey-darker">
                             <b-field label="Current Password" custom-class="has-text-white" :type="errors.old_password ?'is-danger':''" :message="errors.old_password">
-                                <b-input v-model="old_password"  type="password"  placeholder="Current Password" autofocus></b-input>
+                                <b-input v-model="old_password"  type="password"  placeholder="Current Password" ></b-input>
                             </b-field>
 
                             <b-field label=" New Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password">
-                                <b-input v-model="password" type="password" placeholder="Password" autofocus></b-input>
+                                <b-input v-model="password" type="password" placeholder="Password" ></b-input>
                             </b-field>
 
                             <b-field label="Re-Enter New Password" custom-class="has-text-white" :type="errors.password_confirmation ?'is-danger':''" :message="errors.password_confirmation">
-                                <b-input v-model="password_confirmation"  type="password" placeholder="Confirm Password" autofocus></b-input>
+                                <b-input v-model="password_confirmation"  type="password" placeholder="Confirm Password" ></b-input>
                             </b-field>
                         </div>
                         <footer class="card-footer has-background-black-ter">
@@ -37,10 +37,10 @@
                         </div>
                         <div class="card-content has-background-grey-darker">
                             <b-field label="Your Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name">
-                                <b-input v-model="name"  type="text"  placeholder="Current Password" autofocus></b-input>
+                                <b-input v-model="name"  type="text"  placeholder="Current Password" ></b-input>
                             </b-field>
                             <b-field label="You Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email">
-                                <b-input v-model="email"  type="email"  placeholder="Current Password" autofocus></b-input>
+                                <b-input v-model="email"  type="email"  placeholder="Current Password" ></b-input>
                             </b-field>
                             <b-switch class="has-text-white" size="is-small" :value="false" :true-value="1" :false-value="0" v-model="newsletter">
                                 <span v-if="newsletter===1">You are opted in to receive our periodic newsletter!</span>
@@ -118,7 +118,7 @@
                     <p>If you still want to delete your account, please enter your password and click 'Delete Account' below.</p>
 
                     <b-field label="Password" custom-class="has-text-white" :type="errors.delete_password ?'is-danger':''" :message="errors.delete_password">
-                        <b-input v-model="delete_password" type="password" placeholder="Password" autofocus></b-input>
+                        <b-input v-model="delete_password" type="password" placeholder="Password" ></b-input>
                     </b-field>
                 </div>
                 <footer class="modal-card-foot">
