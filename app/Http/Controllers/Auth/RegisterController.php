@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'g-recaptcha-response'=>'required',
+            'g-recaptcha-response'=>'nullable',
             'newsletter'=>'nullable|boolean'
 
         ]);
@@ -106,9 +106,12 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        if(!$this->validateRecaptcha($request['g-recaptcha-response']))
+
+        $captchaIsValid = !empty($request['g-recaptcha-response']) ? $this->validateRecaptcha($request['g-recaptcha-response']):true;//temporarily disable recaptcha
+        if(!$captchaIsValid)
         {
-            return response()->withErrors(['register' => 'Registration failed due to Google Recaptcha failure. Please try again or contact support if this problem persists.']);
+             $response = new \Illuminate\Http\Response();
+            return $response->withErrors(['register' => 'Registration failed due to Google Recaptcha failure. Please try again or contact support if this problem persists.']);
 
         }
 

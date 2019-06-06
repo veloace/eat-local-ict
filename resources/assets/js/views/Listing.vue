@@ -274,7 +274,7 @@
             claimOwnership()
             {
                 this.loading=true;
-                axios.post('/api/places/owner/',{place:this.listing.id})
+                axios.post('/api/places/owner',{place:this.listing.id})
                     .then((response) => {
                         this.showClaimModal=false;
                         this.loading = false;

@@ -13,7 +13,7 @@ import VueRouter from 'vue-router';
 import router  from './router';
 import Buefy from 'buefy'
 import VueAnalytics from 'vue-analytics'
-import InvisibleRecaptcha from 'vue-invisible-recaptcha';
+//import InvisibleRecaptcha from 'vue-invisible-recaptcha';
 
 window.Vue = require('vue');
 window.Vue.use(VueRouter);
@@ -35,7 +35,7 @@ Vue.component('registration', require('./components/Register.vue'));
 Vue.component('description-suggestion', require('./components/DescriptionSuggestion.vue'));
 Vue.component('legal-info', require('./components/LegalInfo.vue'));
 Vue.component('add-to-list', require('./components/AddToList.vue'));
-Vue.component('invisible-recaptcha', InvisibleRecaptcha);
+//Vue.component('invisible-recaptcha', InvisibleRecaptcha);
 
 const app = new Vue({
     el: '#app',
@@ -96,7 +96,7 @@ const app = new Vue({
                 type: type,
                 hasIcon: true,
                 iconPack:'fa',
-                queue:false
+                queue:true
             })
 
         },//showNotification

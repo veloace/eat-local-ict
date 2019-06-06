@@ -31,7 +31,7 @@
             </div>
             <footer class="modal-card-foot">
                 <button class="button" @click="$root.showLoginModal=true;$root.showRegistrationModal = false" >Back to Login</button>
-                <invisible-recaptcha :sitekey="$root.recaptcha" class="button is-success" :callback="register" >Sign Up!</invisible-recaptcha >
+                <button class="button is-success" @click="register">Sign Up!</button>
             </footer>
         </div>
     </b-modal>
@@ -55,7 +55,7 @@
             }
         },
         methods:{
-            register(recaptchaToken){
+            register(recaptchaToken=null){
                 this.errors={
                     name:null,
                         email:null,
@@ -68,7 +68,7 @@
                     password:this.password,
                     password_confirmation:this.password_confirmed,
                     name:this.name,
-                    'g-recaptcha-response':recaptchaToken,
+                    //'g-recaptcha-response':recaptchaToken,
                     newsletter:this.newsletter
                 })
                     .then((response) => {
