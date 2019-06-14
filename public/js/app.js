@@ -3603,10 +3603,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -19236,27 +19232,6 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("p", [
-                    _vm._v("Rating:\n                    "),
-                    _c(
-                      "span",
-                      { staticClass: " is-size-6" },
-                      [
-                        _vm._l(Math.round(_vm.listing.rating), function(d) {
-                          return _c("i", {
-                            staticClass: "fa fa-star fa-2x has-text-warning"
-                          })
-                        }),
-                        _vm._l(5 - Math.round(_vm.listing.rating), function(e) {
-                          return _c("i", {
-                            staticClass: "fa fa-star has-text-grey-lighter"
-                          })
-                        })
-                      ],
-                      2
-                    )
-                  ]),
-                  _vm._v(" "),
                   _vm.listing.is_favorited
                     ? _c(
                         "p",
@@ -19527,7 +19502,24 @@ var render = function() {
                         {
                           staticClass: "title has-text-centered has-text-white"
                         },
-                        [_vm._v("Recent Google Reviews")]
+                        [
+                          _vm._v("Recent Google Reviews ("),
+                          _vm._l(Math.round(_vm.listing.rating), function(d) {
+                            return _c("i", {
+                              staticClass: "fa fa-star has-text-warning"
+                            })
+                          }),
+                          _vm._l(5 - Math.round(_vm.listing.rating), function(
+                            e
+                          ) {
+                            return _c("i", {
+                              staticClass:
+                                "fa fa-star fa-xs has-text-grey-lighter"
+                            })
+                          }),
+                          _vm._v(")")
+                        ],
+                        2
                       ),
                       _vm._v(" "),
                       _vm._l(_vm.listing.reviews, function(review) {

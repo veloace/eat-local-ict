@@ -49,12 +49,7 @@
             </span>
                     </p>
 
-                    <p>Rating:
-                        <span class=" is-size-6">
-                <i class="fa fa-star fa-2x has-text-warning" v-for="d in Math.round(listing.rating)"></i><i
-                                class="fa fa-star has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))"></i>
-            </span>
-                    </p>
+
 
                     <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
                     <p  class="heading" v-else>Do you love {{listing.name}}? Consider adding it your your favorites so you can find it later. <br><add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
@@ -134,7 +129,8 @@
 
             <hr class="no-top">
             <div v-if="listing.reviews">
-                <h2  class="title has-text-centered has-text-white">Recent Google Reviews</h2>
+                <h2  class="title has-text-centered has-text-white">Recent Google Reviews (<i class="fa fa-star has-text-warning" v-for="d in Math.round(listing.rating)"></i><i
+                        class="fa fa-star fa-xs has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))"></i>)</h2>
                 <article class="media"  v-for="review in listing.reviews">
                     <figure class="media-left">
                         <p class="image is-64x64">
