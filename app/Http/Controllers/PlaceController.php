@@ -466,6 +466,11 @@ class PlaceController extends Controller
         }//lat lng
         $places = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude');
 
+        $lat = !empty(session('lat')) ? session('lat'):37.6889;
+        $lng = !empty(session('lng')) ? session('lng'):-97.336111;
+
+        $userPoint = "point({$lng},{$lat})";
+        $places->selectRaw("ST_Distance_Sphere(point(longitude,latitude), {$userPoint}) AS distance");
         if(!empty($request['name']))
         {
             $places->where('name','like',"%{$request['name']}%");
@@ -588,6 +593,27 @@ class PlaceController extends Controller
             $places = $places->selectRaw("{$haversine} AS distance")
                 ->whereRaw("{$haversine} < ?", [$radius]);
         }//search by radius
+
+        $sort = !empty($request['sort']) ? $request['sort']:3;
+
+        switch($sort)
+        {
+            case 1:
+                $places->orderBy('name','asc');
+                break;
+            case 2:
+                $places->orderBy('name','desc');
+                break;
+            case 3:
+                $places->orderBy('distance','asc');
+                break;
+            case 4:
+                $places->orderBy('distance','desc');
+                break;
+            default:
+                $places->orderBy('distance','asc');
+        }
+
         return $places->paginate(20);
     }
 

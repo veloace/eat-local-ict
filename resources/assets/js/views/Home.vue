@@ -4,19 +4,24 @@
       <!-- Hero content: will be in the middle -->
       <div class="hero is-fullheight">
          <div class="hero-body">
-            <div class="container has-text-centered">
-               <h1 class="title has-text-white">
-                  EAT & DRINK LOCAL IN WICHITA
-               </h1>
+            <div class="container has-text-centered top-spacer">
+               <div class="columns">
+                  <div class="column is-4 is-offset-4">
+                     <figure class="image is-3by2">
+                        <img src="/img/logo-title-alt.svg" alt="EatLocalICT" title="EatLocalICT" class="image">
+                     </figure>
+                  </div>
+               </div>
+
                <h2 class="subtitle has-text-white">
-                  Why eat at a chain if you can eat local?
+                  Find locally-owned establishments that are unique to Wichita and the surrounding area.
                </h2>
 
                <p>
                   <button @click="findRandomPlace" class="button is-link is-inverted  is-outlined is-large has-text-weight-bold	">Random Place</button>
                </p>
                <p>
-                  <router-link :to="{name:'search'}"  class="button is-link is-inverted  is-outlined has-text-weight-bold">Advanced Search</router-link>
+                  <router-link :to="{name:'search'}"  class="button is-link   is-outlined has-text-weight-bold">Advanced Search</router-link>
                </p>
                <hr>
                <p class="has-text-white">Help us add features and keep our servers running!</p>

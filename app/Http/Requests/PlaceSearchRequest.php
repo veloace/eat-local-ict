@@ -42,7 +42,8 @@ class PlaceSearchRequest extends FormRequest
             'brunch'=>'nullable|boolean',
             'charger'=>'nullable|boolean',
             'parking'=>'nullable|boolean',
-            'tags'=>'nullable|array'
+            'tags'=>'nullable|array',
+            'sort'=>'required|in:1,2,3,4'
         ];
     }
 }

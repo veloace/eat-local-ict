@@ -28,8 +28,8 @@
                     </div>
                 </div>
                     <div class="columns">
-                        <div class="column is-full">
-                            <b-field label="Search by Tag" custom-class="has-text-white">
+                        <div class="column is-10">
+                            <b-field label="Search by Tag(s)" custom-class="has-text-white">
                                 <b-taginput
                                         v-model="search.tags"
                                         autocomplete
@@ -43,8 +43,22 @@
                                 >
                                 </b-taginput>
                             </b-field>
+
                         </div>
-                    </div>
+                        <div class="column is-2">
+                            <b-field label="Sort By" custom-class="has-text-white">
+
+                                <b-select v-model="search.sort" placeholder="Sort By" :expanded="true">
+                                    <option
+                                            v-for="option in sortOptions"
+                                            :value="option.id"
+                                            :key="option.id">
+                                        {{option.text }}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                        </div>
                     <p class="heading has-text-white">Service Options</p>
 
                     <div class="columns is-multiline">
@@ -266,6 +280,7 @@
                     lat:null,
                     lng:null,
                     distance:0,
+                    sort:3,
                     vegan:0,
                     glutenFree:0,
                     alcohol:0,
@@ -324,6 +339,25 @@
                     },
 
                 ],
+                sortOptions:[
+                    {
+                        id:1,
+                        text:'Name, A-Z'
+                    },
+                    {
+                        id:2,
+                        text:'Name, Z-A'
+                    },
+                    {
+                        id:3,
+                        text:'Closest First'
+                    },
+                    {
+                        id:4,
+                        text:'Furthest First'
+                    },
+
+                ],
                 missingSuggestion:null
             }
         },
@@ -343,6 +377,7 @@
                         lat:this.search.lat,
                         lng:this.search.lng,
                         distance:this.search.distance,
+                        sort:this.search.sort,
                         vegan:this.search.vegan,
                         glutenFree:this.search.glutenFree,
                         alcohol:this.search.alcohol,
@@ -449,8 +484,27 @@
                     labelString = labelString+" that" + options.join(' and');
                 }
 
-                this.searchLabel=labelString+'.';
+                labelString=labelString+'. ';
 
+                switch(this.search.sort)
+                {
+                    case 1:
+                        labelString = labelString+'Sorted alphabetically by name, A-Z.';
+                        break;
+                    case 2:
+                        labelString = labelString+'Sorted alphabetically by name, Z-A.';
+                        break;
+                    case 3:
+                        labelString = labelString+'Sorted by distance, closest first.';
+                        break;
+                    case 4:
+                        labelString = labelString+'Sorted by distance, furthest locations first.';
+                        break;
+                    default:
+                        labelString = labelString+'Sorted by distance, closest first.';
+                }
+
+                this.searchLabel=labelString;
             },
             loadNext(next)
             {
@@ -467,6 +521,7 @@
                  lat:this.$root.geo.lat,
                  lng:this.$root.geo.lng,
                  distance:0,
+                 sort:3,
                  genre:null,
                  vegan:0,
                  glutenFree:0,

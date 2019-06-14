@@ -83,7 +83,7 @@
 
         <section >
             <keep-alive>
-                <router-view class="has-background-black-bis"></router-view>
+                <router-view class="has-background-black-ter"></router-view>
             </keep-alive>
         </section>
 
