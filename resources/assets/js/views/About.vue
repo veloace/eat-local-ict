@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class="top-spacer">
         <div class="container" style="margin-top: 30px;">
             <h1 class="has-text-center has-text-white title">Our Plan</h1>
             <p class="has-text-white">EatLocalICT mission is to promote local restaurants, cafes, and bars in Wichita and the surrounding area. What your are looking at is a MVP (Minimum Viable Product) which represents version 1 of what will be an amazing platform for local establishments. Some features, which take time to build and perfect, were not included in our initial release but are planned and listed below.</p>

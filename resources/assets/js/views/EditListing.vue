@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class=" top-spacer">
         <div class="container has-text-white is-translucent" v-if="listing" style="margin-bottom: 15px;">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">

@@ -1,5 +1,5 @@
 <template>
-    <div class="hero is-fullheight has-background-translucent">
+    <div class="hero is-fullheight">
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title has-text-white">

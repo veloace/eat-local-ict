@@ -81,9 +81,9 @@
   </div>
     </nav>
 
-        <section class="hero is-fullheight ict-flag-bg">
+        <section >
             <keep-alive>
-                <router-view></router-view>
+                <router-view class="has-background-black-bis"></router-view>
             </keep-alive>
         </section>
 

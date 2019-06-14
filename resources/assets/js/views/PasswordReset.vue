@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer" style="padding-top: 70px">
+    <div class=" top-spacer" style="padding-top: 70px;padding-bottom: 70px">
         <div class="container">
             <div class="columns">
                 <div class="column is-half is-offset-one-quarter">
@@ -20,9 +20,6 @@
                             <b-field label="Re-Enter Password" custom-class="has-text-white" :type="errors.password_confirmation ?'is-danger':''" :message="errors.password_confirmation">
                                 <b-input v-model="password_confirmation"  type="password" placeholder="Confirm Password" autofocus></b-input>
                             </b-field>
-
-
-
 
                         </div>
                         <footer class="card-footer has-background-black-ter">

@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class=" top-spacer">
         <div class="container has-text-white has-background-translucent" style="margin-top: 25px;min-height: 100vh">
             <header>
                 <h1 class="title has-text-white">Your Favorites</h1>

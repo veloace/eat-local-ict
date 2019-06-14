@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class=" top-spacer">
         <div class="container" style="padding-top: 30px;">
             <h1 class="title has-text-white">Help keep us online and ad-free!</h1>
             <p class="has-text-white">EatLocalICT is built and maintained by a volunteer staff to promote local restaurants, cafes, and bars in Wichita and the surrounding area. Ads annoy us and we believe they detract from the usability of this website.</p>

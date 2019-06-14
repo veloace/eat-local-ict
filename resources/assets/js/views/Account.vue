@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class="top-spacer">
         <div class="container main-container has-text-white" style="margin-top: 30px;">
             <h1 class="title has-text-white">Your Account</h1>
             <div class="columns is-multiline">

@@ -3601,8 +3601,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -3706,9 +3704,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-//
-//
-//
 //
 //
 //
@@ -19052,7 +19047,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "has-background-translucent top-spacer" },
+    { staticClass: " top-spacer" },
     [
       !_vm.loading
         ? _c(
@@ -19084,219 +19079,199 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column is-three-quarters" }, [
-                  _c(
-                    "h1",
-                    {
-                      staticClass: "title  has-text-white",
-                      staticStyle: { "margin-bottom": "0" }
-                    },
-                    [
-                      _vm.listing.is_favorited
-                        ? _c("i", {
-                            staticClass: "fa fa-star has-text-warning"
-                          })
-                        : _vm._e(),
-                      _vm._v(
-                        " " + _vm._s(_vm.listing.name) + "\n                "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("p", { staticClass: " heading" }, [
-                    _vm.listing.claim_status === "unclaimed"
-                      ? _c("span", { staticClass: "has-text-grey" }, [
-                          _vm._v(
-                            "This place is unclaimed.\n                        "
-                          ),
-                          _vm.$root.user.logged
-                            ? _c(
-                                "a",
-                                {
-                                  on: {
-                                    click: function($event) {
-                                      _vm.showClaimModal = true
-                                    }
-                                  }
-                                },
-                                [_vm._v(" Claim ownership?")]
-                              )
-                            : _c(
-                                "a",
-                                {
-                                  on: {
-                                    click: function($event) {
-                                      _vm.$root.showLoginModal = true
-                                    }
-                                  }
-                                },
-                                [_vm._v(" Login to claim ownership.")]
-                              )
-                        ])
-                      : _vm.listing.claim_status === "claimed"
-                      ? _c("span", { staticClass: "has-text-grey" }, [
-                          _vm._v("Claimed.")
-                        ])
-                      : _vm.listing.claim_status === "approved"
-                      ? _c("span", { staticClass: "has-text-grey" }, [
-                          _vm._v("You own this place.")
-                        ])
-                      : _vm.listing.claim_status === "denied"
-                      ? _c("span", { staticClass: "has-text-danger" }, [
-                          _vm._v("Your ownership claim has been denied.")
-                        ])
-                      : _vm.listing.claim_status === "pending"
-                      ? _c("span", { staticClass: "has-text-grey" }, [
-                          _vm._v(
-                            "Your ownership claim is pending approval by an EatLocalICT Admin."
-                          )
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "subtitle" }, [
+                _c(
+                  "div",
+                  { staticClass: "column is-three-quarters" },
+                  [
                     _c(
-                      "a",
+                      "h1",
                       {
-                        attrs: {
-                          href: _vm.listing.map_link,
-                          target: "_blank",
-                          rel: "nofollow noopener"
-                        }
+                        staticClass: "title  has-text-white",
+                        staticStyle: { "margin-bottom": "0" }
                       },
                       [
-                        _c("i", { staticClass: "fa fa-map-marker" }),
+                        _vm.listing.is_favorited
+                          ? _c("i", {
+                              staticClass: "fa fa-star has-text-warning"
+                            })
+                          : _vm._e(),
                         _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.listing.address) +
-                            " " +
-                            _vm._s(_vm.listing.city) +
-                            ", " +
-                            _vm._s(_vm.listing.state_code) +
-                            "\n                    "
+                          " " + _vm._s(_vm.listing.name) + "\n                "
                         )
                       ]
                     ),
                     _vm._v(" "),
-                    _vm.listing.user_distance
-                      ? _c("span", { staticClass: "has-text-info" }, [
-                          _vm._v(
-                            "\n                       (About " +
-                              _vm._s(_vm.listing.user_distance) +
-                              " miles away)\n                    "
-                          )
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _vm.listing.summary
-                    ? _c("p", [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(_vm.listing.summary) +
-                            "\n                "
-                        )
-                      ])
-                    : _c("div", { staticClass: "has-text-white" }, [
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _c(
-                          "a",
+                    _vm.listing.is_favorited
+                      ? _c(
+                          "p",
                           {
-                            staticClass: "button is-info is-outlined is-small",
-                            on: { click: _vm.suggestDescription }
-                          },
-                          [_vm._v("Suggest a Description")]
-                        )
-                      ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _vm._v("Price:\n                    "),
-                    _c(
-                      "span",
-                      { staticClass: "is-size-6" },
-                      [
-                        _vm._l(_vm.listing.price, function(i) {
-                          return _c("i", {
-                            staticClass: " has-text-success fas fa-dollar-sign"
-                          })
-                        }),
-                        _vm._l(5 - _vm.listing.price, function(c) {
-                          return _c("i", {
                             staticClass:
-                              "fas fa-dollar-sign has-text-grey-lighter"
-                          })
-                        })
-                      ],
-                      2
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm.listing.is_favorited
-                    ? _c(
-                        "p",
+                              "heading has-text-warning has-text-italic"
+                          },
+                          [
+                            _vm._v("In your "),
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "has-text-warning underlined",
+                                attrs: { to: { name: "favorites" } }
+                              },
+                              [_vm._v("favorites")]
+                            ),
+                            _vm._v(".\n                    "),
+                            _vm.listing.user_comment
+                              ? _c("span", [
+                                  _vm._v("You said..\n                    "),
+                                  _c("span", { staticClass: " is-italic" }, [
+                                    _vm._v(
+                                      '"' +
+                                        _vm._s(_vm.listing.user_comment) +
+                                        '"'
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      : _c("add-to-list", {
+                          attrs: { place: _vm.listing, listType: "Favorite" },
+                          on: { "add-success": _vm.favorited }
+                        }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: " heading" }, [
+                      _vm.listing.claim_status === "unclaimed"
+                        ? _c("span", { staticClass: "has-text-grey" }, [
+                            _vm._v(
+                              "This place is unclaimed.\n                        "
+                            ),
+                            _vm.$root.user.logged
+                              ? _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        _vm.showClaimModal = true
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(" Claim ownership?")]
+                                )
+                              : _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        _vm.$root.showLoginModal = true
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(" Login to claim ownership.")]
+                                )
+                          ])
+                        : _vm.listing.claim_status === "claimed"
+                        ? _c("span", { staticClass: "has-text-grey" }, [
+                            _vm._v("Claimed.")
+                          ])
+                        : _vm.listing.claim_status === "approved"
+                        ? _c("span", { staticClass: "has-text-grey" }, [
+                            _vm._v("You own this place.")
+                          ])
+                        : _vm.listing.claim_status === "denied"
+                        ? _c("span", { staticClass: "has-text-danger" }, [
+                            _vm._v("Your ownership claim has been denied.")
+                          ])
+                        : _vm.listing.claim_status === "pending"
+                        ? _c("span", { staticClass: "has-text-grey" }, [
+                            _vm._v(
+                              "Your ownership claim is pending approval by an EatLocalICT Admin."
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "subtitle" }, [
+                      _c(
+                        "a",
                         {
-                          staticClass:
-                            "heading has-text-warning has-text-italic"
-                        },
-                        [
-                          _vm._v("In your "),
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "has-text-warning underlined",
-                              attrs: { to: { name: "favorites" } }
-                            },
-                            [_vm._v("favorites")]
-                          ),
-                          _vm._v(".")
-                        ],
-                        1
-                      )
-                    : _c(
-                        "p",
-                        { staticClass: "heading" },
-                        [
-                          _vm._v(
-                            "Do you love " +
-                              _vm._s(_vm.listing.name) +
-                              "? Consider adding it your your favorites so you can find it later. "
-                          ),
-                          _c("br"),
-                          _c("add-to-list", {
-                            attrs: { place: _vm.listing, listType: "Favorite" },
-                            on: { "add-success": _vm.favorited }
-                          })
-                        ],
-                        1
-                      ),
-                  _vm._v(" "),
-                  _vm.listing.user_comment
-                    ? _c(
-                        "div",
-                        {
-                          staticStyle: {
-                            "margin-bottom": "0",
-                            "padding-bottom": "0"
+                          attrs: {
+                            href: _vm.listing.map_link,
+                            target: "_blank",
+                            rel: "nofollow noopener"
                           }
                         },
                         [
-                          _c("p", { staticClass: "heading has-text-warning" }, [
-                            _vm._v("You said..\n                        "),
-                            _c(
-                              "span",
-                              { staticClass: "has-text-warning is-italic" },
-                              [
-                                _vm._v(
-                                  '"' + _vm._s(_vm.listing.user_comment) + '"'
-                                )
-                              ]
+                          _c("i", { staticClass: "fa fa-map-marker" }),
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.listing.address) +
+                              " " +
+                              _vm._s(_vm.listing.city) +
+                              ", " +
+                              _vm._s(_vm.listing.state_code) +
+                              "\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.listing.user_distance
+                        ? _c("span", { staticClass: "has-text-info" }, [
+                            _vm._v(
+                              "\n                       (About " +
+                                _vm._s(_vm.listing.user_distance) +
+                                " miles away)\n                    "
                             )
                           ])
-                        ]
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _vm.listing.summary
+                      ? _c("p", [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(_vm.listing.summary) +
+                              "\n                "
+                          )
+                        ])
+                      : _c("div", { staticClass: "has-text-white" }, [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "button is-info is-outlined is-small",
+                              on: { click: _vm.suggestDescription }
+                            },
+                            [_vm._v("Suggest a Description")]
+                          )
+                        ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v("Price:\n                    "),
+                      _c(
+                        "span",
+                        { staticClass: "is-size-6" },
+                        [
+                          _vm._l(_vm.listing.price, function(i) {
+                            return _c("i", {
+                              staticClass:
+                                " has-text-success fas fa-dollar-sign"
+                            })
+                          }),
+                          _vm._l(5 - _vm.listing.price, function(c) {
+                            return _c("i", {
+                              staticClass:
+                                "fas fa-dollar-sign has-text-grey-lighter"
+                            })
+                          })
+                        ],
+                        2
                       )
-                    : _vm._e()
-                ]),
+                    ])
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "column" }, [
                   _c(
@@ -19503,7 +19478,8 @@ var render = function() {
                           staticClass: "title has-text-centered has-text-white"
                         },
                         [
-                          _vm._v("Recent Google Reviews ("),
+                          _vm._v("Recent Google Reviews"),
+                          _c("br"),
                           _vm._l(Math.round(_vm.listing.rating), function(d) {
                             return _c("i", {
                               staticClass: "fa fa-star has-text-warning"
@@ -19516,8 +19492,7 @@ var render = function() {
                               staticClass:
                                 "fa fa-star fa-xs has-text-grey-lighter"
                             })
-                          }),
-                          _vm._v(")")
+                          })
                         ],
                         2
                       ),
@@ -19846,7 +19821,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "has-background-translucent top-spacer" },
+    { staticClass: "top-spacer" },
     [
       _c(
         "div",
@@ -20424,7 +20399,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+  return _c("div", { staticClass: " top-spacer" }, [
     _c(
       "div",
       {
@@ -20794,57 +20769,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "hero is-fullheight has-background-translucent" },
-    [
-      _c("div", { staticClass: "hero-body" }, [
-        _c("div", { staticClass: "container has-text-centered" }, [
-          _c("h1", { staticClass: "title has-text-white" }, [
-            _vm._v("\n                Page Not Found\n            ")
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "has-text-white" }, [
-            _vm._v(
-              "It looks like the page you are looking for doesn't exist. Why not try one of the links below?"
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "p",
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass:
-                    "button is-link is-inverted  is-outlined has-text-weight-bold",
-                  attrs: { to: { name: "home" } }
-                },
-                [_vm._v("Go Home")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "p",
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass:
-                    "button is-link is-inverted  is-outlined has-text-weight-bold",
-                  attrs: { to: { name: "search" } }
-                },
-                [_vm._v("Advanced Search")]
-              )
-            ],
-            1
+  return _c("div", { staticClass: "hero is-fullheight" }, [
+    _c("div", { staticClass: "hero-body" }, [
+      _c("div", { staticClass: "container has-text-centered" }, [
+        _c("h1", { staticClass: "title has-text-white" }, [
+          _vm._v("\n                Page Not Found\n            ")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "has-text-white" }, [
+          _vm._v(
+            "It looks like the page you are looking for doesn't exist. Why not try one of the links below?"
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "p",
+          [
+            _c(
+              "router-link",
+              {
+                staticClass:
+                  "button is-link is-inverted  is-outlined has-text-weight-bold",
+                attrs: { to: { name: "home" } }
+              },
+              [_vm._v("Go Home")]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          [
+            _c(
+              "router-link",
+              {
+                staticClass:
+                  "button is-link is-inverted  is-outlined has-text-weight-bold",
+                attrs: { to: { name: "search" } }
+              },
+              [_vm._v("Advanced Search")]
+            )
+          ],
+          1
+        )
       ])
-    ]
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -20868,8 +20839,8 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "has-background-translucent top-spacer",
-      staticStyle: { "padding-top": "70px" }
+      staticClass: " top-spacer",
+      staticStyle: { "padding-top": "70px", "padding-bottom": "70px" }
     },
     [
       _c("div", { staticClass: "container" }, [
@@ -21303,7 +21274,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+    return _c("div", { staticClass: "top-spacer" }, [
       _c(
         "div",
         { staticClass: "container", staticStyle: { "margin-top": "30px" } },
@@ -21406,7 +21377,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+  return _c("div", { staticClass: " top-spacer" }, [
     _c(
       "div",
       { staticClass: "container", staticStyle: { "padding-top": "30px" } },
@@ -21558,7 +21529,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+  return _c("div", { staticClass: " top-spacer" }, [
     _vm.listing
       ? _c(
           "div",
@@ -22809,90 +22780,86 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "div",
-        { staticClass: "hero is-fullheight has-background-translucent" },
-        [
-          _c("div", { staticClass: "hero-body" }, [
-            _c("div", { staticClass: "container has-text-centered" }, [
-              _c("h1", { staticClass: "title has-text-white" }, [
-                _vm._v(
-                  "\n               EAT & DRINK LOCAL IN WICHITA\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("h2", { staticClass: "subtitle has-text-white" }, [
-                _vm._v(
-                  "\n               Why eat at a chain if you can eat local?\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("p", [
+      _c("div", { staticClass: "hero is-fullheight" }, [
+        _c("div", { staticClass: "hero-body" }, [
+          _c("div", { staticClass: "container has-text-centered" }, [
+            _c("h1", { staticClass: "title has-text-white" }, [
+              _vm._v(
+                "\n               EAT & DRINK LOCAL IN WICHITA\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c("h2", { staticClass: "subtitle has-text-white" }, [
+              _vm._v(
+                "\n               Why eat at a chain if you can eat local?\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "button is-link is-inverted  is-outlined is-large has-text-weight-bold\t",
+                  on: { click: _vm.findRandomPlace }
+                },
+                [_vm._v("Random Place")]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              [
                 _c(
-                  "button",
+                  "router-link",
                   {
                     staticClass:
-                      "button is-link is-inverted  is-outlined is-large has-text-weight-bold\t",
-                    on: { click: _vm.findRandomPlace }
+                      "button is-link is-inverted  is-outlined has-text-weight-bold",
+                    attrs: { to: { name: "search" } }
                   },
-                  [_vm._v("Random Place")]
+                  [_vm._v("Advanced Search")]
                 )
-              ]),
-              _vm._v(" "),
-              _c(
-                "p",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass:
-                        "button is-link is-inverted  is-outlined has-text-weight-bold",
-                      attrs: { to: { name: "search" } }
-                    },
-                    [_vm._v("Advanced Search")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("p", { staticClass: "has-text-white" }, [
-                _vm._v("Help us add features and keep our servers running!")
-              ]),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _vm._m(1)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "hero-foot" }, [
-            _c("nav", { staticClass: "tabs" }, [
-              _c("div", { staticClass: "container" }, [
-                _c("ul", [
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "has-text-white",
-                          attrs: { to: { name: "backer" } }
-                        },
-                        [_vm._v("Help Us Out!")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._m(2)
-                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("p", { staticClass: "has-text-white" }, [
+              _vm._v("Help us add features and keep our servers running!")
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "hero-foot" }, [
+          _c("nav", { staticClass: "tabs" }, [
+            _c("div", { staticClass: "container" }, [
+              _c("ul", [
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "has-text-white",
+                        attrs: { to: { name: "backer" } }
+                      },
+                      [_vm._v("Help Us Out!")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._m(2)
               ])
             ])
           ])
-        ]
-      ),
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "b-modal",
@@ -23279,12 +23246,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "has-background-translucent top-spacer" },
+    { staticClass: "top-spacer" },
     [
       _c(
         "div",
         {
-          staticClass: "container has-text-white has-background-translucent",
+          staticClass: "container has-text-white ",
           staticStyle: { "margin-top": "30px" }
         },
         [
@@ -23303,7 +23270,7 @@ var render = function() {
               _c(
                 "div",
                 {
-                  staticClass: "card-header has-background-black",
+                  staticClass: "card-header has-background-grey-darker\t",
                   attrs: { slot: "trigger" },
                   slot: "trigger"
                 },
@@ -23323,7 +23290,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "card-content has-background-grey-darker" },
+                { staticClass: "card-content has-background-grey-dark" },
                 [
                   _c("div", { staticClass: "content" }, [
                     _c("div", { staticClass: "columns" }, [
@@ -24293,8 +24260,8 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "has-background-translucent top-spacer",
-      staticStyle: { "padding-top": "70px" }
+      staticClass: " top-spacer",
+      staticStyle: { "padding-top": "70px", "padding-bottom": "70px" }
     },
     [
       _c("div", { staticClass: "container" }, [
@@ -24454,11 +24421,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "has-background-translucent top-spacer" }, [
+  return _c("div", { staticClass: " top-spacer" }, [
     _c(
       "div",
       {
-        staticClass: "container has-text-white has-background-translucent",
+        staticClass: "container has-text-white ",
         staticStyle: { "margin-top": "25px", "min-height": "100vh" }
       },
       [

@@ -1,14 +1,14 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class="top-spacer">
 
 
-    <div class="container has-text-white has-background-translucent" style="margin-top: 30px;">
+    <div class="container has-text-white " style="margin-top: 30px;">
 
         <b-collapse class="card" :open.sync="filtersVisible" animation="translate-y">
-            <div slot="trigger" class="card-header has-background-black">
+            <div slot="trigger" class="card-header has-background-grey-darker	">
                 <strong class="has-text-white card-header-title">Advanced Search Filters&nbsp;<i v-if="!filtersVisible" class="fas fa-plus"></i> <i v-else class="fas fa-times"></i></strong>
             </div>
-            <div class="card-content has-background-grey-darker">
+            <div class="card-content has-background-grey-dark">
                 <div class="content">
                 <div class="columns">
                     <div class="column is-8">

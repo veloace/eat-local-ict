@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer">
+    <div class=" top-spacer">
         <div v-if="!loading" class="container has-text-white">
             <div class="columns">
                 <div class="column" style="margin-top: 30px;">
@@ -16,7 +16,15 @@
                 <div class="column is-three-quarters">
                     <h1  class="title  has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
                     </h1>
+                    <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.
+                        <span  v-if="listing.user_comment">You said..
+                        <span class=" is-italic">"{{listing.user_comment}}"</span>
+                    </span>
+                    </p>
+
+                    <add-to-list v-else :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list>
                     <p class=" heading">
+
                        <span v-if="listing.claim_status==='unclaimed'" class="has-text-grey">This place is unclaimed.
                             <a v-if="$root.user.logged" @click="showClaimModal=true"> Claim ownership?</a>
                             <a v-else="$root.user.logged" @click="$root.showLoginModal=true"> Login to claim ownership.</a>
@@ -48,16 +56,6 @@
                                 class="fas fa-dollar-sign has-text-grey-lighter" v-for="c in (5-listing.price)"></i>
             </span>
                     </p>
-
-
-
-                    <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.</p>
-                    <p  class="heading" v-else>Do you love {{listing.name}}? Consider adding it your your favorites so you can find it later. <br><add-to-list :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list></p>
-                    <div v-if="listing.user_comment" style="margin-bottom: 0; padding-bottom: 0">
-                        <p  class="heading has-text-warning">You said..
-                            <span class="has-text-warning is-italic">"{{listing.user_comment}}"</span>
-                        </p>
-                    </div>
 
                 </div>
                 <div class="column">
@@ -129,8 +127,8 @@
 
             <hr class="no-top">
             <div v-if="listing.reviews">
-                <h2  class="title has-text-centered has-text-white">Recent Google Reviews (<i class="fa fa-star has-text-warning" v-for="d in Math.round(listing.rating)"></i><i
-                        class="fa fa-star fa-xs has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))"></i>)</h2>
+                <h2  class="title has-text-centered has-text-white">Recent Google Reviews<br><i class="fa fa-star has-text-warning" v-for="d in Math.round(listing.rating)"></i><i
+                        class="fa fa-star fa-xs has-text-grey-lighter" v-for="e in (5- Math.round(listing.rating))"></i></h2>
                 <article class="media"  v-for="review in listing.reviews">
                     <figure class="media-left">
                         <p class="image is-64x64">

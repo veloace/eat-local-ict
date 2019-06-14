@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-translucent top-spacer" style="padding-top: 70px">
+    <div class=" top-spacer" style="padding-top: 70px;padding-bottom: 70px">
        <div class="container">
             <div class="columns">
                 <div class="column is-half is-offset-one-quarter">
