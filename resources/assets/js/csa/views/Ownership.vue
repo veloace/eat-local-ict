@@ -50,12 +50,12 @@
                     this.makeAPICall(claim);
                 }
             },
-            deny(claim)
+            reject(claim)
             {
                 if(confirm("Are you sure you want to reject "+claim.user.name+"'s claim of ownership for "+claim.place.name+"?"))
                 {
-                    claim.is_approved=1;
-                    claim.is_rejected=0;
+                    claim.is_approved=0;
+                    claim.is_rejected=1;
                     this.makeAPICall(claim);
                 }
             },

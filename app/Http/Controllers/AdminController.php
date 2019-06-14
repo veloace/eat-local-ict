@@ -8,6 +8,8 @@ use App\Http\Requests\EditPlaceRequest;
 use App\Http\Requests\EditSuggestionRequest;
 use App\Http\Requests\ProcessOwnershipClaimRequest;
 use App\MissingPlaceSuggestion;
+use App\Notifications\PlaceClaimAccepted;
+use App\Notifications\PlaceClaimRejected;
 use App\Place;
 use App\PlaceDescriptionSuggestion;
 use App\PlaceTag;
@@ -61,20 +63,27 @@ class AdminController extends Controller
 
     public function processOwnershipClaim(ProcessOwnershipClaimRequest $request)
     {
-        $owner = UserPlaceOwnershipClaim::where('id',$request['id'])->first();
+        $claim = UserPlaceOwnershipClaim::where('id',$request['id'])->first();
+        $place = Place::find($claim->place_id);
+        $owner = User::where('id',$claim->requester_user_id )->first();
 
         if($request['is_approved'])
         {
-            $place = Place::find($owner->place_id);
-            $place->owner_user_id = $owner->requester_user_id;
+            $place->owner_user_id = $claim->requester_user_id;
             $place->save();
+
+            $owner->notify(new PlaceClaimAccepted($place->name,$request['admin_comments']));
+        }
+        else
+        {
+            $owner->notify(new PlaceClaimRejected($place->name,$request['admin_comments']));
 
         }
 
-        $owner->is_approved=$request['is_approved'];
-        $owner->is_rejected=$request['is_rejected'];
-        $owner->admin_comments=$request['admin_comments'];
-        $owner->save();
+        $claim->is_approved=$request['is_approved'];
+        $claim->is_rejected=$request['is_rejected'];
+        $claim->admin_comments=$request['admin_comments'];
+        $claim->save();
 
         return response(null,204);
     }
