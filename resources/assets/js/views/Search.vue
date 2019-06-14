@@ -357,23 +357,19 @@
                         tags:this.convertTagsToIDs(this.search.tags)
                     }
                 };
+                this.generateSearchLabel();
+                this.scrollToTop();
                 axios.get('/api/places/search',params)
                     .then((response)=> {
-                        this.generateSearchLabel();
-                        if(!forReset)
-                        {
-                            this.filtersVisible=false
-                        }
-                        this.scrollToTop();
                         this.loading = false;
                         this.items=response.data.data;
                         this.totalResults=response.data.total;
                         this.perPage=response.data.per_page;
+                        this.filtersVisible=false;
 
                     })
                     .catch((error)=> {
-                        this.scrollToTop();
-
+                        this.filtersVisible=false;
                         this.loading = false;
                         this.$root.showNotification('We encountered an error and were unable to load your search results. If this problem persists, try refreshing the page.','danger');
 
@@ -382,6 +378,10 @@
             generateSearchLabel()
             {
                 let labelString='Searching for all locations';
+                if(this.search.name)
+                {
+                    labelString='Searching for locations containing the term "'+this.search.name+'"';
+                }
                 if(this.search.distance!==0)
                 {
                     labelString = labelString + " "+this.distances[this.search.distance].text+ ' from your current location'
