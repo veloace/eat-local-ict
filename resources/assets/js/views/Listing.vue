@@ -14,7 +14,7 @@
 
             <div class="columns">
                 <div class="column is-three-quarters">
-                    <h1  class="title  has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>&nbsp;{{listing.name}}
+                    <h1  class="title  has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>{{listing.name}}
                     </h1>
                     <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.
                         <span  v-if="listing.user_comment">You said..

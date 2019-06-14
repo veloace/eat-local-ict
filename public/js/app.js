@@ -19095,9 +19095,7 @@ var render = function() {
                               staticClass: "fa fa-star has-text-warning"
                             })
                           : _vm._e(),
-                        _vm._v(
-                          " " + _vm._s(_vm.listing.name) + "\n                "
-                        )
+                        _vm._v(_vm._s(_vm.listing.name) + "\n                ")
                       ]
                     ),
                     _vm._v(" "),
