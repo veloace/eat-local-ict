@@ -2233,6 +2233,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
+//
+//
 
 /***/ }),
 
@@ -3217,6 +3219,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AddToList__ = __webpack_require__("./resources/assets/js/components/AddToList.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AddToList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AddToList__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4324,6 +4331,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -4335,6 +4356,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 lat: null,
                 lng: null,
                 distance: 0,
+                sort: 3,
                 vegan: 0,
                 glutenFree: 0,
                 alcohol: 0,
@@ -4382,6 +4404,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 id: 5,
                 text: 'Under 20 miles'
             }],
+            sortOptions: [{
+                id: 1,
+                text: 'Name, A-Z'
+            }, {
+                id: 2,
+                text: 'Name, Z-A'
+            }, {
+                id: 3,
+                text: 'Closest First'
+            }, {
+                id: 4,
+                text: 'Furthest First'
+            }],
             missingSuggestion: null
         };
     },
@@ -4406,6 +4441,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     lat: this.search.lat,
                     lng: this.search.lng,
                     distance: this.search.distance,
+                    sort: this.search.sort,
                     vegan: this.search.vegan,
                     glutenFree: this.search.glutenFree,
                     alcohol: this.search.alcohol,
@@ -4488,7 +4524,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 labelString = labelString + " that" + options.join(' and');
             }
 
-            this.searchLabel = labelString + '.';
+            labelString = labelString + '. ';
+
+            switch (this.search.sort) {
+                case 1:
+                    labelString = labelString + 'Sorted alphabetically by name, A-Z.';
+                    break;
+                case 2:
+                    labelString = labelString + 'Sorted alphabetically by name, Z-A.';
+                    break;
+                case 3:
+                    labelString = labelString + 'Sorted by distance, closest first.';
+                    break;
+                case 4:
+                    labelString = labelString + 'Sorted by distance, furthest locations first.';
+                    break;
+                default:
+                    labelString = labelString + 'Sorted by distance, closest first.';
+            }
+
+            this.searchLabel = labelString;
         },
         loadNext: function loadNext(next) {
             this.currentPage = next;
@@ -4504,6 +4559,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 lat: this.$root.geo.lat,
                 lng: this.$root.geo.lng,
                 distance: 0,
+                sort: 3,
                 genre: null,
                 vegan: 0,
                 glutenFree: 0,
@@ -21275,71 +21331,79 @@ var staticRenderFns = [
     return _c("div", { staticClass: "top-spacer" }, [
       _c(
         "div",
-        { staticClass: "container", staticStyle: { "margin-top": "30px" } },
+        {
+          staticClass: "container has-text-white",
+          staticStyle: { "margin-top": "30px" }
+        },
         [
-          _c("h1", { staticClass: "has-text-center has-text-white title" }, [
-            _vm._v("Our Plan")
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "has-text-white" }, [
-            _vm._v(
-              "EatLocalICT mission is to promote local restaurants, cafes, and bars in Wichita and the surrounding area. What your are looking at is a MVP (Minimum Viable Product) which represents version 1 of what will be an amazing platform for local establishments. Some features, which take time to build and perfect, were not included in our initial release but are planned and listed below."
-            )
+          _c("h1", { staticClass: "has-text-centered has-text-white title" }, [
+            _vm._v("About EatLocalICT")
           ]),
           _vm._v(" "),
           _c(
-            "ul",
-            {
-              staticClass: "has-text-white",
-              staticStyle: { "padding-left": "15px" }
-            },
+            "a",
+            { attrs: { href: "https://ko-fi.com/T6T2KAM0", target: "_blank" } },
             [
-              _c("li", [
-                _c("i", { staticClass: "fa fa-arrow-circle-right" }),
-                _vm._v(" An "),
-                _c("strong", { staticClass: "has-text-white" }, [
-                  _vm._v("Advanced Search")
-                ]),
-                _vm._v(
-                  " function to allow searching for places by type, dietary options (Vegan, gluten-free) genre, etc."
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", [
-                _c("i", { staticClass: "fa fa-arrow-circle-right" }),
-                _vm._v(" "),
-                _c("strong", { staticClass: "has-text-white" }, [
-                  _vm._v("Login")
-                ]),
-                _vm._v(
-                  " capabilities to allow users to login, manage favorite restaurants, and keep track of places they have visited."
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", [
-                _c("i", { staticClass: "fa fa-arrow-circle-right" }),
-                _vm._v(" "),
-                _c("strong", { staticClass: "has-text-white" }, [
-                  _vm._v("Android and iOS Native apps")
-                ]),
-                _vm._v(".")
-              ]),
-              _vm._v(" "),
-              _c("li", [
-                _c("i", { staticClass: "fa fa-arrow-circle-right" }),
-                _vm._v(" Ability for operators to "),
-                _c("strong", { staticClass: "has-text-white" }, [
-                  _vm._v("claim ownership")
-                ]),
-                _vm._v(
-                  " of their establishment and manage the listing on our website."
-                )
-              ])
+              _c("img", {
+                staticStyle: { border: "0px", height: "36px" },
+                attrs: {
+                  height: "36",
+                  src: "https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2",
+                  border: "0",
+                  alt: "Buy Me a Coffee at ko-fi.com"
+                }
+              })
             ]
           ),
           _vm._v(" "),
-          _c("p", { staticClass: "has-text-white" }, [
-            _vm._v("And so much more! Please feel free to "),
+          _c("p", [
+            _vm._v(
+              "EatLocalICT's mission is to promote local restaurants, cafes, and bars in Wichita and the surrounding area. You can eat at a chain anywhere, so why not eat local in Wichita to experience some of the best food that you can't find anywhere else? EatLocalICT allows you to randomly find a local place, or do an advanced search of all of the local places around you, save places for later, and make a list of your favorites with you own private notes attached."
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v("EatLocalICT is built and maintained by developer "),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "//instagram.com/veloace",
+                  target: "_blank",
+                  rel: "nofollow"
+                }
+              },
+              [_vm._v("VeloAce")]
+            ),
+            _vm._v(
+              " without any outside support or funding, motivated only by a love for food and the city of Wichita. That said, if you'd like to "
+            ),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "https://ko-fi.com/veloace",
+                  target: "_blank",
+                  rel: "nofollow"
+                }
+              },
+              [_vm._v("buy me a coffee")]
+            ),
+            _vm._v(
+              " for my troubles, I would greatly appreciate it. I would greatly appreciate a any size of contribution, monthly or one time, to help me pay for server costs and other incidentals."
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "Your contributions will help keep EatLocalICT ad-free, high-performing, and up-to-date."
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "If you have any questions, comments, or concerns, please feel free to "
+            ),
             _c(
               "a",
               {
@@ -21348,7 +21412,33 @@ var staticRenderFns = [
                     "mailto:suggestion@eatlocalict.com?subject=Suggestion%20for%20EatLocalICT"
                 }
               },
-              [_vm._v("drop us a suggestion")]
+              [_vm._v("drop a suggestion")]
+            ),
+            _vm._v(".")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("h1", { staticClass: "has-text-centered has-text-white title" }, [
+            _vm._v("Sponsors")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "has-text-centered " }, [
+            _c("span", { staticClass: "has-text-weight-bold " }, [
+              _vm._v("WE HAVE NO SPONSORS RIGHT NOW.")
+            ]),
+            _vm._v(
+              " If you are interested in sponsoring EatLocalICT and want to know more about the potential benefits, please "
+            ),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href:
+                    "mailto:sponsors@eatlocalict.com?subject=Sponsorship%20for%20EatLocalICT"
+                }
+              },
+              [_vm._v("Shoot us an Email")]
             ),
             _vm._v(".")
           ])
@@ -22780,16 +22870,12 @@ var render = function() {
     [
       _c("div", { staticClass: "hero is-fullheight" }, [
         _c("div", { staticClass: "hero-body" }, [
-          _c("div", { staticClass: "container has-text-centered" }, [
-            _c("h1", { staticClass: "title has-text-white" }, [
-              _vm._v(
-                "\n               EAT & DRINK LOCAL IN WICHITA\n            "
-              )
-            ]),
+          _c("div", { staticClass: "container has-text-centered top-spacer" }, [
+            _vm._m(0),
             _vm._v(" "),
             _c("h2", { staticClass: "subtitle has-text-white" }, [
               _vm._v(
-                "\n               Why eat at a chain if you can eat local?\n            "
+                "\n               Find locally-owned establishments that are unique to Wichita and the surrounding area.\n            "
               )
             ]),
             _vm._v(" "),
@@ -22812,7 +22898,7 @@ var render = function() {
                   "router-link",
                   {
                     staticClass:
-                      "button is-link is-inverted  is-outlined has-text-weight-bold",
+                      "button is-link   is-outlined has-text-weight-bold",
                     attrs: { to: { name: "search" } }
                   },
                   [_vm._v("Advanced Search")]
@@ -22827,9 +22913,9 @@ var render = function() {
               _vm._v("Help us add features and keep our servers running!")
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(2)
           ])
         ]),
         _vm._v(" "),
@@ -22852,7 +22938,7 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(3)
               ])
             ])
           ])
@@ -23168,6 +23254,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column is-4 is-offset-4" }, [
+        _c("figure", { staticClass: "image is-3by2" }, [
+          _c("img", {
+            staticClass: "image",
+            attrs: {
+              src: "/img/logo-title-alt.svg",
+              alt: "EatLocalICT",
+              title: "EatLocalICT"
+            }
+          })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("p", [
       _c(
         "a",
@@ -23365,13 +23470,13 @@ var render = function() {
                     _c("div", { staticClass: "columns" }, [
                       _c(
                         "div",
-                        { staticClass: "column is-full" },
+                        { staticClass: "column is-10" },
                         [
                           _c(
                             "b-field",
                             {
                               attrs: {
-                                label: "Search by Tag",
+                                label: "Search by Tag(s)",
                                 "custom-class": "has-text-white"
                               }
                             },
@@ -23395,6 +23500,59 @@ var render = function() {
                                   expression: "search.tags"
                                 }
                               })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "column is-2" },
+                        [
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Sort By",
+                                "custom-class": "has-text-white"
+                              }
+                            },
+                            [
+                              _c(
+                                "b-select",
+                                {
+                                  attrs: {
+                                    placeholder: "Sort By",
+                                    expanded: true
+                                  },
+                                  model: {
+                                    value: _vm.search.sort,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.search, "sort", $$v)
+                                    },
+                                    expression: "search.sort"
+                                  }
+                                },
+                                _vm._l(_vm.sortOptions, function(option) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: option.id,
+                                      domProps: { value: option.id }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(option.text) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
                             ],
                             1
                           )

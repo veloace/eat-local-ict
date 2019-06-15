@@ -87,24 +87,35 @@
             </keep-alive>
         </section>
 
-    <footer class="footer">
-        <div class="content has-text-centered">
+    <footer class="footer has-background-grey-dark has-text-white">
+        <div class="content ">
 
-            <p>
-                <strong>EatLocalICT</strong> by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>.
-            </p>
-            <p>Want to help out? Check out our stuff on <a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" target="_blank" rel="nofollow">Teespring</a>
-                or buy us a coffee on <a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow">Ko-Fi</a>.
-            </p>
-            <p>
-                <img src="/img/logo.svg" alt="EatLocalICT" width="102" height="68">
-            </p>
-            <p>
-                Copyright &copy; 2018-2019. View our repository <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>.
-            </p>
-            </p>
-            <p>Please see our <a @click="$root.toggleLegalInfoModal('terms')" >terms and conditions</a> and our <a @click="$root.toggleLegalInfoModal('cookies')" >cookie policy</a>.</p>
+            <p class="has-text-centered">
+                EatLocalICT by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>. Copyright &copy; 2018-2019. View our repository <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>.
 
+            </p>
+            <hr>
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <h2 class="subtitle has-text-white">Legal Information</h2>
+                    <ul>
+                        <li><a @click="$root.toggleLegalInfoModal('terms')" >Terms and Conditions</a></li>
+                        <li><a @click="$root.toggleLegalInfoModal('cookies')" >Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="column is-one-quarter">
+                    <h2 class="subtitle has-text-white">Extras</h2>
+                    <ul>
+                        <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+                        <li><router-link :to="{name:'about'}" >About EatLocalICT</router-link></li>
+                        <li><a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" rel="nofollow" target="_blank" >Buy MERCH!</a></li>
+                    </ul>
+                </div>
+                <div class="column is-half">
+                    <h2 class="subtitle has-text-white has-text-centered">Sponsors</h2>
+                    <p class="has-text-centered "><span class="has-text-weight-bold ">WE HAVE NO SPONSORS RIGHT NOW.</span> If you are interested in sponsoring EatLocalICT and want to know more about the potential benefits, please <a  href="mailto:sponsors@eatlocalict.com?subject=Sponsorship%20for%20EatLocalICT">Shoot us an Email</a>.</p>
+                </div>
+            </div>
         </div>
     </footer>
 
