@@ -2,16 +2,10 @@
 <template>
    <div>
       <!-- Hero content: will be in the middle -->
-      <div class="hero is-fullheight">
+      <div class="hero is-fullheight ict-flag-bg">
          <div class="hero-body">
             <div class="container has-text-centered top-spacer">
-               <div class="columns">
-                  <div class="column is-4 is-offset-4">
-                     <figure class="image is-3by2">
-                        <img src="/img/logo-title-alt.svg" alt="EatLocalICT" title="EatLocalICT" class="image">
-                     </figure>
-                  </div>
-               </div>
+               <h1 class="title has-text-white">EatLocalICT</h1>
 
                <h2 class="subtitle has-text-white">
                   Find locally-owned establishments that are unique to Wichita and the surrounding area.
@@ -25,8 +19,7 @@
                </p>
                <hr>
                <p class="has-text-white">Help us add features and keep our servers running!</p>
-               <p><a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" target="_blank" rel="nofollow" class="button is-info is-inverted is-outlined is-small is-translucent">Check out our Merch!</a></p>
-               <p><a href="https://ko-fi.com/veloace" target="_blank" rel="nofollow" class="button is-info is-inverted  is-outlined is-small  is-translucent">Support us on Ko-Fi!</a></p>
+               <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
             </div>
          </div>
          <!-- Hero footer: will stick at the bottom -->

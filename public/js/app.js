@@ -3321,13 +3321,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -22868,10 +22861,12 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "hero is-fullheight" }, [
+      _c("div", { staticClass: "hero is-fullheight ict-flag-bg" }, [
         _c("div", { staticClass: "hero-body" }, [
           _c("div", { staticClass: "container has-text-centered top-spacer" }, [
-            _vm._m(0),
+            _c("h1", { staticClass: "title has-text-white" }, [
+              _vm._v("EatLocalICT")
+            ]),
             _vm._v(" "),
             _c("h2", { staticClass: "subtitle has-text-white" }, [
               _vm._v(
@@ -22913,9 +22908,7 @@ var render = function() {
               _vm._v("Help us add features and keep our servers running!")
             ]),
             _vm._v(" "),
-            _vm._m(1),
-            _vm._v(" "),
-            _vm._m(2)
+            _vm._m(0)
           ])
         ]),
         _vm._v(" "),
@@ -22938,7 +22931,7 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(1)
               ])
             ])
           ])
@@ -23254,61 +23247,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column is-4 is-offset-4" }, [
-        _c("figure", { staticClass: "image is-3by2" }, [
-          _c("img", {
-            staticClass: "image",
-            attrs: {
-              src: "/img/logo-title-alt.svg",
-              alt: "EatLocalICT",
-              title: "EatLocalICT"
-            }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _c(
-        "a",
-        {
-          staticClass:
-            "button is-info is-inverted is-outlined is-small is-translucent",
+    return _c(
+      "a",
+      { attrs: { href: "https://ko-fi.com/T6T2KAM0", target: "_blank" } },
+      [
+        _c("img", {
+          staticStyle: { border: "0px", height: "36px" },
           attrs: {
-            href:
-              "https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front",
-            target: "_blank",
-            rel: "nofollow"
+            height: "36",
+            src: "https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2",
+            border: "0",
+            alt: "Buy Me a Coffee at ko-fi.com"
           }
-        },
-        [_vm._v("Check out our Merch!")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _c(
-        "a",
-        {
-          staticClass:
-            "button is-info is-inverted  is-outlined is-small  is-translucent",
-          attrs: {
-            href: "https://ko-fi.com/veloace",
-            target: "_blank",
-            rel: "nofollow"
-          }
-        },
-        [_vm._v("Support us on Ko-Fi!")]
-      )
-    ])
+        })
+      ]
+    )
   },
   function() {
     var _vm = this

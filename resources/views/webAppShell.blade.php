@@ -49,7 +49,7 @@
       <div class="navbar-brand">
 
           <router-link :to="{name:'home'}"  class="navbar-item has-text-white">
-              <img src="/img/logo.svg" alt="EatLocalICT" width="42" height="34">&nbsp;<strong>EatLocalICT</strong>
+              <img src="/img/logo-title-alt.svg" alt="EatLocalICT" width="42" height="34">&nbsp;<strong>EatLocalICT</strong>
           </router-link>
       </div>
       <div class="navbar-menu">
@@ -108,7 +108,6 @@
                     <ul>
                         <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
                         <li><router-link :to="{name:'about'}" >About EatLocalICT</router-link></li>
-                        <li><a href="https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front" rel="nofollow" target="_blank" >Buy MERCH!</a></li>
                     </ul>
                 </div>
                 <div class="column is-half">
