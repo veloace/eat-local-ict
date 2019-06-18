@@ -43,7 +43,7 @@ class PlaceSearchRequest extends FormRequest
             'charger'=>'nullable|boolean',
             'parking'=>'nullable|boolean',
             'tags'=>'nullable|array',
-            'sort'=>'required|in:1,2,3,4'
+            'sort'=>'nullable|in:1,2,3,4'
         ];
     }
 }
