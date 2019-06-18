@@ -3601,6 +3601,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -18268,21 +18299,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Listing.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.underlined\n{\n    text-decoration: underline;\n}\nul\n{\n    list-style-type: none;\n    padding-left: 0;\n}\n.no-bottom\n{\n   margin-bottom: 0!important;\n}\n.no-top\n{\n    margin-top: 0!important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13b16caa\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Account.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19130,7 +19146,7 @@ var render = function() {
               _c("div", { staticClass: "columns" }, [
                 _c(
                   "div",
-                  { staticClass: "column is-three-quarters" },
+                  { staticClass: "column is-half" },
                   [
                     _c(
                       "h1",
@@ -19147,6 +19163,27 @@ var render = function() {
                         _vm._v(_vm._s(_vm.listing.name) + "\n                ")
                       ]
                     ),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c(
+                        "span",
+                        { staticClass: "is-size-6" },
+                        [
+                          _vm._l(_vm.listing.price, function(i) {
+                            return _c("i", {
+                              staticClass:
+                                " has-text-success fas fa-dollar-sign"
+                            })
+                          }),
+                          _vm._l(5 - _vm.listing.price, function(c) {
+                            return _c("i", {
+                              staticClass: "fas fa-dollar-sign has-text-grey"
+                            })
+                          })
+                        ],
+                        2
+                      )
+                    ]),
                     _vm._v(" "),
                     _vm.listing.is_favorited
                       ? _c(
@@ -19186,56 +19223,182 @@ var render = function() {
                           on: { "add-success": _vm.favorited }
                         }),
                     _vm._v(" "),
-                    _c("p", { staticClass: " heading" }, [
-                      _vm.listing.claim_status === "unclaimed"
-                        ? _c("span", { staticClass: "has-text-grey" }, [
+                    _vm.listing.summary
+                      ? _c("p", [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(_vm.listing.summary) +
+                              "\n                "
+                          )
+                        ])
+                      : _c("div", { staticClass: "has-text-white" }, [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "button is-info is-outlined is-small",
+                              on: { click: _vm.suggestDescription }
+                            },
+                            [_vm._v("Suggest a Description")]
+                          )
+                        ]),
+                    _vm._v(" "),
+                    _vm.listing.eb_review_link
+                      ? _c("div", [
+                          _c("hr"),
+                          _vm._v(" "),
+                          _c("p", [
                             _vm._v(
-                              "This place is unclaimed.\n                        "
-                            ),
-                            _vm.$root.user.logged
-                              ? _c(
-                                  "a",
-                                  {
-                                    on: {
-                                      click: function($event) {
-                                        _vm.showClaimModal = true
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(" Claim ownership?")]
-                                )
-                              : _c(
-                                  "a",
-                                  {
-                                    on: {
-                                      click: function($event) {
-                                        _vm.$root.showLoginModal = true
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(" Login to claim ownership.")]
-                                )
-                          ])
-                        : _vm.listing.claim_status === "claimed"
-                        ? _c("span", { staticClass: "has-text-grey" }, [
-                            _vm._v("Claimed.")
-                          ])
-                        : _vm.listing.claim_status === "approved"
-                        ? _c("span", { staticClass: "has-text-grey" }, [
-                            _vm._v("You own this place.")
-                          ])
-                        : _vm.listing.claim_status === "denied"
-                        ? _c("span", { staticClass: "has-text-danger" }, [
-                            _vm._v("Your ownership claim has been denied.")
-                          ])
-                        : _vm.listing.claim_status === "pending"
-                        ? _c("span", { staticClass: "has-text-grey" }, [
-                            _vm._v(
-                              "Your ownership claim is pending approval by an EatLocalICT Admin."
+                              "Want more details about " +
+                                _vm._s(_vm.listing.name) +
+                                "? Read what Eddy has to say:"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "has-text-centered" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "eb-link",
+                                attrs: {
+                                  href: _vm.listing.eb_review_link,
+                                  target: "_blank",
+                                  rel: "nofollow"
+                                }
+                              },
+                              [_c("img", { attrs: { src: "/img/eb-544.png" } })]
                             )
                           ])
-                        : _vm._e()
-                    ]),
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-collapse",
+                      {
+                        staticClass: "card has-background-black-ter",
+                        attrs: { "aria-id": "contentIdForA11y3", open: false },
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "trigger",
+                              fn: function(props) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "card-header has-background-black-bis",
+                                    attrs: {
+                                      role: "button",
+                                      "aria-controls": "contentIdForA11y3"
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "p",
+                                      { staticClass: "card-header-title" },
+                                      [
+                                        _vm.listing.is_open
+                                          ? _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "has-text-centered  has-text-success is-size-4"
+                                              },
+                                              [_vm._v("Open Now!")]
+                                            )
+                                          : _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "has-text-centered  has-text-danger is-size-4"
+                                              },
+                                              [_vm._v("Closed Now")]
+                                            )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass:
+                                          "card-header-icon has-text-white"
+                                      },
+                                      [
+                                        _c("b-icon", {
+                                          attrs: {
+                                            pack: "fas",
+                                            icon: props.open
+                                              ? "caret-down"
+                                              : "caret-up"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                )
+                              }
+                            }
+                          ],
+                          null,
+                          false,
+                          1970063393
+                        )
+                      },
+                      [
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-content " }, [
+                          _c("div", {}, [
+                            _c(
+                              "ul",
+                              { staticClass: "open-hours-list" },
+                              _vm._l(_vm.listing.hours, function(hour, idx) {
+                                return _c(
+                                  "li",
+                                  { staticClass: "has-text-centered" },
+                                  [
+                                    idx === _vm.today
+                                      ? _c(
+                                          "strong",
+                                          {
+                                            staticClass:
+                                              "has-text-weight-bold has-text-white"
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-arrow-circle-right"
+                                            }),
+                                            _vm._v(
+                                              "\n                                        " +
+                                                _vm._s(hour) +
+                                                "\n                                    "
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "has-text-white" },
+                                          [_vm._v(_vm._s(hour))]
+                                        )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("p", { staticClass: "subtitle" }, [
                       _c(
@@ -19262,7 +19425,7 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _vm.listing.user_distance
-                        ? _c("span", { staticClass: "has-text-info" }, [
+                        ? _c("span", { staticClass: "has-text-white" }, [
                             _vm._v(
                               "\n                       (About " +
                                 _vm._s(_vm.listing.user_distance) +
@@ -19272,232 +19435,181 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm.listing.summary
-                      ? _c("p", [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.listing.summary) +
-                              "\n                "
-                          )
-                        ])
-                      : _c("div", { staticClass: "has-text-white" }, [
-                          _vm._m(1),
-                          _vm._v(" "),
-                          _c(
+                    _c("p", { staticClass: "buttons" }, [
+                      _vm.listing.phone_number
+                        ? _c(
                             "a",
                             {
                               staticClass:
-                                "button is-info is-outlined is-small",
-                              on: { click: _vm.suggestDescription }
+                                "button is-small is-primary is-outlined",
+                              attrs: { href: "tel:" + _vm.listing.phone_number }
                             },
-                            [_vm._v("Suggest a Description")]
+                            [
+                              _vm._m(2),
+                              _vm._v(" "),
+                              _c("span", [
+                                _vm._v(_vm._s(_vm.listing.phone_number))
+                              ])
+                            ]
                           )
-                        ]),
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.listing.email_address
+                        ? _c(
+                            "a",
+                            {
+                              staticClass:
+                                "button is-small is-success  is-outlined",
+                              attrs: {
+                                href: "mailto:" + _vm.listing.email_address
+                              }
+                            },
+                            [
+                              _vm._m(3),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(" Email")])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.listing.website_url
+                        ? _c(
+                            "a",
+                            {
+                              staticClass:
+                                "button is-small is-link  is-outlined",
+                              attrs: {
+                                href: _vm.listing.website_url,
+                                target: "_blank"
+                              }
+                            },
+                            [
+                              _vm._m(4),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(" Website")])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.listing.menu_link
+                        ? _c(
+                            "a",
+                            {
+                              staticClass:
+                                "button is-small is-info  is-outlined",
+                              attrs: {
+                                href: _vm.listing.menu_link,
+                                target: "_blank"
+                              }
+                            },
+                            [
+                              _vm._m(5),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(" Menu")])
+                            ]
+                          )
+                        : _vm._e()
+                    ]),
                     _vm._v(" "),
                     _c("p", [
-                      _vm._v("Price:\n                    "),
-                      _c(
-                        "span",
-                        { staticClass: "is-size-6" },
-                        [
-                          _vm._l(_vm.listing.price, function(i) {
-                            return _c("i", {
-                              staticClass:
-                                " has-text-success fas fa-dollar-sign"
-                            })
-                          }),
-                          _vm._l(5 - _vm.listing.price, function(c) {
-                            return _c("i", {
-                              staticClass:
-                                "fas fa-dollar-sign has-text-grey-lighter"
-                            })
-                          })
-                        ],
-                        2
-                      )
+                      _vm.listing.facebook_link
+                        ? _c(
+                            "a",
+                            {
+                              attrs: {
+                                href:
+                                  "https://facebook.com/" +
+                                  _vm.listing.facebook_link,
+                                target: "_blank",
+                                rel: "nofollow"
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fab fa-facebook fa-2x",
+                                staticStyle: { color: "#fff" }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.listing.instagram_link
+                        ? _c(
+                            "a",
+                            {
+                              attrs: {
+                                href:
+                                  "https://instagram.com/" +
+                                  _vm.listing.instagram_link,
+                                target: "_blank",
+                                rel: "nofollow"
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fab fa-instagram fa-2x",
+                                staticStyle: { color: "#FFF" }
+                              })
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c(
-                    "h2",
-                    {
-                      staticClass:
-                        "has-text-centered is-size-3 has-text-white has-text-weight-bold"
-                    },
-                    [_vm._v("Hours")]
-                  ),
-                  _vm._v(" "),
-                  _vm.listing.is_open
-                    ? _c(
-                        "p",
-                        {
-                          staticClass:
-                            "has-text-centered  has-text-success is-size-4"
-                        },
-                        [_vm._v("Open Now!")]
-                      )
-                    : _c(
-                        "p",
-                        {
-                          staticClass:
-                            "has-text-centered  has-text-danger is-size-4"
-                        },
-                        [_vm._v("Closed Now")]
-                      ),
-                  _vm._v(" "),
-                  _c(
-                    "ul",
-                    _vm._l(_vm.listing.hours, function(hour, idx) {
-                      return _c("li", { staticClass: "has-text-centered" }, [
-                        idx === _vm.today
-                          ? _c(
-                              "strong",
-                              {
-                                staticClass:
-                                  "has-text-weight-bold has-text-white"
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-arrow-circle-right"
-                                }),
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(hour) +
-                                    "\n                        "
-                                )
-                              ]
-                            )
-                          : _c("span", [_vm._v(_vm._s(hour))])
-                      ])
-                    }),
-                    0
-                  )
-                ])
+                )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("p", { staticClass: "buttons" }, [
-                    _vm.listing.phone_number
-                      ? _c(
-                          "a",
-                          {
-                            staticClass:
-                              "button is-small is-primary is-outlined",
-                            attrs: { href: "tel:" + _vm.listing.phone_number }
-                          },
-                          [
-                            _vm._m(2),
-                            _vm._v(" "),
-                            _c("span", [
-                              _vm._v(_vm._s(_vm.listing.phone_number))
-                            ])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.listing.email_address
-                      ? _c(
-                          "a",
-                          {
-                            staticClass:
-                              "button is-small is-success  is-outlined",
-                            attrs: {
-                              href: "mailto:" + _vm.listing.email_address
-                            }
-                          },
-                          [
-                            _vm._m(3),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(" Email")])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.listing.website_url
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "button is-small is-link  is-outlined",
-                            attrs: {
-                              href: _vm.listing.website_url,
-                              target: "_blank"
-                            }
-                          },
-                          [
-                            _vm._m(4),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(" Website")])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.listing.menu_link
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "button is-small is-info  is-outlined",
-                            attrs: {
-                              href: _vm.listing.menu_link,
-                              target: "_blank"
-                            }
-                          },
-                          [
-                            _vm._m(5),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(" Menu")])
-                          ]
-                        )
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _vm.listing.facebook_link
-                      ? _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "https://facebook.com/" +
-                                _vm.listing.facebook_link,
-                              target: "_blank",
-                              rel: "nofollow"
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fab fa-facebook fa-2x",
-                              staticStyle: { color: "#fff" }
-                            })
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.listing.instagram_link
-                      ? _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "https://instagram.com/" +
-                                _vm.listing.instagram_link,
-                              target: "_blank",
-                              rel: "nofollow"
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fab fa-instagram fa-2x",
-                              staticStyle: { color: "#FFF" }
-                            })
-                          ]
-                        )
-                      : _vm._e()
-                  ])
-                ])
+              _c("div", { staticClass: "columns" }),
+              _vm._v(" "),
+              _c("p", { staticClass: " heading" }, [
+                _vm.listing.claim_status === "unclaimed"
+                  ? _c("span", { staticClass: "has-text-grey" }, [
+                      _vm._v(
+                        "This place is unclaimed.\n                        "
+                      ),
+                      _vm.$root.user.logged
+                        ? _c(
+                            "a",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.showClaimModal = true
+                                }
+                              }
+                            },
+                            [_vm._v(" Claim ownership?")]
+                          )
+                        : _c(
+                            "a",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.$root.showLoginModal = true
+                                }
+                              }
+                            },
+                            [_vm._v(" Login to claim ownership.")]
+                          )
+                    ])
+                  : _vm.listing.claim_status === "claimed"
+                  ? _c("span", { staticClass: "has-text-grey" }, [
+                      _vm._v("This place is claimed.")
+                    ])
+                  : _vm.listing.claim_status === "approved"
+                  ? _c("span", { staticClass: "has-text-grey" }, [
+                      _vm._v("You own this place.")
+                    ])
+                  : _vm.listing.claim_status === "denied"
+                  ? _c("span", { staticClass: "has-text-danger" }, [
+                      _vm._v("Your ownership claim has been denied.")
+                    ])
+                  : _vm.listing.claim_status === "pending"
+                  ? _c("span", { staticClass: "has-text-grey" }, [
+                      _vm._v(
+                        "Your ownership claim is pending approval by an EatLocalICT Admin."
+                      )
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c(
@@ -28001,33 +28113,6 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Listing.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Listing.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("600ecee9", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Listing.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Listing.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 
@@ -41516,10 +41601,6 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-03689981\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/views/Listing.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/views/Listing.vue")
@@ -41528,7 +41609,7 @@ var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/templa
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */

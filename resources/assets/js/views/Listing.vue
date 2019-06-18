@@ -13,9 +13,15 @@
             </div>
 
             <div class="columns">
-                <div class="column is-three-quarters">
+                <div class="column is-half">
                     <h1  class="title  has-text-white" style="margin-bottom: 0"><i class="fa fa-star has-text-warning" v-if="listing.is_favorited"></i>{{listing.name}}
                     </h1>
+                    <p>
+                        <span class="is-size-6">
+                <i class=" has-text-success fas fa-dollar-sign" v-for="i in listing.price"></i><i
+                                class="fas fa-dollar-sign has-text-grey" v-for="c in (5-listing.price)"></i>
+            </span>
+                    </p>
                     <p  class="heading has-text-warning has-text-italic" v-if="listing.is_favorited">In your <router-link :to="{name:'favorites'}" class="has-text-warning underlined">favorites</router-link>.
                         <span  v-if="listing.user_comment">You said..
                         <span class=" is-italic">"{{listing.user_comment}}"</span>
@@ -23,26 +29,7 @@
                     </p>
 
                     <add-to-list v-else :place="listing" listType="Favorite" v-on:add-success="favorited"></add-to-list>
-                    <p class=" heading">
 
-                       <span v-if="listing.claim_status==='unclaimed'" class="has-text-grey">This place is unclaimed.
-                            <a v-if="$root.user.logged" @click="showClaimModal=true"> Claim ownership?</a>
-                            <a v-else="$root.user.logged" @click="$root.showLoginModal=true"> Login to claim ownership.</a>
-                       </span>
-                        <span v-else-if="listing.claim_status==='claimed'" class="has-text-grey">Claimed.</span>
-                        <span v-else-if="listing.claim_status==='approved'" class="has-text-grey">You own this place.</span>
-                        <span v-else-if="listing.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
-                        <span v-else-if="listing.claim_status==='pending'" class="has-text-grey">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
-                    </p>
-                    <p class="subtitle">
-                        <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
-                            <i class="fa fa-map-marker"></i>
-                            {{listing.address}} {{listing.city}}, {{listing.state_code}}
-                        </a>
-                        <span v-if="listing.user_distance" class="has-text-info">
-                           (About {{listing.user_distance}} miles away)
-                        </span>
-                    </p>
                     <p v-if="listing.summary">
                         {{listing.summary}}
                     </p>
@@ -50,34 +37,64 @@
                         <p class="is-italic"><em>We don't have a description for this place yet.</em></p>
                         <a class="button is-info is-outlined is-small" @click="suggestDescription">Suggest a Description</a>
                     </div>
-                    <p>Price:
-                        <span class="is-size-6">
-                <i class=" has-text-success fas fa-dollar-sign" v-for="i in listing.price"></i><i
-                                class="fas fa-dollar-sign has-text-grey-lighter" v-for="c in (5-listing.price)"></i>
-            </span>
+                    <div v-if="listing.eb_review_link" >
+                        <hr>
+                        <p>Want more details about {{listing.name}}? Read what Eddy has to say:</p>
+                        <p class="has-text-centered">
+                            <a :href="listing.eb_review_link" target="_blank" rel="nofollow" class="eb-link">
+                                <img src="/img/eb-544.png">
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="column">
+
+                    <b-collapse class="card has-background-black-ter" aria-id="contentIdForA11y3" :open="false">
+                        <div
+                                slot="trigger"
+                                slot-scope="props"
+                                class="card-header has-background-black-bis"
+                                role="button"
+                                aria-controls="contentIdForA11y3">
+                            <p class="card-header-title">
+                                <span class="has-text-centered  has-text-success is-size-4" v-if="listing.is_open">Open Now!</span>
+                                <span class="has-text-centered  has-text-danger is-size-4" v-else="">Closed Now</span>
+                            </p>
+                            <a class="card-header-icon has-text-white">
+                                <b-icon pack="fas"
+                                        :icon="props.open ? 'caret-down' : 'caret-up'">
+                                </b-icon>
+                            </a>
+                        </div>
+                        <div class="card-content ">
+                            <div class="">
+                                <ul class="open-hours-list">
+                                    <li v-for="(hour,idx) in listing.hours" class="has-text-centered">
+                                        <strong v-if="idx===today" class="has-text-weight-bold has-text-white">
+                                            <i class="fa fa-arrow-circle-right"></i>
+                                            {{hour}}
+                                        </strong>
+                                        <span v-else class="has-text-white">{{hour}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </b-collapse>
+
+
+                    <p class="subtitle">
+                        <a :href="listing.map_link" target="_blank" rel="nofollow noopener">
+                            <i class="fa fa-map-marker"></i>
+                            {{listing.address}} {{listing.city}}, {{listing.state_code}}
+                        </a>
+                        <span v-if="listing.user_distance" class="has-text-white">
+                           (About {{listing.user_distance}} miles away)
+                        </span>
                     </p>
 
-                </div>
-                <div class="column">
-                    <h2 class="has-text-centered is-size-3 has-text-white has-text-weight-bold">Hours</h2>
-                        <p class="has-text-centered  has-text-success is-size-4" v-if="listing.is_open">Open Now!</p>
-                        <p class="has-text-centered  has-text-danger is-size-4" v-else="">Closed Now</p>
-                    <ul>
-                        <li v-for="(hour,idx) in listing.hours" class="has-text-centered">
-                            <strong v-if="idx===today" class="has-text-weight-bold has-text-white">
-                                <i class="fa fa-arrow-circle-right"></i>
-                                {{hour}}
-                            </strong>
-                            <span v-else>{{hour}}</span>
-                        </li>
-                    </ul>
 
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
                     <p class="buttons">
-
                         <a v-if="listing.phone_number" :href="'tel:'+listing.phone_number"
                            class="button is-small is-primary is-outlined">
             <span class="icon">
@@ -120,11 +137,25 @@
                     </p>
                 </div>
             </div>
-                    <b-taglist class="no-bottom">
-                        <b-tag type="is-dark" v-for="tag in listing.tags" :key="tag.id">{{tag.name}}</b-tag>
+            <div class="columns">
 
-                    </b-taglist>
+            </div>
+            <p class=" heading">
 
+                       <span v-if="listing.claim_status==='unclaimed'" class="has-text-grey">This place is unclaimed.
+                            <a v-if="$root.user.logged" @click="showClaimModal=true"> Claim ownership?</a>
+                            <a v-else="$root.user.logged" @click="$root.showLoginModal=true"> Login to claim ownership.</a>
+                       </span>
+                <span v-else-if="listing.claim_status==='claimed'" class="has-text-grey">This place is claimed.</span>
+                <span v-else-if="listing.claim_status==='approved'" class="has-text-grey">You own this place.</span>
+                <span v-else-if="listing.claim_status==='denied'" class="has-text-danger">Your ownership claim has been denied.</span>
+                <span v-else-if="listing.claim_status==='pending'" class="has-text-grey">Your ownership claim is pending approval by an EatLocalICT Admin.</span>
+            </p>
+
+            <b-taglist class="no-bottom">
+                <b-tag type="is-dark" v-for="tag in listing.tags" :key="tag.id">{{tag.name}}</b-tag>
+
+            </b-taglist>
             <hr class="no-top">
             <div v-if="listing.reviews">
                 <h2  class="title has-text-centered has-text-white">Recent Google Reviews<br><i class="fa fa-star has-text-warning" v-for="d in Math.round(listing.rating)"></i><i
@@ -292,24 +323,3 @@
         }
     }
 </script>
-<style>
-    .underlined
-    {
-        text-decoration: underline;
-    }
-    ul
-    {
-        list-style-type: none;
-        padding-left: 0;
-    }
-
-    .no-bottom
-    {
-       margin-bottom: 0!important;
-    }
-    .no-top
-    {
-        margin-top: 0!important;
-
-    }
-</style>

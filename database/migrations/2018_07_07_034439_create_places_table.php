@@ -23,6 +23,8 @@ class CreatePlacesTable extends Migration
             $table->string('city')->default('Wichita');
             $table->char('state_code',2)->default('KS');
             $table->unsignedInteger('owner_user_id')->nullable();
+            //Eb
+            $table->string('eb_review_link')->nullable();
             //
             //contact info
             $table->string('phone_number')->nullable();
