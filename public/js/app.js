@@ -23083,39 +23083,7 @@ var render = function() {
                           ]
                         ),
                     _vm._v(" "),
-                    _c("p", [
-                      _c(
-                        "label",
-                        { staticClass: "heading" },
-                        [
-                          _c(
-                            "b-switch",
-                            {
-                              attrs: { "true-value": 1, "false-value": 0 },
-                              model: {
-                                value: _vm.filters.is_open,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.filters, "is_open", $$v)
-                                },
-                                expression: "filters.is_open"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                           " +
-                                  _vm._s(
-                                    _vm.filters.is_open
-                                      ? "Only showing places that are open right now."
-                                      : "Showing all places. Check to only show open places."
-                                  ) +
-                                  "\n                        "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    ]),
+                    _c("p"),
                     _vm._v(" "),
                     _vm.$root.geo.lat && _vm.$root.geo.lng
                       ? _c(

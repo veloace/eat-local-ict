@@ -65,11 +65,11 @@
                         <a class="button is-info is-outlined is-small" @click="suggestDescription">Suggest a Description</a>
                      </div>
                      <p>
-                        <label class="heading">
+                      <!--  <label class="heading">
                            <b-switch  v-model="filters.is_open" :true-value="1" :false-value="0">
                               {{filters.is_open ? 'Only showing places that are open right now.':'Showing all places. Check to only show open places.'}}
                            </b-switch>
-                        </label>
+                        </label>-->
 
                      </p>
                      <b-field label="Distance" class="has-text-white" v-if="$root.geo.lat && $root.geo.lng">
