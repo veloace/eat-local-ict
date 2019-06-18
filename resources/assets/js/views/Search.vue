@@ -371,7 +371,6 @@
                 this.search.lat=this.$root.geo.lat;
                 this.search.lng=this.$root.geo.lng;
                 let params = {
-                    params:{
                         page:this.currentPage,
                         name:this.search.name,
                         lat:this.search.lat,
@@ -390,11 +389,13 @@
                         delivery:this.search.delivery,
                         parking:this.search.parking,
                         tags:this.convertTagsToIDs(this.search.tags)
-                    }
+
+
                 };
+                console.log(params.tags);
                 this.generateSearchLabel();
                 this.scrollToTop();
-                axios.get('/api/places/search',params)
+                axios.get('/api/places/search',{params:params})
                     .then((response)=> {
                         this.loading = false;
                         this.items=response.data.data;
@@ -424,56 +425,56 @@
 
                 let options = [];
 
-                if(this.search.vegan)
+                if(this.search.vegan==1)
                 {
                     options.push(' have vegan options');
                 }
-                if(this.search.glutenFree)
+                if(this.search.glutenFree==1)
                 {
                     options.push(' have gluten-free options');
 
                 }
-                if(this.search.alcohol)
+                if(this.search.alcohol==1)
                 {
                     options.push(' serves alcohol');
 
                 }
-                if(this.search.wifi)
+                if(this.search.wifi==1)
                 {
                     options.push(' have public wi-fi');
 
                 }
 
-                if(this.search.bikeRack)
+                if(this.search.bikeRack==1)
                 {
                     options.push(' have a bike rack close by');
 
                 }
-                if(this.search.meals)
+                if(this.search.meals==1)
                 {
                     options.push(' serve full meal (breakfast, lunch, or dinner)');
                 }
-                if(this.search.carryout)
+                if(this.search.carryout==1)
                 {
                     options.push(' have carryout');
 
                 }
 
-                if(this.search.charger)
+                if(this.search.charger==1)
                 {
                     options.push(' have an electric vehicle (EV) charger within walking distance');
                 }
 
-                if(this.search.brunch)
+                if(this.search.brunch==1)
                 {
                     options.push(' serve brunch');
                 }
 
-                if(this.search.delivery)
+                if(this.search.delivery==1)
                 {
                     options.push(' have delivery');
                 }
-                if(this.search.parking)
+                if(this.search.parking==1)
                 {
                     options.push(' have free parking close by');
 
