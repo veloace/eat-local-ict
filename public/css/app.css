@@ -22091,3 +22091,7 @@ p {
   max-width: 200px;
 }
 
+.is-image-centered {
+  margin: 0 auto;
+}
+

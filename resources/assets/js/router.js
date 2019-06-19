@@ -20,7 +20,8 @@ const routes =
         {
             path: '/backers',
             component: require('./views/Backers.vue'),
-            name:'backer'
+            name:'backers',
+            alias:'backer'
         },
         {
             path: '/about',

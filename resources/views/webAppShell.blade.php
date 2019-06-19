@@ -88,31 +88,59 @@
         </section>
 
     <footer class="footer has-background-grey-dark has-text-white">
-        <div class="content ">
+        <div class=" ">
 
             <p class="has-text-centered">
                 EatLocalICT by <a href="//instagram.com/veloace" target="_blank" rel="nofollow">VeloAce</a>. Copyright &copy; 2018-2019. View our repository <a href="https://github.com/veloace/eat-local-ict" target="_blank" rel="nofollow">on Github</a>.
 
             </p>
+            <p class="has-text-centered">                        <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+            </p>
             <hr>
             <div class="columns">
-                <div class="column is-one-quarter">
+
+                <div class="column">
+                    <h2 class="subtitle has-text-white has-text-centered">Sponsors</h2>
+                    <div class="columns">
+                        <div class="column is-one-third">
+                            <div class="columns is-mobile">
+                                <div class="column is-one-third">
+                                    <a href="//labor-party.com" target="_blank" rel="nofollow">
+                                        <figure class="image is-square is-image-centered">
+                                            <img src="/img/lp-icon.jpg" alt="The Labor Party" title="The Labor Party: Coworking in Downtown Wichita, Kansas" >
+                                        </figure>
+                                    </a>
+
+                                </div>
+                                <div class="column is-two-thirds">
+                                    <p class="">Coworking in Old Town</p>
+                                    <p class="heading">Join other freelancers, remote workers, and startups in Wichita’s hub for coworking and shared office space. <a href="//labor-party.com" target="_blank" rel="nofollow">
+                                           <br> Visit Website&nbsp;<i class="fa fa-external-link-alt"></i>
+                                        </a></p>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <p class="has-text-centered ">If you are interested in sponsoring EatLocalICT and want to know more about the potential benefits, please <a  href="mailto:sponsors@eatlocalict.com?subject=Sponsorship%20for%20EatLocalICT">Shoot us an Email</a>.</p>
+                </div>
+            </div>
+            <hr>
+            <div class="columns">
+                <div class="column is-2">
                     <h2 class="subtitle has-text-white">Legal Information</h2>
                     <ul>
                         <li><a @click="$root.toggleLegalInfoModal('terms')" >Terms and Conditions</a></li>
                         <li><a @click="$root.toggleLegalInfoModal('cookies')" >Cookie Policy</a></li>
                     </ul>
                 </div>
-                <div class="column is-one-quarter">
+                <div class="column is-2">
                     <h2 class="subtitle has-text-white">Extras</h2>
                     <ul>
-                        <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
                         <li><router-link :to="{name:'about'}" >About EatLocalICT</router-link></li>
                     </ul>
-                </div>
-                <div class="column is-half">
-                    <h2 class="subtitle has-text-white has-text-centered">Sponsors</h2>
-                    <p class="has-text-centered "><span class="has-text-weight-bold ">WE HAVE NO SPONSORS RIGHT NOW.</span> If you are interested in sponsoring EatLocalICT and want to know more about the potential benefits, please <a  href="mailto:sponsors@eatlocalict.com?subject=Sponsorship%20for%20EatLocalICT">Shoot us an Email</a>.</p>
                 </div>
             </div>
         </div>

@@ -2639,6 +2639,24 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -3219,6 +3237,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AddToList__ = __webpack_require__("./resources/assets/js/components/AddToList.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AddToList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AddToList__);
+//
+//
+//
+//
 //
 //
 //
@@ -4459,30 +4481,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.search.lat = this.$root.geo.lat;
             this.search.lng = this.$root.geo.lng;
             var params = {
-                params: {
-                    page: this.currentPage,
-                    name: this.search.name,
-                    lat: this.search.lat,
-                    lng: this.search.lng,
-                    distance: this.search.distance,
-                    sort: this.search.sort,
-                    vegan: this.search.vegan,
-                    glutenFree: this.search.glutenFree,
-                    alcohol: this.search.alcohol,
-                    wifi: this.search.wifi,
-                    bikeRack: this.search.bikeRack,
-                    meals: this.search.meals,
-                    carryout: this.search.carryout,
-                    charger: this.search.charger,
-                    brunch: this.search.brunch,
-                    delivery: this.search.delivery,
-                    parking: this.search.parking,
-                    tags: this.convertTagsToIDs(this.search.tags)
-                }
+                page: this.currentPage,
+                name: this.search.name,
+                lat: this.search.lat,
+                lng: this.search.lng,
+                distance: this.search.distance,
+                sort: this.search.sort,
+                vegan: this.search.vegan,
+                glutenFree: this.search.glutenFree,
+                alcohol: this.search.alcohol,
+                wifi: this.search.wifi,
+                bikeRack: this.search.bikeRack,
+                meals: this.search.meals,
+                carryout: this.search.carryout,
+                charger: this.search.charger,
+                brunch: this.search.brunch,
+                delivery: this.search.delivery,
+                parking: this.search.parking,
+                tags: this.convertTagsToIDs(this.search.tags)
+
             };
+            console.log(params.tags);
             this.generateSearchLabel();
             this.scrollToTop();
-            axios.get('/api/places/search', params).then(function (response) {
+            axios.get('/api/places/search', { params: params }).then(function (response) {
                 _this.loading = false;
                 _this.items = response.data.data;
                 _this.totalResults = response.data.total;
@@ -4506,41 +4528,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var options = [];
 
-            if (this.search.vegan) {
+            if (this.search.vegan == 1) {
                 options.push(' have vegan options');
             }
-            if (this.search.glutenFree) {
+            if (this.search.glutenFree == 1) {
                 options.push(' have gluten-free options');
             }
-            if (this.search.alcohol) {
+            if (this.search.alcohol == 1) {
                 options.push(' serves alcohol');
             }
-            if (this.search.wifi) {
+            if (this.search.wifi == 1) {
                 options.push(' have public wi-fi');
             }
 
-            if (this.search.bikeRack) {
+            if (this.search.bikeRack == 1) {
                 options.push(' have a bike rack close by');
             }
-            if (this.search.meals) {
+            if (this.search.meals == 1) {
                 options.push(' serve full meal (breakfast, lunch, or dinner)');
             }
-            if (this.search.carryout) {
+            if (this.search.carryout == 1) {
                 options.push(' have carryout');
             }
 
-            if (this.search.charger) {
+            if (this.search.charger == 1) {
                 options.push(' have an electric vehicle (EV) charger within walking distance');
             }
 
-            if (this.search.brunch) {
+            if (this.search.brunch == 1) {
                 options.push(' serve brunch');
             }
 
-            if (this.search.delivery) {
+            if (this.search.delivery == 1) {
                 options.push(' have delivery');
             }
-            if (this.search.parking) {
+            if (this.search.parking == 1) {
                 options.push(' have free parking close by');
             }
 
@@ -21570,137 +21592,115 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: " top-spacer" }, [
-    _c(
-      "div",
-      { staticClass: "container", staticStyle: { "padding-top": "30px" } },
-      [
-        _c("h1", { staticClass: "title has-text-white" }, [
-          _vm._v("Help keep us online and ad-free!")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "has-text-white" }, [
-          _vm._v(
-            "EatLocalICT is built and maintained by a volunteer staff to promote local restaurants, cafes, and bars in Wichita and the surrounding area. Ads annoy us and we believe they detract from the usability of this website."
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "p",
-          { staticClass: "has-text-white" },
-          [
-            _vm._v(
-              "We cannot guarantee that our database is complete or up-to-date, so if you see something that is missing or incorrect, please "
-            ),
-            _c(
-              "a",
-              {
-                attrs: {
-                  href:
-                    "mailto:suggestion@eatlocalict.com?subject=Suggestion%20for%20EatLocalICT"
-                }
-              },
-              [_vm._v("let us know")]
-            ),
-            _vm._v(". As we work on this web app, we have plenty of "),
-            _c("router-link", { attrs: { to: { name: "about" } } }, [
-              _vm._v("planned features")
-            ]),
-            _vm._v(
-              ", some of which will help make our database more up to date and reliable."
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("h2", { staticClass: "title has-text-white" }, [
-          _vm._v("Shirts, stickers and mugs")
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _c("h2", { staticClass: "title has-text-white" }, [_vm._v("Sponsors")]),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _c("h2", { staticClass: "title has-text-white" }, [
-          _vm._v("Ko-Fi Backers")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "has-text-white" }, [
-          _vm._v(
-            "Ko-Fi backers will have their name featured here, unless they choose to remain anonymous."
-          )
-        ])
-      ]
-    )
-  ])
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "has-text-white" }, [
-      _vm._v("We have a store online at "),
+    return _c("div", { staticClass: " top-spacer" }, [
       _c(
-        "a",
-        {
-          attrs: {
-            href:
-              "https://teespring.com/eat-local-ict#pid=76&cid=5845&sid=front",
-            target: "_blank",
-            rel: "nofollow"
-          }
-        },
-        [_vm._v("Teespring")]
-      ),
-      _vm._v(
-        " that features merchandise that you will love. Proceeds from sales help us pay for development costs, servers, and maintenance."
+        "div",
+        { staticClass: "container", staticStyle: { "padding-top": "30px" } },
+        [
+          _c("header", { staticStyle: { "margin-bottom": "60px" } }, [
+            _c("h1", { staticClass: "title has-text-white" }, [
+              _vm._v("Our Sponsors")
+            ]),
+            _vm._v(" "),
+            _c("h2", { staticClass: "subtitle has-text-white" }, [
+              _vm._v("Our sponsors keep EatLocalICT Online and Ad-free!")
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "columns multiline",
+              staticStyle: { "margin-bottom": "60px" }
+            },
+            [
+              _c("div", { staticClass: "column is-half" }, [
+                _c("div", { staticClass: "columns is-mobile" }, [
+                  _c("div", { staticClass: "column is-one-third" }, [
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: "//labor-party.com",
+                          target: "_blank",
+                          rel: "nofollow"
+                        }
+                      },
+                      [
+                        _c(
+                          "figure",
+                          { staticClass: "image is-square is-image-centered" },
+                          [
+                            _c("img", {
+                              attrs: {
+                                src: "/img/lp-icon.jpg",
+                                alt: "The Labor Party",
+                                title:
+                                  "The Labor Party: Coworking in Downtown Wichita, Kansas"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column is-two-thirds" }, [
+                    _c("h3", { staticClass: "subtitle has-text-white" }, [
+                      _vm._v("Coworking in Old Town")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "has-text-white" }, [
+                      _vm._v(
+                        "Join other freelancers, remote workers, and startups in Wichita’s hub for coworking and shared office space. "
+                      ),
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "//labor-party.com",
+                            target: "_blank",
+                            rel: "nofollow"
+                          }
+                        },
+                        [
+                          _c("br"),
+                          _vm._v(" Visit Website "),
+                          _c("i", { staticClass: "fa fa-external-link-alt" })
+                        ]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("p", { staticClass: "has-text-centered has-text-white " }, [
+            _vm._v(
+              "If you are interested in sponsoring EatLocalICT and want to know more about the potential benefits, please "
+            ),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href:
+                    "mailto:sponsors@eatlocalict.com?subject=Sponsorship%20for%20EatLocalICT"
+                }
+              },
+              [_vm._v("Shoot us an Email")]
+            ),
+            _vm._v(".")
+          ])
+        ]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "has-text-white" }, [
-      _vm._v("If you don't want any merch, you can buy us a coffee on  "),
-      _c(
-        "a",
-        {
-          attrs: {
-            href: "https://ko-fi.com/veloace",
-            target: "_blank",
-            rel: "nofollow"
-          }
-        },
-        [_vm._v("Ko-Fi")]
-      ),
-      _vm._v(
-        ". Proceeds help us keep this site up and running and our developers fueled with local Wichita coffee and food."
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "has-text-white" }, [
-      _vm._v("We don't have any sponsors yet, but we are open to it. Please "),
-      _c(
-        "a",
-        {
-          attrs: {
-            href:
-              "mailto:sponsorships@eatlocalict.com&subject=EatLocalICT%20Sponsorship%20Inquiry"
-          }
-        },
-        [_vm._v("contact us")]
-      ),
-      _vm._v(" if you're interested.")
     ])
   }
 ]
@@ -23020,7 +23020,23 @@ var render = function() {
               _vm._v("Help us add features and keep our servers running!")
             ]),
             _vm._v(" "),
-            _vm._m(0)
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "p",
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "button is-link is-inverted  is-outlined  has-text-weight-bold",
+                    attrs: { to: { name: "backers" } }
+                  },
+                  [_vm._v("Our Sponsors")]
+                )
+              ],
+              1
+            )
           ])
         ]),
         _vm._v(" "),
@@ -41199,7 +41215,8 @@ var routes = [{
 }, {
     path: '/backers',
     component: __webpack_require__("./resources/assets/js/views/Backers.vue"),
-    name: 'backer'
+    name: 'backers',
+    alias: 'backer'
 }, {
     path: '/about',
     component: __webpack_require__("./resources/assets/js/views/About.vue"),

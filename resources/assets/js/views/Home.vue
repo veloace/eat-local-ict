@@ -20,6 +20,10 @@
                <hr>
                <p class="has-text-white">Help us add features and keep our servers running!</p>
                <a href='https://ko-fi.com/T6T2KAM0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+               <p>
+                  <router-link :to="{name:'backers'}"  class="button is-link is-inverted  is-outlined  has-text-weight-bold">Our Sponsors</router-link>
+               </p>
+
             </div>
          </div>
          <!-- Hero footer: will stick at the bottom -->
