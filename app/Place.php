@@ -28,6 +28,7 @@ class Place extends Model
 
 
     /**
+     * Determines if this places is favorited by the current user
      * @return bool
      */
     function getIsFavoritedAttribute()
@@ -216,19 +217,20 @@ class Place extends Model
     }
 
     /**
-     * @return string
+     * Determines the claim status of this listing in relation to current user
+     * There are five types of claim status:
+     *
+     * 1. 'unclaimed' Means this place has not been claimed by anyone and is open to being claimed
+     * 2. 'claimed' Means this place has been claimed, but it is claimed by someone who is not the current user
+     * 3. 'pending' Means this place has been claimed by the current user, but the ownership has not been verified by an admin.
+     * 4. 'approved' means the current user has claimed this place and it has been approved by and admin. Logically similar to 'claimed'
+     * 5. 'denied' means the current user has claimed this place, but it was denied by an admin
+     *
+     * @return string the claim status as described above
      */
     public function getClaimStatusAttribute()
     {
-        /*
-         * There are five types of claim status
-         *
-         * 1. 'unclaimed' Means this place has not been claimed by anyone and is open to being claimed
-         * 2. 'claimed' Means this place has been claimed, but it is claimed by someone who is not the current user
-         * 3. 'pending' Means this place has been claimed by the current user, but the ownership has not been verified by an admin.
-         * 4. 'approved' means the current user has claimed this place and it has been approved by and admin. Logically similar to 'claimed'
-         * 5. 'denied' means the current user has claimed this place, but it was denied by an admin
-         */
+
 
 
         if(!Auth::check())
@@ -279,6 +281,11 @@ class Place extends Model
 
     }//function getClaimStatusAttribute.
 
+    /**
+     * gets the tags associated with this place
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
      function tags()
     {
         return $this->hasManyThrough(Tag::class,PlaceTag::class,'place_id','id','id','tag_id');

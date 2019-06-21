@@ -9,9 +9,11 @@ use App\UserSavedForLater;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserListConroller extends Controller
+class UserListController extends Controller
 {
     /**
+     * Adds a place to a user's "favorites" list
+     *
      * @param AddToListRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -31,9 +33,11 @@ class UserListConroller extends Controller
         $list->comment = !empty($request['comment']) ? $request['comment']:null;
         $list->save();
         return response()->json(['id'=>$list->id]);
-    }
+    }//addToFavorites
 
     /**
+     * Adds a place to a user's "save for later" list
+     *
      * @param AddToListRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -45,9 +49,11 @@ class UserListConroller extends Controller
         );
         return response()->json(['id'=>$list->id]);
 
-    }
+    }//addToSavedForLater
 
     /**
+     * Deletes a place from a user's "favorites" list
+     *
      * @param DeleteFromListRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
@@ -68,9 +74,11 @@ class UserListConroller extends Controller
         {
             return response('This favorite does not appear to belong to you.',403);
         }//else
-    }
+    }//deleteFavorites
 
     /**
+     * Deletes a place from a user's "saved for later" list
+     *
      * @param DeleteFromListRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
@@ -90,5 +98,5 @@ class UserListConroller extends Controller
         {
             return response('This list item does not appear to belong to you.',403);
         }//else
-    }
+    }//deleteSavedForLater
 }

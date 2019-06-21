@@ -28,13 +28,21 @@ class PlaceController extends Controller
 
 
     /**
+     * Get's a random place from the database, with a variety of possible parameters (Such as distance, if it's open, etc).
+     * This could fail and lead to a race condition (due to the way distance, repetition, and open/not open works) because
+     * we can call this function recursively to re-try randomization if the first attempt fails. The $iterator variables prevents
+     * a race condition by force the function to return data to the user after a certain number of tries, even if it is not within
+     * the user-defined parameters
+     *
+     * TODO: Need to clean this up to use SQL queries for distance and hours (is open/not open). However, we need to remove
+     * the reliance of Google Places API first and save our hours to the database via a PlaceHours object.
+     *
      * @param GetRandomPlaceRequest $request
      * @param int $iterator
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function getRandomPlace(GetRandomPlaceRequest $request,$iterator = 0)
     {
-
         if($iterator >5)
         {
             //if we've got here, we're border on a race condition, so just sent an empty response.
@@ -151,7 +159,8 @@ class PlaceController extends Controller
 
 
     /**
-     * @param $place
+     * Returns a place object by ID
+     * @param $place int the ID of the place
      * @return array
      */
     public function index($place)
@@ -173,6 +182,7 @@ class PlaceController extends Controller
 
         }
 
+        //attempt to make a call to the Google API to build place information
         if (empty($place->google_place_id))
         {
             $place =$this->buildPlaceInformation($place);
@@ -181,6 +191,8 @@ class PlaceController extends Controller
         $return = $place->toArray();
         $return['map_link']=$place->map_link;
 
+
+        //see how old the information we have in the database is. Looks for a cache less than a week old
         $cached =GooglePlaceCache::where([
             ['google_place_id',$place->google_place_id],
             ['updated_at', '>=', \Carbon\Carbon::now()->subWeek()]
@@ -188,7 +200,7 @@ class PlaceController extends Controller
 
 
         if($cached)
-        {
+        {//if our cache is less than a week old, we can go ahead and use it
             $response = json_decode($cached->cached_content);
             $return['hours']=!empty($response->result->opening_hours->weekday_text) ? $response->result->opening_hours->weekday_text:[];
             $return['is_open']=$place->is_open;//since this information is cached, use our function to determine if they are open
@@ -199,7 +211,7 @@ class PlaceController extends Controller
 
         }
         else
-        {
+        {//if the cache is over a week old, or we don't have a cache at all, make an API call and update the place object with the API info
             $key = config('app.PLACES_API_KEY');
             $url = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place->google_place_id}&fields=opening_hours,rating,price_level,reviews&key={$key}";
             if($response=@json_decode(@file_get_contents($url))) {
@@ -214,14 +226,13 @@ class PlaceController extends Controller
                     ['cached_content'=>json_encode($response)]
                 );
 
-            }
-        }
-
-
-        return($return);
-    }
+            }//if response
+        }//else
+        return $return;
+    }//function index
 
     /**
+     * Get a  places that is owned by the currently logged-in user
      * @param $place
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
@@ -229,13 +240,13 @@ class PlaceController extends Controller
     {
         $place = Place::where('id',$place)->with('tags')->first();
         if($place->claim_status=='approved' ||$place->claim_status=='pending')
-        {//only send the data if they have appropriate clearance
+        {//only send the data if they have appropriate clearance (pending our approveD)
             return $place;
         }
         else
         {
             return response("You do not have access to edit {$place->name} .",422);
-        }
+        }//else, they don't own this place
     }
 
 
@@ -650,6 +661,8 @@ class PlaceController extends Controller
 
 
     /**
+     * Processes a claim from the currently logged-in user that they own the provided place
+     *
      * @param PlaceOwnershipRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
@@ -665,7 +678,8 @@ class PlaceController extends Controller
     }
 
     /**
-     * @return array
+     * returns all locations owned by the current user
+     * @return array the locations owned by the current user
      */
     public function showLocationsOwnedByUser()
     {
@@ -686,11 +700,13 @@ class PlaceController extends Controller
         {
             return [];
         }
-    }
+    }//function showLocationsOwnedByUser
 
 
     /**
-     * @param UserEditPlaceRequest $request
+     * Allows a user to edit a listing that they own
+     *
+     * @param UserEditPlaceRequest $request HTTP request from frontend
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function editListing(UserEditPlaceRequest $request)
@@ -732,9 +748,13 @@ class PlaceController extends Controller
 
 
         return response(null,204);
-    }
+    }//function editListing
 
     /**
+     * Updates the tags for the place
+     *
+     * TODO: This function is very similar to the one in the AdminController. Consider creating a trait to share functions between these two controllers
+     *
      * @param Place $place
      * @param UserEditPlaceRequest $request
      */
@@ -772,7 +792,7 @@ class PlaceController extends Controller
             ->whereNotIn('tag_id',$incoming)
             ->delete();
 
-    }
+    }//update tags
 
 
 

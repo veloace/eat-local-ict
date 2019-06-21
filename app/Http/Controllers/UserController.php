@@ -18,6 +18,8 @@ class UserController extends Controller
     //
 
     /**
+     * Process an AJAX login request from the frontend
+     *
      * @param SPALoginRequest $request
      * @param Encrypter $enc
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -37,10 +39,12 @@ class UserController extends Controller
         {
             $data=['message'=>'Incorrect email or password'];
             return response($data,422);
-        }
-    }
+        }//ekse
+    }//function loginViaSPA
 
     /**
+     * Returns the current user information to front end. Used primarily as a canary on the front end to determine if the current session is valid.
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     function currentUser()
@@ -58,11 +62,12 @@ class UserController extends Controller
         {
             return response(null,204);
         }
-    }
+    }//function currentUser
 
 
     /**
-     * Allows user to change their own password
+     * Allows user to change their own password from the account page of the SPA
+     *
      * @param UserPasswordSelfServiceChangeRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -81,7 +86,7 @@ class UserController extends Controller
     }
 
     /**
-     * Allows the user to securely delete their account
+     * Allows the user to securely delete their account. End result is that any trace of them is delete from our DB
      *
      * @param UserAccountDeletionRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -117,6 +122,8 @@ class UserController extends Controller
 
 
     /**
+     * Allows user to update their name and/or email address from the frontend
+     *
      * @param UpdateUserSelfRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -158,6 +165,6 @@ class UserController extends Controller
 
             return response(null,204);
 
-    }
+    }//function update user
 
-}
+}//class

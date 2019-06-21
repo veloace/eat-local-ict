@@ -34,33 +34,13 @@ Route::domain($backendDomain)
                 Route::prefix('place')->group(function () {
                     Route::get('', 'AdminController@indexPlaces')->name('indexPlaces');
                     Route::delete('', 'AdminController@deletePlace')->name('deletePlace');
-                    Route::get('edit/{place}', function($place){
-
-                        $place = \App\Place::with('tags')->find($place);
-                        $data['tags'] = \App\Tag::select('id','name')->get();
-                         $data['listing'] = $place;
-                         //
-                         $data['previous'] = \App\Place::where('id','<',$place->id)
-                             ->orderBy('id','desc')
-                             ->first();
-                         $data['previous'] = empty($data['previous']) ? null:$data['previous']->id;
-                         //
-                         $data['next'] = \App\Place::where('id','>',$place->id)
-                             ->orderBy('id','asc')
-                             ->first();
-                        $data['next'] = empty($data['next']) ? null:$data['next']->id;
-
-                            return $data;
-                    })->name('editPlace');
+                    Route::get('edit/{place}','AdminController@indexPlaceForEdits')->name('indexPlaceForEdits');
                     Route::post('edit/', 'AdminController@savePlaceEdits')->name('savePlaceEdits');
-                    Route::get('add', 'AdminController@addPlace')->name('addPlace');
                     Route::post('add', 'PlaceController@saveNewPlace')->name('saveNewPlace');
 
 
                 });//place prefix
             });//webAPI prefix
-
-
 
             Route::get('/{vue_capture?}','AdminController@index')->where('vue_capture', '[\/\w\.-]*');
 
@@ -106,5 +86,3 @@ Route::get('/{vue_capture?}',function(){
     ->name('app');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

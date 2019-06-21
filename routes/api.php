@@ -41,10 +41,10 @@ Route::prefix('places')->group(function () {
     Route::post('description', 'PlaceController@placeDescriptionSuggestion');
     Route::post('missing', 'PlaceController@missingPlaceSuggestion');
     Route::prefix('lists')->group(function () {
-        Route::post('favorites', 'UserListConroller@addToFavorites');
-        Route::post('favorites/delete', 'UserListConroller@deleteFavorites');
-        Route::post('savedForLater', 'UserListConroller@addToSavedForLater');
-        Route::post('savedForLater/delete', 'UserListConroller@deleteSavedForLater');
+        Route::post('favorites', 'UserListController@addToFavorites');
+        Route::post('favorites/delete', 'UserListController@deleteFavorites');
+        Route::post('savedForLater', 'UserListController@addToSavedForLater');
+        Route::post('savedForLater/delete', 'UserListController@deleteSavedForLater');
     });
 
 

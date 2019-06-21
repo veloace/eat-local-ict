@@ -24,12 +24,20 @@ class AdminController extends Controller
 {
     //
 
+    /**
+     * Serves up the admin Vue web app shell /SPA (corresponds to backend.eatlocalict.com)
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View the SPA shell
+     */
     public function index()
     {
         $data['token']=json_encode(['csrfToken' => csrf_token()]);
         return view('admin.dash',$data);
-    }
+    }//function index.
 
+    /**
+     * Get the information needed to display the dashboard for the admins as JSON
+     * @return mixed
+     */
     public function loadDashboard()
     {
        $data['description_suggestions'] =PlaceDescriptionSuggestion::count();
@@ -45,9 +53,33 @@ class AdminController extends Controller
        $data['users'] = User::count();
 
        return $data;
+    }//function load dashboard
+
+
+    function indexPlaceForEdits($place)
+    {
+        $place = Place::with('tags')->find($place);
+        $data['tags'] = Tag::select('id','name')->get();
+        $data['listing'] = $place;
+        //
+        $data['previous'] = Place::where('id','<',$place->id)
+            ->orderBy('id','desc')
+            ->first();
+        $data['previous'] = empty($data['previous']) ? null:$data['previous']->id;
+        //
+        $data['next'] = Place::where('id','>',$place->id)
+            ->orderBy('id','asc')
+            ->first();
+        $data['next'] = empty($data['next']) ? null:$data['next']->id;
+
+        return $data;
     }
 
 
+    /**
+     * Gets user place ownership claims that haven't been processed yet and returns it as a JSON object
+     * @return mixed
+     */
     public function showOwnershipClaims()
     {
         $data['ownership_claims']=UserPlaceOwnershipClaim::where(
@@ -61,6 +93,12 @@ class AdminController extends Controller
         return $data;
     }
 
+    /**
+     * Processes either the admin approval or admin disapproval of a user's place ownership claim. Notifies claimant of the decision
+     *
+     * @param ProcessOwnershipClaimRequest $request HTTP request from the front-end
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function processOwnershipClaim(ProcessOwnershipClaimRequest $request)
     {
         $claim = UserPlaceOwnershipClaim::where('id',$request['id'])->first();
@@ -88,12 +126,14 @@ class AdminController extends Controller
         return response(null,204);
     }
 
-    public function dataEditRequest()
-    {
 
-    }
-
-
+    /**
+     * Process an admin's approval of a user submitted place description suggestion and saves the user's suggestion as the
+     * summary description for the corresponding  place object in our daatabase
+     *
+     * @param EditSuggestionRequest $request HTTP request from the front-end
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function acceptSuggestion(EditSuggestionRequest $request)
     {
         $suggestion = PlaceDescriptionSuggestion::find($request['id']);
@@ -104,6 +144,12 @@ class AdminController extends Controller
         return $this->deleteSuggestion($request);
     }
 
+    /**
+     * Deletes a user-submitted place description suggestion from our database
+     *
+     * @param EditSuggestionRequest $request HTTP request from the front-end
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function deleteSuggestion(EditSuggestionRequest $request)
     {
 
@@ -112,7 +158,11 @@ class AdminController extends Controller
     }
 
 
-
+    /**
+     *
+     * Lists all places in the databases, returns (paginates) 50 at a time
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function indexPlaces()
     {
         return Place::with('tags')->paginate(50);
@@ -120,10 +170,16 @@ class AdminController extends Controller
     }
 
 
-
+    /**
+     * Saves place edits from the Admin frontend and logs the changes
+     *
+     * @param EditPlaceRequest $request HTTP request from the front-end
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function savePlaceEdits(EditPlaceRequest $request)
     {
 
+        //applies edits to place model
         $place = Place::find($request['id']);
         $place->name=!empty($request['name']) ? $request['name']:null;
         $place->image_url=!empty($request['image_url']) ? $request['image_url']:null;
@@ -152,6 +208,7 @@ class AdminController extends Controller
         $place->save();
         $place->fresh();
 
+        //saves history of the edits to our update log.
         $log = new PlaceUpdateLog();
         $log->place_id = $place->id;
         $log->edited_by_user_id = Auth::id();
@@ -159,15 +216,17 @@ class AdminController extends Controller
         $log->new_model_json = $place->toJson(JSON_PRETTY_PRINT);
         $log->save();
 
-
-
         return response(null,204);
 
-    }
+    }//function savePlaceEdits
+
 
     /**
-     * @param Place $place
-     * @param EditPlaceRequest $request
+     * Updates the tags for a place based on the incoming place tags. This function deletes all place tags that aren't in $request and
+     * also adds place tags that are in $request but aren't yet in the $place. Common tags are left untouched.
+     *
+     * @param Place $place the place object with old tags  need to be updated
+     * @param EditPlaceRequest $request HTTP request that contains the new tags for the $place object
      */
     public function updateTags(Place $place, EditPlaceRequest $request)
     {
@@ -231,23 +290,19 @@ class AdminController extends Controller
             ->whereNotIn('tag_id',$incoming)
             ->delete();
 
-    }
+    }//function updateTags
 
-
-    public function addPlace()
-    {
-        return view('admin.place.add');
-
-    }
-
-
-
-
+    /**
+     * Removes a place from our database.
+     *
+     * @param DeletePlaceRequest $request
+     * @return $this
+     */
     public function deletePlace(DeletePlaceRequest $request)
     {
         Place::find($request['id'])->delete();
         return redirect()->route('indexPlaces')->with('success_message', 'Place successfully deleted.');
 
-    }
+    }//function deletePlace
 
 }
