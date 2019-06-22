@@ -109,6 +109,12 @@
                     </b-field>
                 </div>
 
+                <div class="column is-one-third">
+                    <b-field label="WichitaByEb Link" custom-class="" >
+                        <b-input  v-model="listing.eb_review_link"  maxlength="175" ></b-input>
+                    </b-field>
+                </div>
+
                 <div class="column is-full">
                     <hr>
                     <h1 class=" title is-4">Service Information</h1>

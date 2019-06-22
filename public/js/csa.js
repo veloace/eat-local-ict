@@ -2067,6 +2067,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -17167,6 +17173,31 @@ var render = function() {
                           _vm.$set(_vm.listing, "instagram_link", $$v)
                         },
                         expression: "listing.instagram_link"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "column is-one-third" },
+              [
+                _c(
+                  "b-field",
+                  { attrs: { label: "WichitaByEb Link", "custom-class": "" } },
+                  [
+                    _c("b-input", {
+                      attrs: { maxlength: "175" },
+                      model: {
+                        value: _vm.listing.eb_review_link,
+                        callback: function($$v) {
+                          _vm.$set(_vm.listing, "eb_review_link", $$v)
+                        },
+                        expression: "listing.eb_review_link"
                       }
                     })
                   ],

@@ -187,6 +187,7 @@ class AdminController extends Controller
         $place->email_address=!empty($request['email_address']) ? $request['email_address']:null;
         $place->menu_link=!empty($request['menu_link']) ? $request['menu_link']:null;
         $place->website_url=!empty($request['website_url']) ? $request['website_url']:null;
+        $place->eb_review_link=!empty($request['eb_review_link']) ? $request['eb_review_link']:null;
         $place->facebook_link=!empty($request['facebook_link']) ? $request['facebook_link']:null;
         $place->instagram_link=!empty($request['instagram_link']) ? $request['instagram_link']:null;
         $place->google_place_id=!empty($request['google_place_id']) ? $request['google_place_id']:null;

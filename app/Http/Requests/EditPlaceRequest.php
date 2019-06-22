@@ -37,6 +37,7 @@ class EditPlaceRequest extends FormRequest
             'email_address'=>'nullable|email',
             'menu_link'=>'nullable|url',
             'website_url'=>'nullable|url',
+            'eb_review_link'=>'nullable|url',
             'facebook_link'=>'nullable|string',
             'instagram_link'=>'nullable|string',
             'google_place_id'=>'nullable|string',
