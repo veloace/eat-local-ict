@@ -68,7 +68,7 @@
                         this.$root.showNotification(loginMessage,'success');
                         this.email=null;
                         this.password=null;
-                        this.$router.push({name:'account'});
+                        this.$router.push({name:'home'});
                     })
                     .catch((error) => {
                         this.$root.loading = false;
@@ -99,7 +99,7 @@
         },
         activated()
         {
-            this.$root.isAuthenticated(true,false,'home')
+            this.$root.isAuthenticated(true,false,'account')
         }
     }
 </script>

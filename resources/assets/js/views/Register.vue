@@ -88,7 +88,7 @@
                         this.$root.user.logged = true;
                         let registerMessage = 'Hi, '+this.name +'! Welcome to EatLocalICT!';
                         this.$root.showNotification(registerMessage,'success');
-                        this.$router.push({name:'account'})
+                        this.$router.push({name:'home'})
 
 
                     })
@@ -114,7 +114,7 @@
         },
         activated()
         {
-            this.$root.isAuthenticated(true,false,'home')
+            this.$root.isAuthenticated(true,false,'account')
         }
     }
 </script>
