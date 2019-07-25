@@ -114,7 +114,7 @@
         },
         activated()
         {
-            this.$root.isAuthenticated(true,false,'account')
+            this.$root.isAuthenticated(true,false,'home')
         }
     }
 </script>
