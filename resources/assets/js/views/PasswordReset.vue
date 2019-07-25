@@ -92,7 +92,6 @@
         },
         activated()
         {
-            this.$root.showLoginModal = false;
             this.$root.isAuthenticated(true);
             this.token = this.$route.params.token;
         }

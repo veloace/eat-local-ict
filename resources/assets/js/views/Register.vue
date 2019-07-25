@@ -1,40 +1,51 @@
 <template>
-    <b-modal :active.sync="$root.showRegistrationModal" v-if="!$root.user.logged" :width="640" :canCanel="['x', 'outside']">
-        <div class="modal-background"></div>
-        <div class="modal-card has-background-grey-darker">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Register</p>
-            </header>
-            <div class="modal-card-body">
-                <p class="subtitle has-text-white">You don't need an account to access EatLocalICT, but you can create a <strong class="has-text-white">FREE</strong> account to save favorites, make lists, and to claim ownership of restaurants!</p>
-                    <b-field  label="Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name"  >
-                        <b-input   minlength="2" maxlength="100" v-model="name" placeholder="Your Name" ></b-input>
-                    </b-field>
+    <div class="hero is-fullheight ict-flag-bg">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column has-background-grey-darker is-offset-2 is-8">
+                        <h1 class="has-text-centered has-text-white title">Signup For EatLocalICT</h1>
 
-                    <b-field  label="Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email" >
-                        <b-input minlength="2" maxlength="150" v-model="email" placeholder="Your Email" ></b-input>
-                    </b-field>
+                        <p class="subtitle has-text-white">You don't need an account to access EatLocalICT, but you can create a <strong class="has-text-white">FREE</strong> account to save favorites, make lists, and to claim ownership of restaurants!</p>
+                    <div class="columns">
+                        <div class="column">
+                            <b-field  label="Name" custom-class="has-text-white" :type="errors.name ?'is-danger':''" :message="errors.name"  >
+                                <b-input   minlength="2" maxlength="100" v-model="name" placeholder="Your Name" ></b-input>
+                            </b-field>
+                        </div>
+                        <div class="column">
+                            <b-field  label="Email" custom-class="has-text-white" :type="errors.email ?'is-danger':''" :message="errors.email" >
+                                <b-input minlength="2" maxlength="150" v-model="email" placeholder="Your Email" ></b-input>
+                            </b-field>
+                        </div>
+                    </div>
 
-                    <b-field  label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password" >
-                        <b-input   v-model="password" type="password" placeholder="Your Password" required></b-input>
-                    </b-field>
+                    <div class="columns">
+                        <div class="column">
+                            <b-field  label="Password" custom-class="has-text-white" :type="errors.password ?'is-danger':''" :message="errors.password" >
+                                <b-input   v-model="password" type="password" placeholder="Your Password" required></b-input>
+                            </b-field>
+                        </div>
+                        <div class="column">
+                            <b-field  label="Re-type Password" custom-class="has-text-white" :type="errors.password_confirmed ?'is-danger':''" :message="errors.password_confirmed" >
+                                <b-input v-model="password_confirmed" type="password" placeholder="Confirm Password" required></b-input>
+                            </b-field>
+                        </div>
+                    </div>
 
-                    <b-field  label="Re-type Password" custom-class="has-text-white" :type="errors.password_confirmed ?'is-danger':''" :message="errors.password_confirmed" >
-                        <b-input v-model="password_confirmed" type="password" placeholder="Confirm Password" required></b-input>
-                    </b-field>
                     <p class="has-text-white heading">In the future, we are considering adding a periodic newsletter of updates to the app and information about new and updated restaurants. Would you like to opt-in to receiving this newsletter if we decide to do it? (You can opt out at any time)</p>
                     <b-switch class="has-text-white" size="is-small" :value="false" :true-value="1" :false-value="0" v-model="newsletter">
                         <span v-if="newsletter===1">You are opted in!</span>
                         <span v-else>You are NOT opted in</span>
                     </b-switch>
                     <p class="has-text-white">By clicking the sign-up button below, you agree to our <a @click="$root.toggleLegalInfoModal('terms')" >terms and conditions</a> and our <a @click="$root.toggleLegalInfoModal('cookies')" >cookie policy</a>.</p>
-            </div>
-            <footer class="modal-card-foot">
-                <button class="button" @click="$root.showLoginModal=true;$root.showRegistrationModal = false" >Back to Login</button>
+                <router-link :to="{name:'login'}" class="button"  >Back to Login</router-link>
                 <button class="button is-success" @click="register">Sign Up!</button>
-            </footer>
+                    </div>
+                </div>
+            </div>
         </div>
-    </b-modal>
+    </div>
 </template>
 <script>
     export default {
@@ -77,8 +88,8 @@
                         this.$root.user.logged = true;
                         let registerMessage = 'Hi, '+this.name +'! Welcome to EatLocalICT!';
                         this.$root.showNotification(registerMessage,'success');
-                        this.showLoginModal=false;
-                        this.$root.showRegistrationModal = false;
+                        this.$router.push({name:'account'})
+
 
                     })
                     .catch((error) => {
@@ -100,6 +111,10 @@
                         }
                     });
             }
+        },
+        activated()
+        {
+            this.$root.isAuthenticated(true,false,'account')
         }
     }
 </script>

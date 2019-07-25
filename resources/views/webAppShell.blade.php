@@ -69,7 +69,7 @@
                       <router-link :to="{name:'account'}"  class="has-text-white"><i class="fa fa-cogs"></i></router-link>
               </div>
               <div class="navbar-item" v-if="!$root.user.logged">
-                  <a @click="$root.showLoginModal=true" class="has-text-white"><i class="fa fa-sign-in-alt"></i><span class="is-hidden-mobile">&nbsp;Login</span></a>
+                  <router-link :to="{name:'login'}" class="has-text-white"><i class="fa fa-sign-in-alt"></i><span class="is-hidden-mobile">&nbsp;Login</span></router-link>
 
               </div>
               <div class="navbar-item" v-else>
@@ -145,9 +145,6 @@
             </div>
         </div>
     </footer>
-
-    <login></login>
-    <registration></registration>
     <description-suggestion></description-suggestion>
     <legal-info :type="legalInfo" v-if="legalInfo"></legal-info>
 </div>

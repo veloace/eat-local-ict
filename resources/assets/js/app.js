@@ -24,14 +24,15 @@ window.Vue.use(VueAnalytics, {
     router
 });
 
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('login', require('./components/Login.vue'));
-Vue.component('registration', require('./components/Register.vue'));
+
 Vue.component('description-suggestion', require('./components/DescriptionSuggestion.vue'));
 Vue.component('legal-info', require('./components/LegalInfo.vue'));
 Vue.component('add-to-list', require('./components/AddToList.vue'));

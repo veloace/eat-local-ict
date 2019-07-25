@@ -5,7 +5,17 @@ const routes =
             path: '/',
             component: require('./views/Home.vue'),
             name: 'home',
-            alias:['/home','/login','/register']
+            alias:['/home']
+        },
+        {
+            path: '/login',
+            component: require('./views/Login.vue'),
+            name: 'login',
+        },
+        {
+            path: '/register',
+            component: require('./views/Register.vue'),
+            name: 'register',
         },
         {
             path: '/listing/:id',

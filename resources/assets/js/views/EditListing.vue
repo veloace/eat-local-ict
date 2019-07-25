@@ -399,6 +399,7 @@
 
         },
         activated(){
+            this.$root.isAuthenticated(false,true,'login');
             this.loadListing();
         }
 
