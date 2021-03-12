@@ -23,9 +23,7 @@ class CreatePlacesTable extends Migration
             $table->string('city')->default('Wichita');
             $table->char('state_code',2)->default('KS');
             $table->unsignedInteger('owner_user_id')->nullable();
-            //Eb
-            $table->string('eb_review_link')->nullable();
-            //
+            //Eb\            //
             //contact info
             $table->string('phone_number')->nullable();
             $table->string('email_address')->nullable();
@@ -45,12 +43,9 @@ class CreatePlacesTable extends Migration
             $table->boolean('serves_alcohol')->default(false);
             $table->boolean('serves_full_meals')->default(false);
             $table->boolean('serves_brunch')->default(false);
-
             $table->boolean('is_food_truck')->default(false);
 
             //location info
-            //
-            $table->string('google_place_id')->nullable();
             $table->decimal('latitude',10,8)->nullable()->index();
             $table->decimal('longitude',11,8)->nullable()->index();
             $table->timestamps();

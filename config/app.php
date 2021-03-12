@@ -66,7 +66,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Chicago',//timezone of Wichita, KS
 
     /*
     |--------------------------------------------------------------------------
@@ -108,8 +108,6 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-    'PLACES_API_KEY'=>env('PLACES_API_KEY'),
-
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

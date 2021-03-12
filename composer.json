@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "veloace/eat-local-ict",
+    "description": "This project is a locator for local food/drink places in Wichita, KS but it has been designed to allow expansion to all localities, as the database migrations were made with that concept in mind.\n\n",
+    "keywords": ["food", "laravel"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -9,7 +9,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/passport": "^7.2",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "spatie/opening-hours": "^2.10"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

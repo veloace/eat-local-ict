@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\OpeningHours\OpeningHours;
+
 
 class Place extends Model
 {
@@ -14,6 +16,7 @@ class Place extends Model
     protected $appends=['user_distance','is_open','is_favorited','user_comment','claim_status'];
 
     protected $favorite;
+    protected $openingHours;
     /**
      * Generates the Apple Maps navigation link for use by the frontend
      * @return string
@@ -35,16 +38,10 @@ class Place extends Model
     {
         if(Auth::check())
         {
-            $fav = UserFavorite::where([
+            return UserFavorite::where([
                 ['user_id',Auth::id()],
                 ['place_id',$this->id],
-            ])
-                ->first();
-            if($fav)
-            {
-                $this->favorite = $fav;
-                return true;
-            }//if collection
+            ])->count() >0;
         }//if user is logged in
         return false;
     }
@@ -56,128 +53,18 @@ class Place extends Model
 
 
     /**
-     * determines (using JSON from the Google Places API) if the location is open or closed at this exact time.
+     * determines if the location is open or closed at this exact time.
      * @return bool
      */
     public function getIsOpenAttribute()
     {
-
-        //while we're here, let's make sure there is an address.
-
-        try {
-            $response = $this->getCachedAPI();
-            $now = new Carbon();
-           $now->tz = 'America/Chicago';
-            $today = $now->dayOfWeek;
-            $currentTime = $now->format('Hi');
-            //
-
-            if (!empty($response->result->opening_hours)) {
-                $periods = $response->result->opening_hours->periods;        //this usort should be relevant as the opening hours should already be sorted correctly--but let's explicitly program that
-                usort($periods, function ($a, $b) {
-                    return $a->open->day > $b->open->day;
-                });
-
-                foreach ($response->result->opening_hours->periods as $period) {
-                    $openDay = (integer)$period->open->day;
-                    $openTime = (integer)$period->open->time;
-                    $closeDay = (integer)$period->close->day;
-
-                    if($period->close->time == 0)
-                    {
-                        $closeTime = 2400;
-                        $closeDay = $closeDay== 0 ? 6:$closeDay-1;
-
-                    }
-                    else
-                    {
-                        $closeTime = (integer)$period->close->time;
-
-                    }
-
-                    if (($openDay == $today) && ($closeDay == $today)) {//easy one, today is equal to the open day and close day, so we only need to look at time
-                        if (($openTime <= $currentTime) && ($closeTime >= $currentTime)) {
-                            //current time is between the open time and the close time so it is open
-                            return true;
-                        }
-                    }//if $close==$open==$now
-                    elseif (($openDay == $today) && ($closeDay != $today)) {
-                        //close day is not today, but today is the open day, so we just need to make sure we are passed the open time
-                        if (($openTime <= $currentTime)) {
-                            //current time is greater than the open time, so it's open
-                            return true;
-                        }
-                    }//elseif $open==$now, but $close != now
-                    elseif (($closeDay == $today) && ($openDay != $today)) {//open day is not today, but the close day is today
-                        if (($currentTime < $closeTime)) {
-                            //current time is less than the close time, so it's open
-                            return true;
-                        }
-                    }//elseif $open!=today, but $close ==$today
-                    elseif (($closeDay > $today) && ($openDay < $today)) {//
-                        //today falls between the open days, meaning it neither opens nor closes today
-
-                        return true;
-                    }//if open < today < close
-                    elseif ($closeDay < $openDay) {//weird scenario
-                        /*this weird, because it indicates a span of open and close that spans a week, like Saturday to Monday, where the open day
-                        is 6 and the close day is 1, so we can't use standard math as that would give us a false close
-                        */
-                        if (($today < $closeDay) || ($openDay < $today)) {
-                            return true;
-                        }
-                    }
-
-
-                }//foreach
-            }
-            return false;//default value
+        if(empty($this->openingHours)){
+            $this->setOpeningHours();//set the hours, if they are not yet set
         }
-        catch (\Exception $e)
-        {
-            return false;
-        }//false
+        return $this->openingHours->isOpenAt(Carbon::now()); // false
 
     }//is_open
 
-    /**
-     * gets the cached Google Places API information from the database if it is still fresh enough (less than one week old)
-     * If it's over 1 week old, it will call a function to make the API call
-     * @return mixed|null
-     */
-    public function getCachedAPI()
-    {
-        $cached =GooglePlaceCache::where([
-            ['google_place_id',$this->google_place_id],
-            ['updated_at', '>=', Carbon::now()->subWeek()]
-        ])->first();
-        return $cached ? json_decode($cached->cached_content): $this->refreshCache();
-    }
-
-
-    /**
-     * updates our Cache of the Google Places API information by calling the Google Places API
-     * @return mixed|null
-     */
-    public function refreshCache()
-    {
-
-    if($this->google_place_id)
-    {
-        $key = config('app.PLACES_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$this->google_place_id}&fields=opening_hours,rating,price_level,reviews&key={$key}";
-        if($response=@json_decode(@file_get_contents($url))) {
-            GooglePlaceCache::updateOrCreate(
-                ['google_place_id'=>$this->google_place_id],
-                ['cached_content'=>json_encode($response)]
-            );
-            return $response;
-        }
-    }
-
-
-        return null;
-    }
 
 
     /**
@@ -230,8 +117,6 @@ class Place extends Model
      */
     public function getClaimStatusAttribute()
     {
-
-
 
         if(!Auth::check())
         {
@@ -286,10 +171,65 @@ class Place extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-     function tags()
+     public function tags()
     {
         return $this->hasManyThrough(Tag::class,PlaceTag::class,'place_id','id','id','tag_id');
     }
+
+    /**
+     * Gets the raw place hours
+     *
+     */
+    public function placeHours(){
+         return $this->hasMany(PlaceHour::class,'place_id','id');
+    }
+    /**
+     * Gets the raw place hours
+     *
+     */
+    public function placeHourExceptions(){
+         return $this->hasMany(PlaceHourException::class,'place_id','id');
+    }
+
+
+    public function setOpeningHours(){
+        /*first step is to get our place hours from the database and convert them to a form usable
+         by the spatie openingHours package*/
+        $weekHours=[
+            'monday'     => [],
+            'tuesday'    => [],
+            'wednesday'  => [],
+            'thursday'   => [],
+            'friday'     => [],
+            'saturday'   => [],
+            'sunday'     => [],
+            'exceptions'     => [],
+        ];//prototype of array used by Spatie package
+        foreach ($this->placeHours as $dayHours){
+           $day =  strtolower(jddayofweek($dayHours->day_of_week,1));
+           if($dayHours->open_all_day){
+               $weekHours[$day][]="00:00-23:59";
+
+           } elseif($dayHours->closed){
+               $weekHours[$day]=[];
+
+           } else {
+               $start = substr($dayHours->start,0,5);
+               $end = substr($dayHours->end,0,5);
+               $weekHours[$day][]="{$start}-{$end}";
+           }
+        }
+        $this->openingHours = OpeningHours::create($weekHours);
+    }
+
+    public function getOpenHoursAttribute(){
+        if(empty($this->openingHours)){
+            $this->setOpeningHours();//set the hours, if they are not yet set
+        }
+        return $this->openingHours->forWeek();
+    }
+
+
 
 
 

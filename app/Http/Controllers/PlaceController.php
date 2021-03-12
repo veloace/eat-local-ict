@@ -35,7 +35,7 @@ class PlaceController extends Controller
      * the user-defined parameters
      *
      * TODO: Need to clean this up to use SQL queries for distance and hours (is open/not open). However, we need to remove
-     * the reliance of Google Places API first and save our hours to the database via a PlaceHours object.
+     * the reliance of Google Places API first and save our hours to the database via a PlaceHour object.
      *
      * @param GetRandomPlaceRequest $request
      * @param int $iterator
@@ -50,7 +50,6 @@ class PlaceController extends Controller
         }
         $useRadius=false;
         $radius = 40;//default fail-safe value
-        $requires_open = empty($request['is_open']) ? false :(boolean)$request['is_open'];
 
         //get the reruns from the session, if they are there
         $runs = session('runs',[]);//retrieve the runs array from the session, or else initialize the empty array.
@@ -92,15 +91,15 @@ class PlaceController extends Controller
         }//if lat lng
 
 
-        $place = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude');
+        $place = Place::select('id','name','address','city','state_code','summary','latitude','longitude');
 
         if($useRadius)
         {
-            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . ")) 
-                    * cos(radians(`latitude`)) 
-                    * cos(radians(`longitude`) 
-                    - radians(" . $request['lng'] . ")) 
-                    + sin(radians(" . $request['lat'] . ")) 
+            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . "))
+                    * cos(radians(`latitude`))
+                    * cos(radians(`longitude`)
+                    - radians(" . $request['lng'] . "))
+                    + sin(radians(" . $request['lat'] . "))
                     * sin(radians(`latitude`))))";
 
             $place = $place->selectRaw("{$haversine} AS distance")
@@ -141,20 +140,7 @@ class PlaceController extends Controller
         }
         session(['runs'=>$runs]);//save to session
         //
-        //final preflight; TODO: consider adding a scheduled task to update open status in database so that we can query it directly
-        if(($requires_open && ($place->is_open==false))&& $iterator<5)
-        {
-            //this place must be open, but it's not, so try another place
-            $iterator++;
-            return $this->getRandomPlace($request,$iterator);
-        }//the place is required to be open but it is not open
-        else
-        {
-            //either this place is good to go, or we couldn't find a place after 5 iterations.
-            //either way, we need to send something to the user, even if it isn't perfect
-            return $place;
-        }//else
-
+        return $place;
     }//function getRandomPlaces
 
 
@@ -172,6 +158,7 @@ class PlaceController extends Controller
             ();
 
         $place->append('user_distance');
+        dd($place->is_open);
         if(!empty($_GET['lat']) && !empty($_GET['lng']) )
         {
             //browser gps coordinates were supplied, so add them to the session.
@@ -182,52 +169,9 @@ class PlaceController extends Controller
 
         }
 
-        //attempt to make a call to the Google API to build place information
-        if (empty($place->google_place_id))
-        {
-            $place =$this->buildPlaceInformation($place);
-
-        }
         $return = $place->toArray();
         $return['map_link']=$place->map_link;
 
-
-        //see how old the information we have in the database is. Looks for a cache less than a week old
-        $cached =GooglePlaceCache::where([
-            ['google_place_id',$place->google_place_id],
-            ['updated_at', '>=', \Carbon\Carbon::now()->subWeek()]
-        ])->first();
-
-
-        if($cached)
-        {//if our cache is less than a week old, we can go ahead and use it
-            $response = json_decode($cached->cached_content);
-            $return['hours']=!empty($response->result->opening_hours->weekday_text) ? $response->result->opening_hours->weekday_text:[];
-            $return['is_open']=$place->is_open;//since this information is cached, use our function to determine if they are open
-            $return['price']=!empty($response->result->price_level) ? $response->result->price_level:1;
-            $return['rating']=!empty($response->result->rating) ? $response->result->rating:5;
-            $return['reviews']=!empty($response->result->reviews) ? $response->result->reviews:null;
-
-
-        }
-        else
-        {//if the cache is over a week old, or we don't have a cache at all, make an API call and update the place object with the API info
-            $key = config('app.PLACES_API_KEY');
-            $url = "https://maps.googleapis.com/maps/api/place/details/json?placeid={$place->google_place_id}&fields=opening_hours,rating,price_level,reviews&key={$key}";
-            if($response=@json_decode(@file_get_contents($url))) {
-                $return['hours']=!empty($response->result->opening_hours->weekday_text) ? $response->result->opening_hours->weekday_text:[];
-                $return['is_open']=!empty($response->result->opening_hours->open_now) ? $response->result->opening_hours->open_now:false;//since we are getting an API call right off the bat, don't worry about using our function to build the hours/determine if open
-                $return['price']=!empty($response->result->price_level) ? $response->result->price_level:1;
-                $return['rating']=!empty($response->result->rating) ? $response->result->rating :5;
-                $return['reviews']=!empty($response->result->reviews) ? $response->result->reviews:null;
-
-                GooglePlaceCache::updateOrCreate(
-                    ['google_place_id'=>$place->google_place_id],
-                    ['cached_content'=>json_encode($response)]
-                );
-
-            }//if response
-        }//else
         return $return;
     }//function index
 
@@ -251,150 +195,8 @@ class PlaceController extends Controller
 
 
 
-    /**
-     * Attempts to populate the place information using the Google Places API
-     * @param Place $place
-     * @return Place
-     */
-    public function buildPlaceInformation(Place $place)
-    {
-        $key = config('app.PLACES_API_KEY');
-        $name=urlencode("$place->name Wichita");
-        $url =   "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={$name}&inputtype=textquery&locationbias=circle:20@37,-97&key={$key}";
-
-        if($response=@json_decode(@file_get_contents($url))) {
-            if($response->candidates)
-            {
-                foreach ($response->candidates as $candidate)
-                {
-                    $details =  $this->getPlaceDetails($candidate->place_id,$key);
-                    if($details)
-                   {
-                       $place->address=$details['street_address'];
-                       $place->city=$details['city'];
-                       $place->state_code=$details['state'];
-                       $place->phone_number=$details['phone'];
-                       $place->google_place_id = $candidate->place_id;
-                       $place->latitude=$details['lat'];
-                       $place->longitude=$details['long'];
-                       $place->name=$details['name'];
-                       $place->save();
-                       $place->refresh();
-                       return $place;
-                   }
-                }//loop
-            }//if response has candidates
-        }//if json decodable response
-        return $place;
-    }//build place information
 
 
-    /**
-     * Gets the place details from a Google Places API call
-     * @param $placeID
-     * @param $key
-     * @return array|bool
-     */
-    private function getPlaceDetails($placeID,$key)
-    {
-        $cached = GooglePlaceCache::where(
-            'google_place_id',$placeID
-        )->first();
-
-
-        if($cached) {
-            $response = json_decode($cached->cached_content);
-        }
-        else
-        {
-            $url="https://maps.googleapis.com/maps/api/place/details/json?placeid={$placeID}&key={$key}";
-            $response=@json_decode(@file_get_contents($url));
-            if($response)
-            {
-                //update the cache
-                GooglePlaceCache::updateOrCreate(
-                    ['google_place_id'=>$placeID],
-                    ['cached_content'=>json_encode($response)]
-                );
-            }//if response
-            else
-            {
-                return false;
-            }
-        }
-        if($response->result) {
-                //
-                //get address details
-                $place = $response->result;
-                $address = $this->buildAddress($place->address_components);
-                if($address['state']=='KS')
-                {
-                    //the state is KS, so this is likely a correct candidate, so set it up.
-                    $address['phone'] = $res =!empty($place->formatted_phone_number )? preg_replace("/[^0-9]/", "", $place->formatted_phone_number ):null;
-                    $address['lat']=$place->geometry->location->lat;
-                    $address['long']=$place->geometry->location->lng;
-                    $address['name']=$place->name;
-                    return $address;
-                }
-            }
-            return false;//default return
-    }//getPlaceDetails
-
-
-    /**
-     * Builds a human-readable address from the Google Places API JSON
-     * @param $address_components
-     * @return array
-     */
-    private function buildAddress($address_components)
-    {
-        $addr = [
-            'number'=>null,
-            'street'=>null,
-            'city'=>null,
-            'state'=>null,
-            'zip'=>null
-        ];
-
-        foreach ($address_components as $address_component) {
-            //check if it is a street number
-            if (in_array('street_number', $address_component->types))
-            {
-                $addr['number'] = $address_component->long_name;
-            }//if
-
-            //check if it is a street/route
-            if (in_array('route', $address_component->types))
-            {
-                $addr['street'] = $address_component->short_name;
-            }//if
-
-            //check if it is a city
-            if (in_array('locality', $address_component->types))
-            {
-                $addr['city'] = $address_component->long_name;
-            }//if
-
-            //check if it is a city
-            if (in_array('administrative_area_level_1', $address_component->types))
-            {
-                $addr['state'] = $address_component->short_name;
-            }//if
-
-            //check if it is a postal code
-            if (in_array('postal_code', $address_component->types))
-            {
-                $addr['zip'] = $address_component->short_name;
-            }//if
-
-
-        }//foreach
-
-        $addr['street_address'] = "{$addr['number']} {$addr['street']}";
-
-        return $addr;
-
-    }//function buildAddress
 
 
     /**
@@ -594,11 +396,11 @@ class PlaceController extends Controller
 
         if($useRadius)
         {
-            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . ")) 
-                    * cos(radians(`latitude`)) 
-                    * cos(radians(`longitude`) 
-                    - radians(" . $request['lng'] . ")) 
-                    + sin(radians(" . $request['lat'] . ")) 
+            $haversine = "(6371 * acos(cos(radians(" . $request['lat'] . "))
+                    * cos(radians(`latitude`))
+                    * cos(radians(`longitude`)
+                    - radians(" . $request['lng'] . "))
+                    + sin(radians(" . $request['lat'] . "))
                     * sin(radians(`latitude`))))";
 
             $places = $places->selectRaw("{$haversine} AS distance")

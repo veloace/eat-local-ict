@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email',175)->unique();
             $table->string('password');
             $table->boolean('has_world_admin_access')->default(false);
+            $table->boolean('can_get_newsletter')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

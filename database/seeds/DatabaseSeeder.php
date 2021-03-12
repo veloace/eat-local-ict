@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TagsTableSeeder::class);
         $this->call(PlacesTableSeeder::class);
         $this->call(PlaceTagsTableSeeder::class);
+        $this->call(PlaceHoursTableSeeder::class);
     }
 }
