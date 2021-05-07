@@ -70,12 +70,12 @@
                         <div class="card-content ">
                             <div class="">
                                 <ul class="open-hours-list">
-                                    <li v-for="(hour,idx) in listing.hours" class="has-text-centered">
-                                        <strong v-if="idx===today" class="has-text-weight-bold has-text-white">
+                                    <li v-for="(hour,idx) in listing.store_hours_for_display" class="has-text-centered">
+                                        <strong v-if="idx === 'Today'" class="has-text-weight-bold has-text-white">
                                             <i class="fa fa-arrow-circle-right"></i>
-                                            {{hour}}
+                                            {{idx}}: {{hour}}
                                         </strong>
-                                        <span v-else class="has-text-white">{{hour}}</span>
+                                        <span v-else class="has-text-white">{{idx}}: {{hour}}</span>
                                     </li>
                                 </ul>
                             </div>

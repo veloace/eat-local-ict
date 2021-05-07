@@ -19,11 +19,11 @@ class CreatePlacesTable extends Migration
             $table->string('image_url')->nullable();
             $table->string('summary')->nullable();
             $table->text('description')->nullable();
+            $table->unsignedInteger('price')->default(1);
             $table->string('address')->nullable();//nullable because food trucks may not have a set address
             $table->string('city')->default('Wichita');
             $table->char('state_code',2)->default('KS');
             $table->unsignedInteger('owner_user_id')->nullable();
-            //Eb\            //
             //contact info
             $table->string('phone_number')->nullable();
             $table->string('email_address')->nullable();

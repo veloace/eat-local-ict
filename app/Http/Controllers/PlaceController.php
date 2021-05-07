@@ -154,11 +154,10 @@ class PlaceController extends Controller
 
         $place = Place::where('id',$place)
             ->with('tags')
-            ->first
-            ();
+            ->first()
+            ->append('store_hours_for_display');
 
         $place->append('user_distance');
-        dd($place->is_open);
         if(!empty($_GET['lat']) && !empty($_GET['lng']) )
         {
             //browser gps coordinates were supplied, so add them to the session.

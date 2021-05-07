@@ -17,6 +17,7 @@ class Place extends Model
 
     protected $favorite;
     protected $openingHours;
+    protected $hidden = ['placeHours','placeHourExceptions'];
     /**
      * Generates the Apple Maps navigation link for use by the frontend
      * @return string
@@ -188,7 +189,7 @@ class Place extends Model
      *
      */
     public function placeHourExceptions(){
-         return $this->hasMany(PlaceHourException::class,'place_id','id');
+         return $this->hasMany(PlaceHourException::class,'place_id','id')->orderBy('day_of_week')->orderBy('start');
     }
 
 
@@ -226,8 +227,31 @@ class Place extends Model
         if(empty($this->openingHours)){
             $this->setOpeningHours();//set the hours, if they are not yet set
         }
-        return $this->openingHours->forWeek();
+        return $this->openingHours->forWeekConsecutiveDays();
     }
+
+
+    public function getStoreHoursForDisplayAttribute(){
+        $weekHours = [];
+        $today = Carbon::now()->format('l');
+        foreach ($this->placeHours as $dayHours){
+            $day =  jddayofweek($dayHours->day_of_week,1);
+            $day = $day == $today ? 'Today' : $day ;
+            if($dayHours->open_all_day){
+                $weekHours[$day] = "Open 24 Hours";
+            } elseif($dayHours->closed){
+                $weekHours[$day]='CLOSED ALL DAY';
+            } else {
+                $start = (new Carbon($dayHours->start))->format('g:i A');
+                $end = (new Carbon($dayHours->end))->format('g:i A');
+                $weekHours[$day]="{$start} to {$end}";
+            }
+        }
+
+        return $weekHours;
+    }
+
+
 
 
 
