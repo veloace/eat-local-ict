@@ -276,7 +276,7 @@ class PlaceController extends Controller
                 }//switch
             }//if
         }//lat lng
-        $places = Place::select('id','name','address','city','state_code','summary','google_place_id','latitude','longitude');
+        $places = Place::select('id','name','address','city','state_code','summary','latitude','longitude');
 
         $lat = !empty(session('lat')) ? session('lat'):37.6889;
         $lng = !empty(session('lng')) ? session('lng'):-97.336111;
@@ -444,7 +444,6 @@ class PlaceController extends Controller
         $place->website_url=!empty($request['website_url']) ? $request['website_url']:null;
         $place->facebook_link=!empty($request['facebook_link']) ? $request['facebook_link']:null;
         $place->instagram_link=!empty($request['instagram_link']) ? $request['instagram_link']:null;
-        $place->google_place_id=!empty($request['google_place_id']) ? $request['google_place_id']:null;
         $place->has_vegan_options=!empty($request['has_vegan_options']) ;
         $place->has_gluten_free_options=!empty($request['has_gluten_free_options']);
         $place->is_food_truck=!empty($request['is_food_truck']) ;
