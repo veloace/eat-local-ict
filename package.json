@@ -20,7 +20,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",
         "@fortawesome/fontawesome-free-solid": "^5.0.13",
-        "ajv": "^6.10.0",
+        "ajv": "^8.18.0",
         "buefy": "^0.7.4",
         "bulma": "^0.7.4",
         "dotenv": "^7.0.0",
